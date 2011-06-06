@@ -1,12 +1,13 @@
+JKæ›´æ–°ä¸­
+
 [2011-06-06]
-×î½üÁ½¸öÔÂµÄĞŞ¸ÄÍ³Ò»¸üĞÂ£¬°üÀ¨
+æœ€è¿‘ä¸¤ä¸ªæœˆçš„ä¿®æ”¹ç»Ÿä¸€æ›´æ–°ï¼ŒåŒ…æ‹¬
 
-ËùÓĞ´úÂë¹æ·¶»¯¡£
-Ìí¼ÓÎŞÒÀÀµ»¯³éÈ¡¹¤¾ß¡£
-js/core¸üĞÂ£º
-  ÎÄ¼şµ÷Õû£ºcustevent.h.jsÓëcustevent_retouch.jsºÏ²¢³ÉÒ»¸öÎÄ¼ş£ºcustevent.js
-  Ìí¼Ó·½·¨£ºStringH.queryUrl¡¢ObjectH.encodeURIJsonµÈ
-js/dom¸üĞÂ£º
-  eventtarget.h.jsÊÂ¼şĞŞ¸Ä£¬Ìí¼Óonchange´úÀíµÈ¡£
-  selector.jsÉı¼¶£¬ĞŞ¸´¸ùÔªËØÒÅÂ©ÎÊÌâ£¬ÒÔ¼°Ìí¼Ó²¿·ÖÎ±Àà
-
+æ‰€æœ‰ä»£ç è§„èŒƒåŒ–ã€‚
+æ·»åŠ æ— ä¾èµ–åŒ–æŠ½å–å·¥å…·ã€‚
+js/coreæ›´æ–°ï¼š
+  æ–‡ä»¶è°ƒæ•´ï¼šcustevent.h.jsä¸custevent_retouch.jsåˆå¹¶æˆä¸€ä¸ªæ–‡ä»¶ï¼šcustevent.js
+  æ·»åŠ æ–¹æ³•ï¼šStringH.queryUrlã€ObjectH.encodeURIJsonç­‰
+js/domæ›´æ–°ï¼š
+  eventtarget.h.jsäº‹ä»¶ä¿®æ”¹ï¼Œæ·»åŠ onchangeä»£ç†ç­‰ã€‚
+  selector.jså‡çº§ï¼Œä¿®å¤æ ¹å…ƒç´ é—æ¼é—®é¢˜ï¼Œä»¥åŠæ·»åŠ éƒ¨åˆ†ä¼ªç±»

@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Anim Demo</title>
+	<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+	<style>
+	li label {width:120px;display: -moz-inline-box; display: inline-block;text-align:right;background-color:#ccc;}
+	.evalSpan {color:#00f;cursor:pointer;}
+	</style>
+	<script type="text/javascript" src="../../../apps/core_dom_youa.js"></script>
+	<script type="text/javascript" src="../../../wagang/anim/anim.js"></script>
+</head>
+<body>
+<div id=doc3>
+	<div id="bd" >
+		<div class="section-ctn">
+			<h3 class="section-hd" onclick="W(this).nextSibling('div').slideToggle(300);" >Anim基础类：---不推荐直接使用 <span style="padding-left:100px;color:blue;">点击展开详情</span></h3>
+			<div style="overflow:hidden;display:none;">
+			<div style="padding-left:30px;">
+<pre>/**
+ * @class Anim 基础动画
+ * @namespace QW
+ * @constructor
+ * @param {function} animFun - 管理动画效果的闭包
+ * @param {int} dur - 动画效果持续的时间 
+ * @param {json} opts - 其它参数， 
+	---目前只支持以下参数：
+	{boolean} byStep (Optional) 是否按帧动画（即"不跳帧"）。如果为true，表示每一帧都走到，帧数为dur/frameTime
+	{boolean} frameTime (Optional) 帧间隔时间。默认为28（约一秒36帧）
+	{boolean} per (Optional) 初始播放进度
+	{function} onbeforeplay (Optional) onbeforeplay事件
+	{function} onplay (Optional) onplay事件
+	{function} onstep (Optional) onstep事件
+	{function} onpause (Optional) onpause事件
+	{function} onresume (Optional) onresume事件
+	{function} onstop (Optional) onstop事件
+	{function} onsuspend (Optional) onsuspend事件
+	{function} onreset (Optional) onreset事件
+ * @returns {Anim} anim - 动画对象
+ */
+</pre>
+<pre>/* 原型方法有：
+	isPlaying() 判断是否正在播放 -----returns {boolean}  
+	play() 从0开始播放 ----returns {boolean} 是否开始顺利开始。（因为onbeforeplay有可能阻止了play） 
+	step(per) 播放一帧，参数per为[0,1]区间内的数值，为可选，表示播放到某进度
+	stop() 停止播放，并预归位到0。
+	suspend() 播放到最后
+	pause() 暂停播放
+	resume() 继续播放
+	reset() 播放到最开始
+*/
+</pre>
+			</div>
+			<button onclick="eval(g('code1').value);" id="evalBtn">运行以下textarea里的代码</button>
+			<br/>
+			<textarea id="code1" style="width:750px;height:200px;">var i=0;
+new QW.Anim(function(){document.title=i++;},3000,{frameTime:100,onsuspend:function(){alert('结束');}}).play();
+
+			</textarea>
+			</div>
+		</div>
+
+		<div class="section-ctn">
+			<h3 class="section-hd" onclick="W(this).nextSibling('div').slideToggle(300);" >动画算子：---可以了解一下，在元素动画中可能用到 <span style="padding-left:100px;color:blue;">点击展开详情</span></h3>
+			<div style="overflow:hidden;display:none;">
+			<div style="padding-left:30px;">
+				说明：基础动画是基于时间轴的，时间进度是从0到1的一个匀速变化过程。<br/>
+				有时候需要非匀速的效果，可以由算子来对进度per作一个转化，来达到非匀速的效果。<br/>
+				参见：
+				<ul>
+					<li><a href="easing.html">动画类算子-运动轨迹</a></li>
+					<li><a href="anim_bystep.html">动画类算子-时间与坐标</a></li>
+				</ul>
+			</div>
+			</div>
+		</div>
+
+		<div class="section-ctn">
+			<h3 class="section-hd" onclick="W(this).nextSibling('div').slideToggle(300);" >针对节点元素的几种动画：---可以了解一下，有时候会用到 <span style="padding-left:100px;color:blue;">点击展开详情</span></h3>
+			<div style="overflow:hidden;display:none;">
+			<div style="padding-left:30px;">
+				<p>>以下是针对节点元素的几种动画，它们用用法几乎一致：new XxxAnim(el, attrs, dur, easing)，具体参见实例。</p>
+				<ul>
+					<li>
+						ElAnim：针对元素的“opacity或以px为单位的样式”的动画。使用场景如：
+						<a href="el_position.html">CSS动画-跳动的小球</a>、
+						<a href="el_rect.html">大小位置动画</a>
+					</li>
+					<li>
+						ColorAnim：针对元素的“颜色性质的样式”的动画。使用场景如：
+						<a href="color.html">颜色渐变</a>
+					</li>
+					<li>
+						ScrollAnim：针对元素的“scroll”的动画。使用场景如：
+						<a href="scroll_page.html">滚屏翻页</a>、
+						<a href="scroll_coda.html">类coda效果</a>、
+						<a href="scroll_home.html">回到首页</a>
+					</li>
+				</ul>
+			</div>
+			</div>
+		</div>
+
+		<div class="section-ctn">
+			<h3 class="section-hd" onclick="W(this).nextSibling('div').slideToggle(300);" >几种retouch后的用法：<span style="padding-left:100px;color:blue;">点击展开详情</span></h3>
+			<div style="overflow:hidden;">
+			<div style="padding-left:30px;">
+				<p>在QW.NodeW添加一些扩展方法，方便用户调用，包括：</p>
+<pre>
+	w.fadeIn(dur, callback) //淡入
+	w.fadeOut(dur, callback) //淡出
+	w.fadeToggle(dur) //淡入/淡出切换 
+	w.slideUp(dur, callback) //收起
+	w.slideDown(dur, callback) 展开
+	w.slideToggle(dur) 收起/展开切换
+	w.shine4Error(dur, callback) //颜色渐变提醒注意
+</pre>
+				<ul>
+					<li>
+						<span class="evalSpan">W('#fadeTestDiv').fadeOut()</span> &nbsp;&nbsp;&nbsp;
+						<span class="evalSpan">W('#fadeTestDiv').fadeIn()</span> &nbsp;&nbsp;&nbsp;
+						<span class="evalSpan">W('#fadeTestDiv').fadeToggle()</span> &nbsp;&nbsp;&nbsp;
+						<div id="fadeTestDiv" style="margin:0 30px;background-color:#ccc;zoom:1;">天王盖地虎，<br/>宝塔镇河妖。</div>
+					</li>
+					<li>
+						<span class="evalSpan">W('#slideTestDiv').slideUp()</span> &nbsp;&nbsp;&nbsp;
+						<span class="evalSpan">W('#slideTestDiv').slideDown()</span> &nbsp;&nbsp;&nbsp;
+						<span class="evalSpan">W('#slideTestDiv').slideToggle()</span> &nbsp;&nbsp;&nbsp;
+						<div id="slideTestDiv" style="margin:0 30px;overflow:hidden;background-color:#ccc">天下太平，<br/>江山永固。</div>
+					</li>
+					<li>
+						<span class="evalSpan">W('#shineTestDiv').shine4Error().focus()</span> &nbsp;&nbsp;&nbsp;
+						<input id="shineTestDiv"  value="">
+					</li>
+				</ul>
+			</div>
+			</div>
+		</div>
+
+
+
+	</div>
+	<div id="ft">
+		QWrap (<a href="http://www.qwrap.com">www.qwrap.com</a>)
+	</div>
+
+</div>
+<script>
+W('body').delegate('.evalSpan','click',function(){eval(this.innerHTML);});
+</script>
+</body>
+</html>

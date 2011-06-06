@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>JKDrag Sample(LayoutDrag): RowDrag,ColumnDrag,ModuleLayoutDrag</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="../assets/drag.css" rel="stylesheet" type="text/css" media="screen">
+	<style type="text/css" title="default" media="screen">
+	/*<![CDATA[*/
+		.layoutDragHeader {cursor:move;background-color:#cccccc;}
+		.dragingModule,tr.dragingModule td	{filter:alpha(opacity:40);opacity:0.4;zoom:1;}
+
+		.listCtn { width:200px;float:left;margin:10px;zoom:1 }
+		.blockModuleCtn { border:1px solid #000;background:#fff; min-height:300px;*height:300px;}
+		.blockModule1 { background:#C0E0E0;margin:1px;border:1px solid #7EA6B2;padding:0.2em;margin:10px;zoom:1; }
+		.blockModule2 { background:#C0C0E0;margin:1px;border:1px solid #7EA6B2;padding:0.2em;margin:10px;zoom:1; }
+		.blockModule3 { background:#E0C0C0;margin:1px;border:1px solid #7EA6B2;padding:0.2em;margin:10px;zoom:1; }
+
+		.inlineModuleCtn { display:block;min-height:110px;*height:110px;margin:10px;border:solid black 1px }
+		.inlineModule1 {border:solid black 1px;float:left;width:100px;height:100px;background-color:#C0E0E0;margin:5px;zoom:1;}
+		.inlineModule2 {border:solid black 1px;float:left;width:100px;height:100px;background-color:#C0C0E0;margin:5px;zoom:1;}
+	/*]]>*/
+	</style>
+	<script type="text/javascript" src="../../../apps/core_dom_pure.js"></script>
+	<script type="text/javascript" src="../../../wagang/anim/anim.js"></script>
+	<script type="text/javascript" src="../drag.js"></script>
+</head>
+<body>
+<div id=doc3>
+	<div id=hd>
+		JKDrag LayoutDrag: RowDrag,ColumnDrag,ModuleLayoutDrag<br/>
+	</div>
+	<div id="bd" >
+		<div class="section-ctn">
+			<h3 class="section-hd">模块拖动示例(block)：</h3>
+
+			<div class="cls">
+				<div class="listCtn">
+					<h3>List 1</h3>
+					<ul id="ul1" class="blockModuleCtn">
+						<li class="blockModule1 draggable" id="li1_1">list 1, item 1</li>
+						<li class="blockModule1 draggable" id="li1_2">list 1, item 2</li>
+						<li class="blockModule1 draggable" id="li1_3">list 1, item 3</li>
+						<li class="blockModule1 draggable" id="li1_4">list 1, item 4</li>
+						<li class="blockModule1 draggable" id="li1_5">list 1, item 5</li>
+					</ul>
+				</div>
+
+				<div class="listCtn">
+					<h3>List 2</h3>
+					<ul id="ul2" class="blockModuleCtn">
+						<li class="blockModule2 draggable" id="li2_1">list 2, item 1</li>
+						<li class="blockModule2 draggable" id="li2_2">list 2, item 2</li>
+						<li class="blockModule2 draggable" id="li2_3">list 2, item 3</li>
+						<li class="blockModule2 draggable" id="li2_4">list 2, item 4</li>
+						<li class="blockModule2 draggable" id="li2_5">list 2, item 5</li>
+					</ul>
+				</div>
+
+				<div class="listCtn">
+					<h3>List 3</h3>
+					<ul id="ul2" class="blockModuleCtn" style="width:300px;">
+						<li class="blockModule3 draggable" id="li2_1">list 3, item 1</li>
+						<li class="blockModule3 draggable" id="li2_2">list 3, item 2</li>
+						<li class="blockModule3 draggable" id="li2_3">list 3, item 3</li>
+						<li class="blockModule3 draggable" id="li2_4">list 3, item 4</li>
+						<li class="blockModule3 draggable" id="li2_5">list 3, item 5</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="section-ctn">
+			<h3 class="section-hd">模块拖动示例(inline)：</h3>
+			<div class="inlineModuleCtn cls">
+				<div class="inlineModule1 draggable2" >1---1</div>
+				<div class="inlineModule1 draggable2">1---2</div>
+				<div class="inlineModule1 draggable2">1---3</div>
+				<div class="inlineModule1 draggable2">1---4</div>
+				<div class="inlineModule1 draggable2">1---5</div>
+			</div>
+			<div class="inlineModuleCtn cls">
+				<div class="inlineModule2 draggable2">2---1</div>
+				<div class="inlineModule2 draggable2">2---2</div>
+				<div class="inlineModule2 draggable2">2---3</div>
+				<div class="inlineModule2 draggable2">2---4</div>
+				<div class="inlineModule2 draggable2">2---5</div>
+			</div>
+		</div>
+
+		<div class="section-ctn">
+			<h3 class="section-hd">行列拖动示例：</h3>
+
+			<table border="1" width="90%" id="tableSample1" >
+				<thead>
+					<tr>
+						<td>&nbsp;</td>
+						<td >列1</td>
+						<td >列2</td>
+						<td >列3</td>
+						<td >列4</td>
+						<td >列5</td>
+					</tr>
+				</thead>
+				<tbody id=tbody1>
+					<tr >
+						<td class=layoutDragHeader >行1</td>
+						<td>11</td>
+						<td>12</td>
+						<td>13</td>
+						<td>14</td>
+						<td>15</td>
+					</tr>
+					<tr >
+						<td class=layoutDragHeader >行2</td>
+						<td>21</td>
+						<td>22</td>
+						<td>23</td>
+						<td>24</td>
+						<td>25</td>
+					</tr>
+					<tr  >
+						<td class=layoutDragHeader >行3</td>
+						<td>31</td>
+						<td>32</td>
+						<td>33</td>
+						<td>34</td>
+						<td>35</td>
+					</tr>
+					<tr >
+						<td class=layoutDragHeader >行4</td>
+						<td>41</td>
+						<td>42</td>
+						<td>43</td>
+						<td>44</td>
+						<td>45</td>
+					</tr>
+					<tr >
+						<td class=layoutDragHeader >行5</td>
+						<td>51</td>
+						<td>52</td>
+						<td>53</td>
+						<td>54</td>
+						<td>55</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+	</div>
+	<div id="ft">
+		QWrap (<a href="http://www.qwrap.com">www.qwrap.com</a>)
+	</div>
+
+</div>
+</body>
+<script>
+//模块拖动(block)
+function initModuleLayoutDrag()
+{
+	var containers=QW.NodeH.query(0,".blockModuleCtn");
+	var objs=QW.NodeH.query(0,".draggable");
+	var siblings=objs;
+	for(var i=0;i<objs.length;i++)
+	{
+		var obj=objs[i];
+		var d=new QW.LayoutDrag({oSrc:obj,hdlObj:obj,siblings:siblings,containers:containers,needAnim:true});
+	}
+}
+initModuleLayoutDrag();
+
+
+//模块拖动(inline)
+function initModuleLayoutDrag2()
+{
+	var containers=QW.NodeH.query(0,".inlineModuleCtn");
+	var objs=QW.NodeH.query(0,".draggable2");
+	var siblings=objs;
+	for(var i=0;i<objs.length;i++)
+	{
+		var obj=objs[i];
+		var d=new QW.LayoutDrag({oSrc:obj,hdlObj:obj,siblings:siblings,containers:containers,isInline:true,needAnim:true});
+	}
+}
+initModuleLayoutDrag2();
+
+//模块拖动(tr)
+function initTableRowDrop(tbody){
+	var rows=tbody.rows;
+
+	var objs=rows;
+	var siblings=objs
+	for(var i=0;i<objs.length;i++)
+	{
+		var obj=objs[i];
+		var d=new QW.LayoutDrag({oSrc:obj,hdlObj:obj.cells[0],siblings:siblings,needAnim:true});
+	}
+}
+initTableRowDrop(QW.NodeH.g("tbody1"));
+
+
+/*function initTableColumnDrop(table,startIdx){
+	var cells=table.rows[0].cells;
+	startIdx=startIdx||1;//不能等于0.
+	var columnDragObjs=[];
+	for(var i=1;i<cells.length;i++){
+		var d=new QW.LayoutDrag({oSrc:cells[i],hdlObj:cells[i],startIdx:startIdx,adjustLayout:LayoutDrag.adjustColumnDrag});
+		d.ondragendEvent.observe(LayoutDrag.layoutDragEnd4Ef);
+		columnDragObjs.push(d);
+	}
+}
+initTableColumnDrop(g("tableSample1"));
+*/
+
+
+</script>
+</html>

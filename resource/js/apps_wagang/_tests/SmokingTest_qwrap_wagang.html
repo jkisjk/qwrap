@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>QW: SmokingTest</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+<script type="text/javascript" src="../../apps_wagang/qwrap_wagang.js"></script>
+
+<script type="text/javascript" src="../../_tools/smokingtest/SmokingTest.js"></script>
+<link href="../../_tools/smokingtest/assets/page.css" rel="stylesheet" type="text/css" media="screen"/>
+</head>
+
+<body>
+<div id=doc3>
+	<h1 class="page-h1">QWrap 冒烟测试</h1>
+	<div id=hd>
+		<!-- keep it -->
+	</div>
+	<div id="bd" >
+		<div class="section-ctn" id="ST_ctn">
+		</div>
+	</div>
+	<div>
+<hr/>
+<pre>
+一些常用例子：
+alert(new Date().format()); //原型调用
+W("textarea").setStyle("color","blue").setStyle("width","600px"); //链式调用
+use('Ajax',function(){alert(Ajax.post)}); //异步按须加载
+</pre>
+</pre>
+	</div>
+	<div id="ft">
+		QW 
+	</div>
+</div>
+
+<script>
+SmokingTest.init(document.getElementById('ST_ctn'),['QW']);
+</script>
+</body>
+</html>

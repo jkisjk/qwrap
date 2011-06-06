@@ -1,0 +1,26 @@
+body{margin:10px;background-color:#FFFFFF;font-size:13px;}
+body,td,div{word-wrap:break-word;word-break:break-all}
+form{margin:0}
+td,div{font-size:13px;line-height:18px}
+a:link{color:#0033CC}
+a:visited{color:#800080}
+
+.tip {color:#666666;}
+.title {font-size:14px;}
+.lk {cursor:pointer !important; cursor:hand; text-decoration:underline; color:#261CDC;}
+.tab {font-size:14px;}
+.tab_body {border:1px solid #CCC;padding:5px;}
+.selected_tab {text-decoration:none;font-weight:bold;border-top:1px solid #CCC;border-left:1px solid #CCC;border-right:1px solid #CCC;bottom:-2px;*bottom:-1px;position:relative;background-color:#FFF;}
+
+.img_pos{display:block;width:80px;height:65px;cursor:pointer;}
+.img_pos_default{background:url(float-default.gif) no-repeat;}
+.img_pos_left{background:url(float-left.gif) no-repeat;}
+.img_pos_center{background:url(float-center.gif) no-repeat;}
+.img_pos_right{background:url(float-right.gif) no-repeat;}
+#tabs span {padding:8px;}
+#tabContainer {margin-top:7px;}
+#ctrlButtonContainer {margin-top:7px;}
+#ctrlButtonContainer {}
+
+.ok {margin:5px;}
+.cancel {margin:5px;}

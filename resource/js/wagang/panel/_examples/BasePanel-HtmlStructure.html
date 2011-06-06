@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Panel render</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="../assets/Panel.css" rel="stylesheet" type="text/css" media="screen">
+	<script>
+		function g(id){
+			if(typeof(id)=="string") return document.getElementById(id);
+			else return id;
+		}
+
+		function show(el,bl)
+		{
+			el=g(el);
+			if(bl) el.style.display="";
+			else el.style.display="none";
+		}
+	</script>
+</head>
+<body>
+<div id="doc3">
+	<div id=hd>
+		本页panel的结构来自Rank、国忠，css来自国忠，css有些微修改
+	</div>
+	<div id="bd" >
+		<div class="section-ctn">
+			<h3 class="section-hd">Panel结构，来自Rank、国忠</h3>
+			<!-- {干净panel -->
+			<div class="panel panel-t1" style="width:380px;display:block;position:relative;z-index:10;" id="panel_demo_001" remark="oWrap">
+				<div class="panel-content" remark="oContent">
+					<div class="hd"  remark="oHeader">
+						<h3>塞上曲</h3>
+					</div>
+					<div class="bd" remark="oBody">
+						<!-- panel-body -->
+						<style>
+						.panel_demo_001_content {font-size:93%;color:#666;}
+						.panel_demo_001_content li {list-style:disc;margin:0 0 .5em 2em;}
+						</style>
+						<div class="panel_demo_001_content">
+							<ol>
+								<li>月黑雁飞高</li>
+								<li>单于衣遁逃</li>
+								<li>欲将轻骑逐</li>
+								<li>大雪满弓刀</li>
+							</ol>
+						</div>
+						<!-- //panel-body -->
+
+					</div>
+					<div class="ft" remark="oFooter"></div>
+				</div>
+				<span class="close" remark="oCloseHdl"></span>
+				<span class="resize" remark="oResizeHdl"></span>
+				<span class="co1" remark="oCorner1"><span></span></span>
+				<span class="co2" remark="oCorner2"><span></span></span>
+				<span class="cue" remark="oCue"></span>
+				<span class="sd" remark="oShadow"></span>
+				<!--<iframe class="panel-iframe" border=0 remark="oBgIframe"></iframe>-->
+			</div>
+			<!-- 干净panel} -->
+		</div>
+		<div class="section-ctn">
+			<h3 class="section-hd">panel样式示例</h3>
+			<!-- {panel -->
+			<div class="panel panel-t1" style="width:380px;display:block;position:relative;z-index:10;zoom:1;" id="panel-demo-002">
+				<div class="panel-content" >
+					<div class="hd" id="oHeader">
+						<h3>塞上曲</h3>
+					</div>
+					<div class="bd" id="oBody">
+						
+						<!-- content -->
+						<style>
+						.panel_demo_002_content {font-size:93%;color:#666;margin:1em;}
+						.panel_demo_002_content li {list-style:disc;margin:0 0 .5em 2em;}
+						</style>
+						<div class="panel_demo_002_content">
+							<ol>
+								<li>月黑雁飞高，单于衣遁逃，欲将轻骑逐，大雪满弓刀</li>
+								<li>
+									oCtnOuter className="panel "+<select onchange="document.getElementById('panel-demo-002').className='panel '+this.value;">
+										<option value="panel-t1">panel-t1</option>
+										<option value="panel-t2">panel-t2</option>
+										<option value="panel-t2 panel-t2-tl">panel-t2 panel-t2-tl</option>
+										<option value="panel-t2 panel-t2-tr">panel-t2 panel-t2-tr</option>
+										<option value="panel-t2 panel-t2-rt">panel-t2 panel-t2-rt</option>
+										<option value="panel-t2 panel-t2-rb">panel-t2 panel-t2-rb</option>
+										<option value="panel-t2 panel-t2-br">panel-t2 panel-t2-br</option>
+										<option value="panel-t2 panel-t2-bl">panel-t2 panel-t2-bl</option>
+										<option value="panel-t2 panel-t2-lb">panel-t2 panel-t2-lb</option>
+										<option value="panel-t2 panel-t2-lt">panel-t2 panel-t2-lt</option>
+										<option value="panel-t3">panel-t3</option>
+										<option value="panel-t4">panel-t4</option>
+										<option value="panel-t5">panel-t5</option>
+										<option value="panel-t5 panel-t5-tl">panel-t5 panel-t5-tl</option>
+										<option value="panel-t5 panel-t5-tr">panel-t5 panel-t5-tr</option>
+										<option value="panel-t5 panel-t5-rt">panel-t5 panel-t5-rt</option>
+										<option value="panel-t5 panel-t5-rb">panel-t5 panel-t5-rb</option>
+										<option value="panel-t5 panel-t5-br">panel-t5 panel-t5-br</option>
+										<option value="panel-t5 panel-t5-bl">panel-t5 panel-t5-bl</option>
+										<option value="panel-t5 panel-t5-lb">panel-t5 panel-t5-lb</option>
+										<option value="panel-t5 panel-t5-lt">panel-t5 panel-t5-lt</option>
+									</select>
+								<li>oHeader:<input type=checkbox checked onclick="show('oHeader',this.checked);"</li>
+								<li>oFooter:<input type=checkbox checked onclick="show('oFooter',this.checked);"</li>
+								<li>oCloseHdl:<input type=checkbox checked onclick="show('oCloseHdl',this.checked);"</li>
+								<li>oResizeHdl:<input type=checkbox checked onclick="show('oResizeHdl',this.checked);"</li>
+								<li>oCorner1/oCorner2:<input type=checkbox checked onclick="show('oCo1',this.checked);show('oCo2',this.checked);"</li>
+								<li>oCue:<input type=checkbox checked onclick="show('oCue',this.checked);"</li>
+								<li>oShadow:<input type=checkbox checked onclick="show('oSd',this.checked);"</li>
+							</ol>
+						</div>
+						<!-- //content -->
+
+					</div>
+					<div class="ft" id="oFooter">--footer--</div>
+				</div>
+				<span class="close" id="oCloseHdl"></span>
+				<span class="resize" id="oResizeHdl"></span>
+				<span class="co1" id="oCo1"><span></span></span>
+				<span class="co2" id="oCo2"><span></span></span>
+				<span class="cue" id="oCue"></span>
+				<span class="sd" id="oSd"></span>
+			</div>
+			<!-- panel} -->
+		</div>
+	</div>
+	<div id="ft">
+		QWrap (<a href="http://www.qwrap.com">www.qwrap.com</a>)
+	</div>
+</div>
+</body>
+</html>

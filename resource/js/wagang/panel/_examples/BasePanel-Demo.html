@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>BasePanel Demo</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="../assets/panel.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="../../drag/assets/drag.css" rel="stylesheet" type="text/css" media="screen">
+	<style type="text/css" >
+		.panel-args label{width:120px;display:-moz-inline-block;*display:inline-block;text-align:right;}
+		.panel-args textarea{width:600px;height:100px;}
+	</style>
+	<script type="text/javascript" src="../../../apps/core_dom_pure.js"></script>
+	<script type="text/javascript" src="../panel.js"></script>
+	<script type="text/javascript" src="../../drag/drag.js"></script>
+	<script>
+		function g(id){
+			return document.getElementById(id);
+		}
+		function getCode(){
+			var els=QW.DomU.query('*[id^="P-"]',g('panel-args'));
+			var json={};
+			for(var i=0;i<els.length;i++){
+				var el=els[i];
+				var key=el.id.substr(2);
+				switch(el.type){
+					case "text":
+					case "textarea":
+					case "select-one":
+						json[key]=el.value;
+						break;
+					case "checkbox":
+						json[key]=el.checked;
+						break;
+				}
+			}
+			var s=['var opts=',QW.ObjectH.stringify(json),';',
+				'var panel=new '+g('panelType').value+'(opts);',
+				'panel.on("beforeshow",function(){this.oHeader.innerHTML=this.oHeader.innerHTML.replace(/<\\/h3>/i,Math.random()+"</h3>");});',
+				'panel.on("afterhide",function(){this.dispose();});',
+				'panel.show(0,30,300,null,g("evalBtn"));'
+			];
+			g('code1').value=s.join("\n");
+		}
+
+	</script>
+</head>
+<body>
+<div id="doc3">
+	<div id=hd>
+		BasePanel示例
+	</div>
+	<div id="bd" >
+		<div class="section-ctn">
+			<h3 class="section-hd">BasePanel生成器</h3>
+			<ul class=panel-args id="panel-args" >
+				<li><label>wrapId:</label><input id="P-wrapId" value="BasePanel01"></li>
+				<li><label>className:</label>
+					<select id="P-className">
+						<option value="panel-t1">panel-t1</option>
+						<option value="panel-t2">panel-t2</option>
+						<option value="panel-t2 panel-t2-tl">panel-t2 panel-t2-tl</option>
+						<option value="panel-t2 panel-t2-tr">panel-t2 panel-t2-tr</option>
+						<option value="panel-t2 panel-t2-rt">panel-t2 panel-t2-rt</option>
+						<option value="panel-t2 panel-t2-rb">panel-t2 panel-t2-rb</option>
+						<option value="panel-t2 panel-t2-br">panel-t2 panel-t2-br</option>
+						<option value="panel-t2 panel-t2-bl">panel-t2 panel-t2-bl</option>
+						<option value="panel-t2 panel-t2-lb">panel-t2 panel-t2-lb</option>
+						<option value="panel-t2 panel-t2-lt">panel-t2 panel-t2-lt</option>
+						<option value="panel-t3">panel-t3</option>
+						<option value="panel-t4">panel-t4</option>
+						<option value="panel-t5">panel-t5</option>
+						<option value="panel-t5 panel-t5-tl">panel-t5 panel-t5-tl</option>
+						<option value="panel-t5 panel-t5-tr">panel-t5 panel-t5-tr</option>
+						<option value="panel-t5 panel-t5-rt">panel-t5 panel-t5-rt</option>
+						<option value="panel-t5 panel-t5-rb">panel-t5 panel-t5-rb</option>
+						<option value="panel-t5 panel-t5-br">panel-t5 panel-t5-br</option>
+						<option value="panel-t5 panel-t5-bl">panel-t5 panel-t5-bl</option>
+						<option value="panel-t5 panel-t5-lb">panel-t5 panel-t5-lb</option>
+						<option value="panel-t5 panel-t5-lt">panel-t5 panel-t5-lt</option>
+						<option value="my-panel-class">以上只是示例</option>
+					</select>
+				</li>
+				<li><label>title:</label><input id="P-title" value="弹出框"></li>
+				<li><label>header:</label><input id="P-header" value=""></li>
+				<li><label>body:</label>
+					<textarea id="P-body" >
+<!-- panel-body -->
+<div class="panel_demo_001_content">
+	<ol>
+		<li>月黑雁飞高</li>
+		<li>单于衣遁逃</li>
+		<li>欲将轻骑逐</li>
+		<li>大雪满弓刀</li>
+	</ol>
+</div>
+<!-- //panel-body -->
+					</textarea>
+				</li>
+				<li><label>footer:</label><input id="P-footer" value=""></li>
+				<li><label>withClose:</label><input id="P-withClose" type=checkbox checked ></li>
+				<li><label>withCorner:</label><input id="P-withCorner" type=checkbox checked >(是否需要圆角)</li>
+				<li><label>withCue:</label><input id="P-withCue" type=checkbox checked >(是否需要指示角)</li>
+				<li><label>withShadow:</label><input id="P-withShadow" type=checkbox >(shadow的半透明，IE下很耗资源，尽量别用)</li>
+				<li><label>withBgIframe:</label><input id="P-withBgIframe" type=checkbox checked>(只在IE6下起作用，用来遮盖select)</li>
+				<li><label>keyEsc:</label><input id="P-keyEsc" type=checkbox checked></li>
+				<li><label>withMask</label><input id="P-withMask" type=checkbox></li>
+				<li><label>dragable:</label><input id="P-dragable" type=checkbox>(需要util/drag/Drag.js来支持)</li>
+				<li><label>resizable:</label><input id="P-resizable" type=checkbox>(需要util/drag/Drag.js来支持)</li>
+				<li><label>posCenter:</label><input id="P-posCenter" type=checkbox>是否居中</li>
+				<li><label>posAdjust:</label><input id="P-posAdjust" type=checkbox>在显示时，是否需要自动调整位置到可见区域</li>
+			</ul>
+			Panel type:<select id=panelType>
+				<option value="QW.BasePanel">BasePanel</option>
+				<option value="QW.LayerPopup">LayerPopup</option>
+				<option value="QW.LayerDialog">LayerDialog</option>
+			</select><button onclick="getCode();">根据以上条件，得到相应代码</button>
+			运行代码:<button onclick="eval(g('code1').value);" id="evalBtn">运行以下textarea里的代码</button> <input id="text-input-t001" value='id="text-input-t001"'/>
+			<br/>
+			<textarea id="code1" style="width:600px;height:200px;">
+var a=function(r){
+//alert(r);
+}
+QW.Panel.alert('大漠<font color=red>孤烟</font>',a,{width:300});
+//QW.Panel.confirm("confim",a);
+//QW.Panel.prompt("prompt","111",a);
+//QW.Panel.msgbox("msgbox",a);			
+			</textarea>
+		</div>
+
+		<input type=checkbox onclick='g("pageIsSea").style.display=this.checked?"":"none"'/>页面是片海
+		<div id="pageIsSea" style="width:3000px;height:3000px;display:none;">3000×3000</div>
+	</div>
+	<div id="ft">
+		QWrap (<a href="http://www.qwrap.com">www.qwrap.com</a>)
+	</div>
+</div>
+</body>
+</html>

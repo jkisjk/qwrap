@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" 
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Drag Sample: Drag,Resize,RectSelector</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="../assets/drag.css" rel="stylesheet" type="text/css" media="screen">
+	<style type="text/css" title="default" media="screen">
+		/*<![CDATA[*/
+
+		.ctn1 { position:absolute;width:500px;height:400px;top:100px;left:100px; border:1px solid #333; background-color:#F8F8F8;}
+		#DragSample1 { position:absolute;width:100px;height:100px;left:350px;top:520px;border:1px solid #333; padding:10;margin:0px;background-color:#FFc0e0}
+		#DragSample2 { position:absolute;width:100px;height:100px;left:500px;top:520px;border:1px solid #333; padding:10;margin:0px;background-color:#FFc0e0;font-size:8px;}
+		.dragHeader {background:#cccccc;display:block;width:100%;}
+
+		#ResizeSample1 { position:absolute;width:100px;height:100px;left:50px;top:520px;border:1px solid #333; padding:10;margin:0px;background-color:#FFc0e0}
+		#ResizeSample2 { position:absolute;width:100px;height:100px;left:200px;top:520px;border:1px solid #333; padding:10;margin:0px;background-color:#FFc0e0; font-size:8px;}
+		.resizeCorner{position:absolute;width:20px;height:20px;bottom:0px;right:0px;border:1px solid black;background-color:#cccccc;}
+
+		#DragAndResizeComplexSamp { position:absolute;width:100px;height:100px;left:100px;top:100px;border:1px solid #333; padding:10;margin:0px;background-color:#FFc0e0}
+	/*]]>*/
+	</style>
+	<script type="text/javascript" src="../../../apps/core_dom_pure.js"></script>
+	<script type="text/javascript" src="../drag.js"></script>
+</head>
+<body >
+<div id=doc3>
+	<div id=hd>
+		Drag Sample: Drag,Resize,RectSelector<br/>
+		简单拖动／简单Resize／长方形选择器示例
+	</div>
+	<div id="bd" >
+		<div class="section-ctn">
+			<h3 class="section-hd">简单拖动</h3>
+			简单拖动
+		</div>
+		<div class="section-ctn">
+			<h3 class="section-hd">简单Resize</h3>
+			简单Resize
+		</div>
+		<div class="section-ctn">
+			<h3 class="section-hd">长方形选择器示例</h3>
+			长方形选择器示例
+		</div>
+	</div>
+	<div id="ft">
+		QWrap (<a href="http://www.qwrap.com">www.qwrap.com</a>)
+	</div>
+	
+	<div class="ctn1" id="ctn1" > 
+		ctn1<hr/>
+		Drag----------------------<br>
+
+		minLeft(minXAttr):<input type=checkbox onclick="dragSampComplex.minXAttr=this.checked?100:null;" />;
+		maxLeft(maxXAttr):<input type=checkbox onclick="dragSampComplex.maxXAttr=this.checked?(600-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'width'))):null;" /><br/>
+		minTop(minYAttr):<input type=checkbox onclick="dragSampComplex.minYAttr=this.checked?100:null;" />;
+		maxTop(maxYAttr):<input type=checkbox onclick="dragSampComplex.maxYAttr=this.checked?(500-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'height'))):null;" /><br/>
+		Drag With Proxy:<input type=checkbox onclick="dragSampComplex.withProxy=this.checked;"/> <br/>
+		X Fixed:<input type=checkbox onclick="dragSampComplex.xFixed=this.checked;"/> <br/>
+		Y Fixed:<input type=checkbox onclick="dragSampComplex.yFixed=this.checked;"/> <br/>
+
+		Resize-------------------<br>
+		minWidth(minXAttr):<input type=checkbox onclick="resizeSampComplex.minXAttr=this.checked?100:70;" />;
+		maxWidth(maxXAttr):<input type=checkbox onclick="resizeSampComplex.maxXAttr=this.checked?Math.max(70,(600-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'left')))):null;" /><br/>
+		minHeight(minYAttr):<input type=checkbox onclick="resizeSampComplex.minYAttr=this.checked?100:70;" />;
+		maxHeight(maxAAttr):<input type=checkbox onclick="resizeSampComplex.maxYAttr=this.checked?Math.max(70,(500-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'top')))):null;" /><br/>
+		Resize With Proxy:<input type=checkbox onclick="resizeSampComplex.withProxy=this.checked;"/> <br/>
+		X Fixed:<input type=checkbox onclick="resizeSampComplex.xFixed=this.checked;"/> <br/>
+		Y Fixed:<input type=checkbox onclick="resizeSampComplex.yFixed=this.checked;"/> <br/>
+
+		Test checkboxes:--------------------<br/>
+		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
+		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /><br/>
+		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
+		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /><br/>
+		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
+		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
+	</div>
+
+	<div id="DragSample1" >Simple Drag</div>
+	<div id="DragSample2" >
+		<div id="DragSam2Header" class="dragHeader">header</div>
+		Drag with header <br>
+		With Proxy:<input type=checkbox onclick="dragSamp2.withProxy=this.checked;" /> <br/>
+		X Fixed:<input type=checkbox onclick="dragSamp2.xFixed=this.checked;"/> <br/>
+		Y Fixed:<input type=checkbox onclick="dragSamp2.yFixed=this.checked;"/> <br/>
+	</div>
+
+	<div id="ResizeSample1" >Simple Resize </div>
+	<div id="ResizeSample2" >
+		<div id=ResizeSam2Corner class="resizeCorner">></div>
+		Resize with corner <br>
+		With Proxy:<input type=checkbox onclick="resizeSamp2.withProxy=this.checked;" /> <br/>
+		X Fixed:<input type=checkbox onclick="resizeSamp2.xFixed=this.checked;"/> <br/>
+		Y Fixed:<input type=checkbox onclick="resizeSamp2.yFixed=this.checked;"/> <br/>
+	</div>
+
+	<div id="DragAndResizeComplexSamp" >
+		<div id="ComplexSamHeader" class="dragHeader">header</div>
+		<div id="ComplexSamCorner" class="resizeCorner">></div>
+		显示ctn1<input type=checkbox onclick="g('ctn1').style.display=this.checked?'':'none';" checked>
+	</div>
+</div>
+</body>
+<script type="text/javascript">//<![CDATA[
+function g(id){
+	return document.getElementById(id);
+};
+	//简单拖动
+	var dragSamp1  = new QW.SimpleDrag({oSrc:g('DragSample1')});
+	//指定oHdl的简单拖动
+	var dragSamp2  = new QW.SimpleDrag({oSrc:g('DragSample2'),oHdl:g("DragSam2Header")});
+	//简单resize
+	var resizeSamp1  = new QW.SimpleResize({oSrc:g('ResizeSample1')});
+	//指定oHdl简单resize
+	var resizeSamp2  = new QW.SimpleResize({oSrc:g('ResizeSample2'),oHdl:g("ResizeSam2Corner")});
+
+
+	//复合Drag和Resize示例
+	var dragSampComplex=new QW.SimpleDrag({oSrc:g('DragAndResizeComplexSamp'),oHdl:g("ComplexSamHeader")});
+	var resizeSampComplex=new QW.SimpleResize({oSrc:g('DragAndResizeComplexSamp'),oHdl:g("ComplexSamCorner")});
+	
+	//自定义事件示例。－－－在drag的dragEnd里重新设置最大width/height
+	dragSampComplex.on('dragend',function(e){
+		if(resizeSampComplex.maxXAttr!=null) resizeSampComplex.maxXAttr=Math.max(70,600-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'left')));
+		if(resizeSampComplex.maxYAttr!=null) resizeSampComplex.maxYAttr=Math.max(70,500-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'top')));
+	});
+	//自定义事件示例。－－－在resize的dragEnd里重新设置最大top/left
+	resizeSampComplex.on('dragend',function(e){
+		if(dragSampComplex.maxXAttr!=null) dragSampComplex.maxXAttr=600-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'width'));
+		if(dragSampComplex.maxYAttr!=null) dragSampComplex.maxYAttr=500-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'height'));
+	});
+
+	//RectSelector简单示例
+	var rectSelectorOnBody=new QW.RectSelector({oHdl:g("ctn1")});
+	rectSelectorOnBody.on('drag',function(){ 
+		var boxes=document.getElementsByName("testCheckbox"); 
+		var region1=QW.NodeH.getRect(this.oProxy);
+		for(var i=0;i<boxes.length;i++) {
+			boxes[i].checked=!!(QW.DomU.rectIntersect(QW.NodeH.getRect(boxes[i]),region1));
+		}
+	});
+
+//]]></script>
+</html>

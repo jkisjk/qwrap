@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Editor Demo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+<link href="../../../wagang/panel/assets/panel.css" rel="stylesheet" type="text/css" media="screen">
+<link href="../../../wagang/drag/assets/drag.css" rel="stylesheet" type="text/css" media="screen">
+<link href="../assets/editor.css" rel="stylesheet" type="text/css" media="screen"/>
+	<script type="text/javascript" src="../../../apps/core_dom_youa.js"></script>
+	<script type="text/javascript" src="../../panel/panel.js"></script>
+	<script type="text/javascript" src="../../drag/drag.js"></script>
+	<script type="text/javascript" src="../../../wagang/editor/editor.js"></script>
+
+
+</head>
+<body>
+
+<form name="form1" method="get" onsubmit="return true">
+	Editor sample:2008-04-01
+	<hr/> 
+	<div id="editorContainer" style="padding:3px;"></div>
+	<textarea name="editorContent" style="height:300px;display:none" title="用这个textarea来提交数据，或设edit里的初始值" >Editor1 <img src="../tifiles/tismiley/i_f06.gif">汉字测试<img src="../tifiles/tismiley/i_f06.gif">--<a href="g">google</a>--<a href=b>baidu</a> fdsafdf</textarea>
+	<script type="text/javascript">
+	var editor =  new Editor({container:g("editorContainer"),textarea:document.form1.editorContent,height:300}); 
+	</script>
+
+
+
+	<input type=button value="提交之前需要调用editor.prepare4Submit()" onclick="editor.prepare4Submit();"/>
+	<input type=button value="editor.focus()" onclick="editor.focus();"/>
+
+
+	<div id="editorContainer2" style="width:500px;padding:3px;"></div>
+	<textarea name="editorContent2" style="height:300px;display:none" title="用这个textarea来提交数据，或设edit里的初始值" >Editor1 <img src="../tifiles/tismiley/i_f06.gif">汉字测试<img src="../tifiles/tismiley/i_f06.gif">--<a href="g">google</a>--<a href=b>baidu</a> fdsafdf</textarea>
+	<script type="text/javascript">
+	var editor2 =  new Editor({container:g("editorContainer2"),textarea:document.form1.editorContent2,tiConfig:Editor.TiConfigs.jk,height:300}); 
+	</script>
+</form>
+
+</body>
+
+
+</html>

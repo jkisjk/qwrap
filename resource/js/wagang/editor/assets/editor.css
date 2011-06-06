@@ -1,0 +1,141 @@
+/**
+Editor HTML缁撴瀯锛?
+<div class="js-editor">
+	<div class="ctn-tab">
+		<div class="tag-design tab selected">缂栬緫鏂囨湰</div>
+		<div class="tab-source tab">缂栬緫婧愭枃浠?/div>
+		<div class="tab-preview">棰勮</div>
+	</div>
+	<div class="ctn-src">
+		<div class="hd">
+			<a class="back">杩斿洖缂栬緫鏂囨湰</a>
+		</div>
+		<div class="bd">
+			<textarea></textarea>
+		</div>
+	</div>
+	<div class="ctn-dsn">
+		<div class="hd">
+			<div class="toolbar">
+				<div class="ti"><div class="img Bold"></div></div>   <!--TI鎰忎负ToolbarItem -->
+				<div class="ti"><div class="img Italic"></div></div>
+				<div class="ti"><img class="img Underline"></div></div>
+				<div class="divider"></div>
+				<div class="ti"><img class="img Italic"/></div>
+				<div class="ti"><img class="img Underline"/></div>
+			</div>
+		</div>
+		<div class="bd">
+			<iframe></iframe>
+		</div>
+	</div>
+</div>
+*/
+ 
+/*editor 缁撴瀯 */
+.js-editor {text-align:left;}
+.js-editor .ctn-tab{line-height:25px;padding-left:10px;padding-bottom:0px;zoom:1;}
+.js-editor .ctn-tab:after {content:"";visibility:hidden;display:block;height:0;clear:both;}
+.js-editor .ctn-src {border:solid 1px #bebebe;background-color:#fff;zoom:1;}
+.js-editor .ctn-dsn {border:solid 1px #bebebe;background-color:#fff;zoom:1;}
+
+/*tabs*/
+.js-editor .ctn-tab .tab{float:left;padding:0 15px;cursor:pointer !important;text-decoration:underline;color:#261CDC;zoom:1;font-size:12px;border:1px solid #bebebe;border-bottom:0;margin-right:.5em;background:url(images/bg_actab.gif) bottom repeat-x #f4f4f4;bottom:-1px;position:relative;}
+.js-editor .ctn-tab .selected {color:#000;text-decoration:none;font-weight:bold;background:#f4f4f4;bottom:-1px;padding:1px 15px 0 15px;}
+.js-editor .ctn-tab .tab-preview {cursor:pointer !important;text-decoration:underline;color:#261CDC;font-size:13px;float:right;}
+
+/*source 妯″潡 */
+.js-editor .ctn-src .hd {padding:2px;background:url(images/bg_acbar.gif) bottom repeat-x #f8f8f8;border-bottom:1px solid #bebebe;height:28px}
+.js-editor .ctn-src .back {padding-left:10px;cursor:pointer !important;text-decoration:underline;color:#261CDC;font-size:12px;line-height:26px;}
+.js-editor .ctn-src .bd {padding:0px;}
+.js-editor .ctn-src textarea {width:100%;border:0;background:white !important;margin-bottom:3px;*margin-bottom:0px}
+
+/*design 妯″潡 */
+.js-editor .ctn-dsn .hd {padding:2px;background:url(images/bg_acbar.gif) bottom repeat-x #f8f8f8;border-bottom:1px solid #bebebe;height:28px}
+.js-editor .ctn-dsn .js-editor-toolbar {display:-moz-inline-box;display:inline-block;white-space:nowrap;-moz-user-select:none}
+.js-editor .ctn-dsn .js-editor-toolbar:after {content:"";visibility:hidden;display:block;height:0;clear:both;}
+.js-editor .ctn-dsn .bd {padding:0px;}
+.js-editor .ctn-dsn iframe {width:100%;border:0;background:white !important;overflow:auto;*margin-bottom:2px}
+
+/*design toobar妯″潡 */
+.js-editor-toolbar .divider {zoom:1; float:left;height:25px}
+.js-editor-toolbar .divider .img {background:url(images/strip.gif) no-repeat 2px -500px;border:none; margin:0 2px 2px 0;display:-moz-inline-box;display:inline-block;width:3px; height:24px;overflow:hidden;line-height:22px;}
+.js-editor-toolbar .ti {zoom:1; float:left;height:25px}
+.js-editor-toolbar .ti .img {background:url(images/strip.gif) no-repeat; border:none; margin:0 2px 2px 0;display:-moz-inline-box;display:inline-block;width:24px; height:24px;overflow:hidden;line-height:22px;}
+.js-editor-toolbar .active {background:#dff1ff url(images/bgItemActive.gif) repeat-x left top; }
+.js-editor-toolbar .active .img{margin:0; border:solid 1px #B3B3B3;}
+.js-editor-toolbar .mouseover {background:#dff1ff url(images/bgItemActive.gif) repeat-x left top;margin:auto;}
+.js-editor-toolbar .mouseover .img{margin:0; border:solid 1px #808080; border-top-color: #FFFFFF; border-left-color: #FFFFFF;}
+.js-editor-toolbar .mousedown {background:#dff1ff url(images/bgItemActive.gif) repeat-x left top;}
+.js-editor-toolbar .mousedown .img{margin:0; border:solid 1px #B3B3B3; border-right-color: #FFFFFF; border-bottom-color: #FFFFFF;}
+.js-editor-toolbar .disabled{opacity:0.30; filter:gray() alpha(opacity=30); zoom:1;}
+
+/*--== ToolbarItem button ==--*/
+.js-editor-toolbar .Bold .img{background-position: 5px 0px;}
+.js-editor-toolbar .Italic .img{background-position: 5px -25px;}
+.js-editor-toolbar .Underline .img{background-position: 5px -50px;}
+
+.js-editor-toolbar .Redo .img{ background-position:5px -450px;}
+.js-editor-toolbar .Undo .img{ background-position:5px -400px;}
+
+.js-editor-toolbar .AlignLeft .img{background-position: 5px -300px;}
+.js-editor-toolbar .AlignCenter .img{background-position: 5px -325px;}
+.js-editor-toolbar .AlignRight .img{background-position: 5px -350px;}
+
+.js-editor-toolbar .FontName { padding:0 6px 0 0;border:1px solid #909090;margin:0 1px;background:url(images/strip.gif) no-repeat right -525px;}
+.js-editor-toolbar .FontName .img{background-position: right -1000px;width:90px;background-color:#FFF;padding-left:2px;}
+.js-editor-ti-fontname .cell {border:1px solid #DDDDDD; margin:2px 0; padding:2px 5px;-moz-user-select:none;zoom:1;}
+.js-editor-toolbar .FontSize { padding:0 6px 0 0;border:1px solid #909090;margin:0 1px;background:url(images/strip.gif) no-repeat right -525px;}
+.js-editor-toolbar .FontSize .img{background-position:5px -1000px;width:40px;background-color:#FFF;padding-left:2px;}
+.js-editor-ti-fontsize .cell {border:1px solid #DDDDDD; margin:2px 0; padding:2px 5px;-moz-user-select:none;zoom:1;}
+
+.js-editor-toolbar .ForeColor .img{background-position: 5px -75px;width:34px;}
+.js-editor-toolbar .BackColor .img{background-position: 5px -100px;width:34px;}
+.js-editor-ti-color1 {}
+.js-editor-ti-color1 .cell{border:1px solid #F4F4F4;background-color:#F4F4F4;padding:2px; text-align:center;white-space:nowrap;margin:auto;font-size:12px}
+.js-editor-ti-color1 .cell-over{border:1px solid #330066;background-color:#C4CDD6}
+.js-editor-ti-color1 .cell .colorbox{width:10px;height:10px;overflow:hidden;display:-moz-inline-block;display:inline-block;border:1px solid #808080}
+.js-editor-ti-color1 .cell .colorbox-big{width:12px;height:12px;overflow:hidden;display:-moz-inline-block;display:inline-block;border:1px solid #808080}
+.js-editor-ti-color1 .cell .colortext{height:14px;padding-bottom:2px;overflow:hidden;display:-moz-inline-block;display:inline-block;}
+
+.js-editor-ti-color2 {padding:6px;background-color:#F4F4F4;}
+.js-editor-ti-color2 table.colors-bd{background-color:black;table-layout:fixed;font-size:1px;}
+.js-editor-ti-color2 .cell {width:10px;height:12px;font-size:1px;}
+.js-editor-ti-color2 .colorbox-big{border:1px solid #888888;height:12px;width:40px;overflow:hidden;display:-moz-inline-block;display:inline-block;}
+.js-editor-ti-color2 .colortext{height:14px;padding-bottom:2px;overflow:hidden;display:-moz-inline-block;display:inline-block;}
+
+.js-editor-toolbar .Link .img{background-position: 5px -125px;}
+.js-editor-toolbar .UnLink .img{background-position: 5px -150px;}
+
+.js-editor-toolbar .Image .img{background-position: 5px -175px;}
+.js-editor-toolbar .Face .img{background-position: 5px -200px;}
+.js-editor-toolbar .Flash .img{background-position: 5px 0px;}
+.js-editor-toolbar .NList .img{background-position: 5px -225px;}
+.js-editor-toolbar .BList .img{background-position: 5px -250px;}
+.js-editor-toolbar .Character .img{background-position: 5px -375px;}
+.js-editor-toolbar .RemoveFormat .img{background-position: 5px -275px;}
+
+/*--== Editor: TiCharacter ==--*/
+.js-editor-ti-character {text-align:center;padding:4px}
+.js-editor-ti-character table {width:100%;border:1px solid #AAAAAA;font-size:15px;background-color:#EEEEFF;}
+.js-editor-ti-character tr{height:30px;}
+.js-editor-ti-character td.active{background-color:#d7d79f;}
+
+/*--== Editor: TiImage ==--*/
+.js-editor-ti-image {text-align:center;padding:4px}
+#EditorInsertImgIfm {width:500px;height:320px;}
+
+/*--== Editor: TiLink ==--*/
+#EditorAddLink_tail {text-align:right;}
+#link_UrlInputBox {margin:5px;}
+
+
+
+/*--== Editor: TiFace ==--*/
+.js-editor-ti-face {text-align:center;padding:4px}
+.js-editor-ti-face .sct-hd {text-align:left;padding-left:10px;}
+.js-editor-ti-face .sct-hd li {display:inline;padding:2px 5px;margin:0 2px;font-size:14px;}
+.js-editor-ti-face .sct-hd li.selected {background-color:#cccccc;font-weight:bold;}
+.js-editor-ti-face table {width:100%;border:1px solid #AAAAAA;font-size:15px;background-color:#EEEEFF;}
+.js-editor-ti-face td.active{background-color:#d7d79f;}
+

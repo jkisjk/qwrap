@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>验证Valid ----初级使用</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+
+	<style>
+	textarea.error{background-color:#FF8888;}
+	input.error{background-color:#FF8888;}
+	select.error{background-color:#FF8888;}
+	em.error{color:red}
+	li label {width:120px;display: -moz-inline-box; display: inline-block;text-align:right;background-color:#ccc;}
+	li {border:solid #FFF 1px;}
+	li.hint {border:solid #33F 1px;}
+	span.placeholder {color:#999;position:absolute;padding:3px;}
+	span.placeholder-dark {display:none}
+	</style>
+	<script type="text/javascript" src="../../../apps/core_dom_youa.js"></script>
+	<script type="text/javascript" src="../valid.js"></script>
+</head>
+<body>
+<div id=doc3>
+	<div id=hd style="margin:10px;">
+	<pre>
+/**
+	*绑定电话区号/电话号码/分机号/手机号
+	* @method bindPhoneEls
+	* @param {Json} opts - 绑定group Json.目前支持以下属性
+		ids:['telN1','telN2','telN3']	//数组id，依次为:电话区号／电话号码／分机号，也可以有四个元素，第四个元素为手机号
+		reqMsgs:[' 请输入电话区号。','请输入电话号码。','',' 电话号码与手机至少填写一项。']		//----必须输入时的提示信息
+	*
+	@return {void} 
+*/
+	</pre>
+	</div>
+	<div id="bd" >
+		<div id="allDemos" style="display:">
+
+		</div>
+		
+		<div class="section-ctn">
+			<div>
+					<button type="button" onclick="saveFun()">保存</button>
+			</div>
+			<form name=frm onsubmit="return saveFun1()">
+				<ul>
+					<li>
+						<span class="nstar"></span>请至少填写手机和固定电话中其中一个
+					</li>
+					<li>
+						<label class="k">固定电话：</label>
+						<span class="v">
+							<input name="telephone_zone" id="telN1" type="text" size="2" > - <input name="telephone" id="telN2" type="text" size="7" > - <input name="telephone_ext" id="telN3" type="text" size="2" >
+						</span>
+						<em></em>
+						
+					</li>
+					<li>
+						<label class="k">手&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;机：</label>
+						<span class="v">
+						<span><input name="mobile" id="mobN" type="text" size="13" ></span><em></em>
+						</span>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+
+	<div id="ft">
+		QWrap (<a href="http://www.qwrap.com">www.qwrap.com</a>)
+	</div>
+
+</div>
+<div style="display:none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fd3e1eba0494bcd7966888ebcb823e8e4' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</div>
+</body>
+
+<script>
+Valid.bindPhoneEls({ids:['telN1','telN2','telN3','mobN']})
+
+
+function saveFun(){
+	var formObj=document.frm;
+	if(!QW.Valid.checkAll(formObj)) return false;
+	alert("Save.");
+}
+
+
+
+
+</script>
+</html>

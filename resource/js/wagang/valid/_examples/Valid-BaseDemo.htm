@@ -1,0 +1,400 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>验证Valid ----初级使用</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="../../../wagang/panel/assets/panel.css" rel="stylesheet" type="text/css" media="screen">
+
+	<style>
+	textarea.error{background-color:#FF8888;}
+	input.error{background-color:#FF8888;}
+	select.error{background-color:#FF8888;}
+	em.error{color:red}
+	li label {width:120px;display: -moz-inline-box; display: inline-block;text-align:right;background-color:#ccc;}
+	li {border:solid #FFF 1px;}
+	li.hint {border:solid #33F 1px;}
+	span.placeholder {color:#999;position:absolute;padding:3px;}
+	span.placeholder-dark {display:none}
+
+	.vld-attr, .vld-msg {
+		margin-left:15px; 
+	}
+	.vld-attr h4, .vld-msg h4 {display:none}
+	.importang-attr{color:red;}
+	</style>
+	<script type="text/javascript" src="../../../apps/core_dom_youa.js"></script>
+	<script type="text/javascript" src="../../panel/panel.js"></script>
+	<script type="text/javascript" src="../valid.js"></script>
+</head>
+<body>
+<div id=doc3>
+	<div id=hd style="margin:10px;font-size:18px;">
+		验证Valid 初级使用演示&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>展示更多<input type=checkbox onclick="document.getElementById('allDemos').style.display=this.checked?'':'none';"></label><br/>
+	</div>
+	<div id="bd" >
+		<div id="allDemos" style="display:none">
+		<div class="section-ctn">
+			<h3 class="section-hd">跟验证相关的自定义属性</h3>
+			<div>
+				验证分两种,一种是required验证,一种是datatype验证.
+			</div>
+			<ul>
+				<li>
+					<label class="k importang-attr">reqMsg</label>
+					<input id="P_reqmsg" >
+					元素为空(required验证)的提示信息.<span title="如果以空格打头,则将其当作提示信息的全部,否则会提示'请输入XXXX'" style="color:red;font-weight:bold">?</span>
+				</li>
+				<li style="display:none;remarkedby:JK">
+					<label class="k">reqLogic</label>
+					<input id="P_reqLogic" > 
+					逻辑非空(仅针对有reqMsg属性的元素).如以下示例:
+					<div class="vld-attr">
+&lt;div >&lt;input  datatype="n" id=aaa reqLogic="$aaa||$bbb" reqMsg=" 请输入邮资或运费"/>&lt;em>邮资&lt;/em>&lt;/div><br/>
+&lt;div >&lt;input  datatype="n" id=bbb />&lt;em>运费&lt;/em>&lt;/div>
+					</div>
+				</li>
+				<li>
+					<label class="k importang-attr">dataType</label>
+					<select id="P_datatype" onchange="refreshVldAttrs();">
+						<option value="" vldAttrs=""></option>
+						<option value="n" vldAttrs="minValue,n_lower,maxValue,n_upper,n_integer,n-pattern,errMsg">n: 整数</option>
+						<option value="n-7.2" vldAttrs="minValue,n_lower,maxValue,n_upper,n_format,errMsg">n-7.2: 数值,有效位最多7位,小数点最多两位</option>
+						<option value="nrange" vldAttrs="fromNEl,toNEl,nrange_from,nrange_to,minValue,n_lower,maxValue,n_upper,n_format,n-pattern,errMsg">nrange: 数值范围</option>
+						<option value="nrange-7.2" vldAttrs="fromNEl,toNEl,nrange_from,nrange_to,minValue,n_lower,maxValue,n_upper,n_format,errMsg">nrange-7.2: 数值范围</option>
+						<option value="d" vldAttrs="minValue,d_lower,maxValue,d_upper,d_format,errMsg">d: 日期</option>
+						<option value="daterange" vldAttrs="fromDateEl,toDateEl,maxDateSpan,daterange_from,daterange_to,daterange_larger_span,minValue,d_lower,maxValue,d_upper,d_format,errMsg">daterange: 日期范围</option>
+						<option value="text" vldAttrs="minLength,maxLength,text_shorter,text_longer,errMsg">text: 文本(用来验证文本的长度)</option>
+						<option value="bytetext" vldAttrs="minLength,maxLength,text_shorter,text_longer,errMsg">bytetext: 文本(用来验证文本的字节长度)</option>
+						<option value="richtext" vldAttrs="ignoreTag,minLength,maxLength,text_shorter,text_longer,errMsg">richtext: 文本(用来验证富文本的长度)</option>
+						<option value="reconfirm" vldAttrs="ignoreDbc,errMsg">reconfirm: 确认输入(用来验证两个输入框的值相同)</option>
+						<option value="time" vldAttrs="errMsg">time: 时分秒</option>
+						<option value="minute" vldAttrs="errMsg">minute: 时分</option>
+						<option value="email" vldAttrs="errMsg">email: 邮件</option>
+						<option value="mobilecode" vldAttrs="errMsg">mobilecode: 手机号码</option>
+						<option value="phone" vldAttrs="errMsg">phone: 电话区号+电话号码</option>
+						<option value="phonezone" vldAttrs="errMsg">phonezone: 电话区号</option>
+						<option value="phonecode" vldAttrs="errMsg">phonecode: 电话号码</option>
+						<option value="phoneext" vldAttrs="errMsg">phoneext: 电话分机</option>
+						<option value="zipcode" vldAttrs="errMsg">zipcode: 邮政编码</option>
+						<option value="idnumber" vldAttrs="errMsg">idnumber: 身份证号</option>
+						<option value="bankcard" vldAttrs="errMsg">bankcard: 银行卡号</option>
+						<option value="cnname" vldAttrs="errMsg">cnname: 中文姓名</option>
+						<option value="vcode" vldAttrs="errMsg">vcode: 验证码（暂定为:数字或字母,长度为4） </option>
+						<option value="imgfile" vldAttrs="errMsg">imgfile: 图片文件</option>
+						<option value="reg" vldAttrs="reg-pattern,ignoreDbc,errMsg">reg: 正则验证---需要配有reg-pattern属性</option>
+						<option value="reg-/^[\w]+$/" vldAttrs="ignoreDbc,errMsg">reg-/^[\w]+$/: 正则表达</option>
+						<option value="uv&quot; onblur=&quot;if(!this.value || this.value==1){QW.Valid.pass(this);return true;}else{QW.Valid.fail(this,'请输入1');return false;}" vldAttrs="">uv: 自定义的datatype,需要自写onblur事件.checkAll时也会对它进行验证</option>
+						<option value="magic-phone||mobilecode||email" vldAttrs="errMsg">magic-phone||mobilecode||email: 复合datatype</option>
+						<option value="magic" vldAttrs="magic-pattern,errMsg">magic: 复合datatype</option>
+					</select>
+					数据格式
+				</li>
+				<li>
+					<label class="k">forceVld</label>
+					<input id="P_forceVld" type=checkbox >
+					<span title="默认情况下,[不可见|readonly|disabled]的元素不会进行验证">是否需要强制验证. </span>
+				</li>
+				<li>
+					<label class="k">focusEl</label>
+					<input type="text" id="P_focusEl" >
+					指定"错误时focus到的element",如果未指定,则focus到自己
+				</li>
+				<li>
+					<label class="k">emEl</label>
+					<input type="text" id="P_emEl" >
+					<span title="寻找emEl的规则:优先查找emEl属性，次之查找四个nextSibling以内的em，再次之查找parentNode的四个nextSibling以内的em">指定"正确引导所在的element"</span>
+				</li>
+				<li>
+					<label class="k">hintEl</label>
+					<input type="text" id="P_hintEl" >
+					指定提示Element，onfocus/onblur时进行class="hint/hint-dark"替换
+				</li>
+				<li>
+					<label class="k">placeholder</label>
+					<input type="text" id="P_placeholder" >
+					HTML5属性placeholder，输入框里的提示
+				</li>
+				<li>
+					
+					----不同的datatype带有不同的附带属性，设置这些附带属性能做到一些更多的校验功能
+					<div id="vld_ctn">
+						<div class="vld-attr">
+							<h4>用于验证参数的属性:</h4>
+							<ul>
+								<li style="display:none">
+									<label class="k">minValue</label>
+									<input type="text" id="P_minValue" >最小值,应用于[n, n-7, n-7.2, d]
+								</li>
+								<li style="display:none">
+									<label class="k">maxValue</label>
+									<input type="text" id="P_maxValue" >最大值,应用于[n, n-7, n-7.2, d]
+								</li>
+								<li style="display:none">
+									<label class="k">fromNEl</label>
+									<input type="text" id="P_fromNEl" >起始值input的ID,应用于[nrange]的终止值input
+								</li>
+								<li style="display:none">
+									<label class="k">toNEl</label>
+									<input type="text" id="P_toNEl" >终止值input的ID,应用于[nrange]的起始值input
+								</li>
+								<li style="display:none">
+									<label class="k">fromDateEl</label>
+									<input type="text" id="P_fromDateEl" >起始日期input的ID,应用于[daterange]的终止日期input
+								</li>
+								<li style="display:none">
+									<label class="k">toDateEl</label>
+									<input type="text" id="P_toDateEl" >终止日期input的ID,应用于[daterange]的起始日期input
+								</li>
+								<li style="display:none">
+									<label class="k">maxDateSpan</label>
+									<input type="text" id="P_maxDateSpan" >日期的最大跨度（天数）,应用于[daterange]
+								</li>
+								<li style="display:none">
+									<label class="k">minLength</label>
+									<input type="text" id="P_minLength" >最短允许长度,应用于[text, bytetext, richtext]
+								</li>
+								<li style="display:none">
+									<label class="k">maxLength</label>
+									<input type="text" id="P_maxLength" >最长允许长度,应用于[text, bytetext, richtext]
+								</li>
+								<li style="display:none">
+									<label class="k">ignoreTag</label>
+									<input type="checkbox" id="P_ignoreTag" >是否在计算长度时忽略标签,应用于[richtext]
+								</li>
+								<li style="display:none">
+									<label class="k">ignoreDbc</label>
+									<input type="checkbox" id="P_ignoreDbc" >是否自动将全码字符转成半码字符,应用于[reconfirm, reg, reg-/^[\w]+$/]
+								</li>
+								<li style="display:none">
+									<label class="k">n-pattern</label>
+									<input type="text" id="P_n-pattern" >数值格式，如"5.2" "5",应用于[n]
+								</li>
+								<li style="display:none">
+									<label class="k">reg-pattern</label>
+									<input type="text" id="P_reg-pattern" >正则表达式,应用于[reg]
+								</li>
+								<li style="display:none">
+									<label class="k">mag-pattern</label>
+									<input type="text" id="P_reg-pattern" >复合datatype,如"phone|mobilecode|email",应用于[reg]
+								</li>
+							</ul>
+						</div>
+						<div class="vld-msg">
+							<h4>用于提示信息的属性:</h4>
+							<ul>
+								<li style="display:none">
+									<label class="k importang-attr">errMsg</label>
+									<input type="text" id="P_errMsg" >错误提示信息,优先于默认的错误提示,应用于[所有dataType]
+								</li>
+								<li style="display:none">
+									<label class="k">n_integer</label>
+									<input type="text" id="P_n_integer" >整数格式错误,应用于[n, n-7]
+								</li>
+								<li style="display:none">
+									<label class="k">n_format</label>
+									<input type="text" id="P_n_format" >带小数的数值格式错误,应用于[n-7.2]
+								</li>
+								<li style="display:none">
+									<label class="k">n_upper</label>
+									<input type="text" id="P_n_upper" >数值太大,应用于[n, n-7, n-7.2]
+								</li>
+								<li style="display:none">
+									<label class="k">n_lower</label>
+									<input type="text" id="P_n_lower" >数值太小,应用于[n, n-7, n-7.2]
+								</li>
+								<li style="display:none">
+									<label class="k">n_useless_zero</label>
+									<input type="text" id="P_n_useless_zero" >数值前面有多余的0,应用于[n, n-7, n-7.2]
+								</li>
+								<li style="display:none">
+									<label class="k">nrange_from</label>
+									<input type="text" id="P_nrange_from" >数值范围不合理[nrange]
+								</li>
+								<li style="display:none">
+									<label class="k">nrange_to</label>
+									<input type="text" id="P_nrange_to" >数值范围不合理[nrange]
+								</li>
+								<li style="display:none">
+									<label class="k">d_format</label>
+									<input type="text" id="P_d_format" >日期格式错误,应用于[d, daterange]
+								</li>
+								<li style="display:none">
+									<label class="k">d_upper</label>
+									<input type="text" id="P_d_upper" >日期太晚,应用于[d, daterange]
+								</li>
+								<li style="display:none">
+									<label class="k">d_lower</label>
+									<input type="text" id="P_d_lower" >日期太早,应用于[d, daterange]
+								</li>
+								<li style="display:none">
+									<label class="k">daterange_from</label>
+									<input type="text" id="P_daterange_from" >起始日期大于终止日期,应用于[daterange]
+								</li>
+								<li style="display:none">
+									<label class="k">daterange_to</label>
+									<input type="text" id="P_daterange_to" >终止日期小于起始日期,应用于[daterange]
+								</li>
+
+								<li style="display:none">
+									<label class="k">daterange_larger_span</label>
+									<input type="text" id="P_daterange_larger_span" >超过时间跨度,应用于[daterange]
+								</li>
+
+								
+								<li style="display:none">
+									<label class="k">text_longer</label>
+									<input type="text" id="P_text_longer" >内容太长,应用于[text, bytetext, richtext]
+								</li>
+								<li style="display:none">
+									<label class="k">text_shorter</label>
+									<input type="text" id="P_text_shorter" >内容太短,应用于[text, bytetext, richtext]
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</ul>
+
+		</div>
+		<div class="section-ctn">
+			<!--h3 class="section-hd">点击,以运行相关代码</h3-->
+			<ul>
+				<li>
+					<button onclick='getHtml();'>根据以上自条件,得到对应的html</button>
+					<button onclick='insertHtml();'>insert以下html到form</button>
+					<button onclick='clearHtml();'>清空form的innerHTML</button>
+					<textarea id="new-html" style="width:600px;height:100px;" ></textarea>
+				</li>
+			</ul>
+		</div>
+		</div>
+		
+		<div class="section-ctn">
+			<div>
+					<button type="button" onclick="saveFun()">保存</button>
+					<button type="button" onclick="resetFun()">清空错误信息</button>
+					<button type="button" onclick="showServerErrs();">显示服务端错误(代码仅作示意)</button>
+			</div>
+			<form name=frm onsubmit="return saveFun1()">
+				<ul>
+					<li id='li-0001'>
+						<label class="k">订单号：</label>
+						<input type="text" reqMsg="订单" name="orderId" hintEl='li-0001' placeholder="订单号"><em>如果没有订单号，请填写订单流水号</em>
+					</li>
+					<li id='li-0002'>
+						<label class="k">订单金额：</label>
+						<input type="text" dataType="n-7.2" reqMsg="订单金额" id="input-002" name="orderAmount" hintEl='li-0002' placeholder="订单金额">元<em>金额精确到小数点后2位。</em>
+					</li>
+					<li id='li-00021'>
+						<label class="k">数值范围：</label>
+						<span class="v"><input type="text" dataType="nrange-7.2" hintEl='li-00021' >到<input type="text" dataType="nrange-7.2" hintEl='li-00021'></span><em>数值范围。</em>
+					</li>
+					<li id='li-0003'>
+						<label class="k">汇入银行：</label>
+						<select name=bank reqMsg="汇入银行" hintEl='li-0003'>
+							<option value="">请选择银行</option>
+							<option value="1">中国银行</option>
+							<option value="2">招商银行</option>
+						</select>
+						<em>请选择银行。</em>
+					</li>
+					<li id='li-0004'>
+						<label class="k">汇款日期：</label>
+						<input type="text" dataType="d" minValue="1900-01-01" hintEl='li-0004'><em>输入汇款日期。</em>
+					</li>
+					<li id='li-0005'>
+						<label class="k">日期范围：</label>
+						<span class="v"><input type="text" dataType="daterange" hintEl='li-0005' maxDateSpan=3 >到<input type="text" dataType="daterange" hintEl='li-0005'></span><em>输入日期查询范围(间隔不得超过3天)。</em>
+					</li>
+					<li id='li-0006'>
+						<label class="k">电话或邮箱：</label>
+						<span class="v"><input type="text" dataType="magic-mobilecode||phone||email" hintEl='li-0006'></span><em>电话号码，手机号码，或电子邮箱地址。</em>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+
+	<div id="ft">
+		QWrap (<a href="http://www.qwrap.com">www.qwrap.com</a>)
+	</div>
+
+</div>
+<div style="display:none">
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fd3e1eba0494bcd7966888ebcb823e8e4' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</div>
+</body>
+
+<script>
+
+function refreshVldAttrs(){
+	var el=g("P_datatype");
+	var attrs=el.options[el.selectedIndex].getAttribute("vldAttrs").toLowerCase()+",";
+	var els=QW.NodeH.query(g('vld_ctn'),'input[id^="P_"]');
+	for(var i=0;i<els.length;i++){
+		var attr=els[i].id.substr(2).toLowerCase()+",";
+		var pEl=els[i].parentNode;
+		if(attrs.indexOf(attr)>-1) QW.NodeH.show(pEl);
+		else QW.NodeH.hide(pEl);
+	}
+}
+
+function getHtml(){
+	var els=QW.NodeH.query(document,'*[id^="P_"]');
+	var html=['<div ><input ']
+	for(var i=0;i<els.length;i++){
+		var el=els[i];
+		if(!el.offsetWidth) continue;
+		var attr=els[i].id.substr(2);
+		if(el.type=="checkbox"){
+			if(el.checked) html.push(attr+'="true"');
+		}
+		else if(el.value){
+			html.push(attr+'="'+el.value+'"');
+		}
+	}
+	html.push("/><em>这里是正确引导</em></div>")
+	g("new-html").value=html.join(" ");
+}
+
+function insertHtml(){
+	QW.NodeH.insertAdjacentHTML(document.frm,"beforeEnd",g("new-html").value);
+	QW.Valid.initAll(document.frm);
+}
+
+function clearHtml(){
+	document.frm.innerHTML="";
+}
+
+function saveFun(){
+	var formObj=document.frm;
+	if(!QW.Valid.checkAll(formObj)) return false;
+	alert("Save.");
+}
+
+function resetFun(){
+	QW.Valid.resetAll(document.frm);
+}
+
+function showServerErrs(){
+	var errs=[{elName:"orderId",errMsg:"单号填错了。"},{elName:"orderAmount",errMsg:"怎么又填这个金额？！。"}];
+	for(var i=0;i<errs.length;i++){
+		var el=document.frm.elements[errs[i].elName];
+		try{
+			if(el) QW.Valid.fail(el,errs[i].errMsg,i==0);
+			else alert(errs[i].errMsg);
+		}
+		catch(ex){
+			alert(errs[i].errMsg);
+		}
+	}
+}
+
+
+</script>
+</html>

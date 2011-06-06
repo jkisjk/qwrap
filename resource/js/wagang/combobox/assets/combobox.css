@@ -1,0 +1,9 @@
+.ac_wrap {position:absolute;z-index:100;background-color:#FFF;overflow-y:hidden;}
+.ac_wrap_inner {z-index:10;border:1px solid #3162A6;}
+.ac_bgIframe {z-index:-1;width:expression(this.parentNode.offsetWidth);height:2000px;position:absolute;top:0px;left:0px;}
+.ac_wrap * {white-space:nowrap;}
+.ac_wrap table {background-color:#FFF;width:100%;}
+.ac_menu {text-align:left;}
+.ac_toolbar {text-align:right}
+.ac_menu tr.mouseover{background-color:#E6E6E6;}
+.ac_menu tr.selected{background-color:#D6DEEC;}

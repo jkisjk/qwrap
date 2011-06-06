@@ -1,0 +1,21 @@
+/*--本文件已被集成到Calendar.js里,在这里只是作备份--*/
+
+#cal_wrap{text-align:center;color:#555;}
+#cal_wrap button,#cal_wrap select {font-size:12px;}
+#cal_hd{padding:5px;}
+#cal_hd select{width:75px;vertical-align: middle;}
+#cal_hd map{float:left}
+#cal_bd{padding:0 5px;}
+#cal_bd table{border-collapse: collapse;width:100%;}
+#cal_bd thead th{padding:3px 0;}
+#cal_bd tbody{width:100%;}
+#cal_bd td,#cal_bd th{border:0;text-align: center;font-size: 12px;width:14%;padding:1px;}
+#cal_bd td{padding:0px;border: 1px #ccc solid;background-color:#fff;}
+#cal_bd td a,#cal_bd td span{text-decoration: none;color:#333;padding:2px;display:block;zoom:1;}
+#cal_bd td.othermonthdayTd a{color:#999;}
+#cal_bd td span{color:#B5B5B5;}
+#cal_bd td a:hover{color:#fff;background-color:#DDD;}
+#cal_bd .thisdayTd a{color:#fff;background-color:#999;}
+#cal_bd .sundayTd a{color:#60B10D;}
+#cal_bd .saturdayTd a{color:#60B10D;}
+#cal_ft {padding:5px 0;}

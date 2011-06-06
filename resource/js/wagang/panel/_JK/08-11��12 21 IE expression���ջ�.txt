@@ -1,0 +1,14 @@
+关于ie css里的expression，
+国忠所言“写CSS的人，都不愿意在自己的代码里带expression的，看起来不专业。”
+JK的感觉还是很实用的，尽管用起来有很大风险，稍不小心就会写出死循环来。
+
+为了在带阴影panel的上下边框外加尖角指示，这次又经不起它的诱惑。
+因为设_overflow-y:hidden;时，在panel结构内的指示尖角，无法显示到panel边框外
+
+－－－－－－－－－－－－－－－－－－－－－
+.panel-t5 {_overflow-y:hidden;}
+.panel-t5 .sd {height:100%;_height:3000px;;position:absolute;top:3px;left:3px;...}
+/****vs****/
+.panel-t5-tr,.panel-t5-tl,.panel-t5-br,.panel-t5-bl {_overflow-y:visible;}
+.panel-t5-tr .sd,.panel-t5-tl .sd,.panel-t5-br .sd,.panel-t5-bl .sd {_height:expression(this.parentNode.offsetHeight-3);}
+

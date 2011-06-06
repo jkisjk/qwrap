@@ -1,0 +1,5 @@
+ IE下，window有attachEvent/detachEvent
+ 但是没有fireEvent这个方法。
+
+ 想手动触发它的onresize，却不知道何哪里下手。
+ 让人迷惑。

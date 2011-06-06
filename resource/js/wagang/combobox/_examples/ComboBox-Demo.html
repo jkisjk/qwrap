@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>ComboBox</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="../assets/combobox.css" rel="stylesheet" type="text/css" media="screen">
+	<style>
+		.section-ctn table td {height:30px;}
+
+	</style>
+	<script type="text/javascript" src="../../../apps/core_dom_youa.js"></script>
+	<script type="text/javascript" src="../combobox.js"></script>
+</head>
+<body>
+<div id=doc3>
+	<div id=hd>
+		ComboBox<br/>
+	</div>
+	<div id="bd" >
+		<div class="section-ctn">
+			<h3 class="section-hd">ComboBox示例：</h3>
+			<table border=1 cellpadding=0 cellspacing=0 width="100%">
+				<tr>
+					<td >原始ComboBox风格:</td>
+					<td ><input name="To" style="width:300px" id="comboxBox_simple" value="在这里输入您的意见"></td>
+				</tr>
+				<tr>
+					<td >雅虎Email登录风格:</td>
+					<td ><input name="To" style="width:300px" id="yahooEmail_login" ><input type=checkbox id="yahooEmail_login_switch" checked ><label for="yahooEmail_login_switch" >开启suggest功能</label></td>
+				</tr>
+				<tr>
+					<td >雅虎Email选择收件人风格:</td>
+					<td ><input name="Cc" style="width:300px" id="yahooEmail_mailTo" value=t ></td>
+				</tr>
+				<tr>
+					<td >google suggest风格:</td>
+					<td ><input name="Cc" style="width:300px" id="google_random" ></td>
+				</tr>
+				<tr>
+					<td >百度有啊搜索suggest风格:</td>
+					<td ><input name="Cc" style="width:300px" id="baidu_youa" ></td>
+				</tr>
+				<tr>
+					<td >随机测试:</td>
+					<td ><input name="Cc" style="width:300px" id="randomTest" ></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td ><select ><option>test test test test test test test test test test test test test</option></select></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="section-ctn">
+			<h3 class="section-hd">说明：</h3>
+			<div>
+			程序员制作页面时不用关注autoComplete的机制，而只需：<br/>
+			在refreshData方法里赋this.itemsData=anArray（通常是根据this.oText.value来得到）。<br/>
+			目前，支持以下几种格式的数据<br/>
+			<pre>
+  元素为String时，则字符串既是value，也是html，如：
+    this.itemsData=["aa","ab","ac"];
+  元素为Array时，则第一个元素为value，第二个元素为html，如：
+    this.itemsData=[ ["aa","<b>a</b>a"], ["ab","<b>a</b>b"], ["ac","<b>a</b>c"],]
+  元素为json时，则其格式为{value:"aaab",html:"<b>aaa</b>b"}，如：
+    this.itemsData=[ {value:"aa",html:"<b>a</b>a"}, {value:"ab",html:"<b>a</b>b"}, {value:"ac",html:"<b>a</b>c"}]
+	</pre>
+
+			</div>
+		</div>
+
+	</div>
+	<div id="ft">
+		QWrap (<a href="http://www.qwrap.com">www.qwrap.com</a>)
+	</div>
+
+</div>
+</body>
+<script>
+(function(){
+	var ComboBox=QW.ComboBox;
+	function g(id){return document.getElementById(id);};
+
+	//示例0：原始ComboBox风格
+	var cb0=new ComboBox({oText:g("comboxBox_simple"),
+		minFilterLen:0,
+		itemsData:["五百年前我辈是同堂罗汉","三千界里谁准能安坐须弥"],
+		refreshData:function(){
+			if(!this.closed) this.show();//如果觉得显示逻辑不够好，可以自己控制显示。
+		}
+	});
+	
+	//示例1：雅虎Email登录风格
+	var cb1=new ComboBox({oText:g("yahooEmail_login"),
+		refreshData:function(){
+			var val=this.oText.value.split("@")[0]
+			var ar=[
+				val+"@yahoo.com.cn",
+				val+"@yahoo.com",
+				val+"@yahoo.cn"
+			];
+			this.itemsData=ar;
+		}
+	});
+
+	g("yahooEmail_login_switch").onclick=function(e){
+		cb1.disabled=!this.checked;
+	};
+	
+	
+	//示例2：雅虎Email选择收件人风格
+	var myFriends=[
+		{shortName:"jk1 Y",mail:"jk1@yahoo.com"},
+		{shortName:"jk2 Y",mail:"jk2@yahoo.com"},
+		{shortName:"jk3 Y",mail:"jk3@yahoo.com"},
+		{shortName:"jk4 Y",mail:"jk4@yahoo.com"},
+		{shortName:"jk5 Y",mail:"jk5@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1a@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1b@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1c@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1d@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1e@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1f@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1g@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1h@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1i@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1j@yahoo.com"},
+		{shortName:"Tom1 Li",mail:"Tom1k@yahoo.com"},
+		{shortName:"Tom2 Li",mail:"Tom2@hotmail.com"},
+		{shortName:"Tom3 Li",mail:"Tom3@google.com"},
+		{shortName:"Tom4 Li",mail:"Tom4@baidu.com"}
+		];
+	var cb2=new ComboBox({oText:g("yahooEmail_mailTo"),
+		refreshData:function(){
+			var ar=[];
+			var val=this.oText.value.toLowerCase();
+			for(var i=0;i<myFriends.length;i++) {
+				var mf=myFriends[i];
+				var itemData={value:mf.shortName+"<"+mf.mail+">"};
+				if(mf.shortName.toLowerCase().indexOf(val)==0) {
+					itemData.html='<font color=red>'+mf.shortName.substr(0,val.length).encode4Html()+'</font>'+
+						(mf.shortName.substr(val.length)+"<"+mf.mail+">").encode4Html();
+					ar.push(itemData);
+				}
+				else if(mf.mail.toLowerCase().indexOf(val)==0) {
+					itemData.html=mf.shortName.encode4Html()+'&lt;<font color=red>'+mf.mail.substr(0,val.length).encode4Html()+'</font>'+
+						mf.mail.substr(val.length).encode4Html()+"&gt;";
+					ar.push(itemData);
+				}
+			}
+			this.itemsData=ar;
+		}});
+
+	//示例3：google suggest风格
+	var cb3=new ComboBox({oText:g("google_random"),
+		refreshData:function(){
+			var ar=[];
+			for(var i=0;i<10;i++) {
+				if(Math.random()<0.2) break;
+				ar.push([this.oText.value+Math.random(),"<font color=red>"+this.oText.value.encode4Html()+"</font>"+Math.random()+'</td><td style="text-align:right;color:#CCCCFF;">共1000条']);
+			}
+			this.itemsData=ar;
+		}});
+
+	//示例4：百度有啊搜索suggest风格 
+	//仅作示例，没有加缓存机制
+	//百度有啊suggest需要页面采用GB2312编码方式
+	var cb4=new ComboBox({oText:g("baidu_youa"),
+		onselectitem:function(){alert("成功选择。")},
+		refreshData:function(){
+			var scritpTag=document.createElement("script");
+			scritpTag.src="http://youa.baidu.com/suggest/se/s?cmd=suggest&type=kwd&max_count=10&callback=baiduSuggestCallback&keyword="+
+					this.oText.value.encode4Http();
+			document.getElementsByTagName("head")[0].appendChild(scritpTag);
+		}});
+	window.baiduSuggestCallback =function (data){
+		var ar=[];
+		var baiduData=data.r;
+		for(var i=0;i<baiduData.length;i++){
+			var key=baiduData[i].key;
+			var val=baiduData[i].val;
+			ar.push([key,key.encode4Html()+'</td><td style="text-align:right;color:#CCCCFF;">共'+val+'条']);
+		}
+		cb4.itemsData=ar;
+	}
+
+	//
+	http://jx-eb-test05.jx.baidu.com:8701/suggest/se/s?cmd=suggest&keyword=d&type=kwd&max_count=10&callback=suggestCallback
+
+	//示例10：随机测试
+	var cb10=new ComboBox({oText:g("randomTest"),
+		onselectitem:function(){document.title=("您选中的selectedIndex是:"+this.selectedIndex+"\n其数据为："+this.itemsData[this.selectedIndex])},
+		refreshData:function(){
+			var ar=[];
+			for(var i=0;i<10;i++) {
+				if(Math.random()<0.2) break;
+				var rnd=Math.random();
+				ar.push([this.oText.value+rnd,"<font color=red>"+this.oText.value.encode4Html()+"</font>"+rnd]);
+			}
+			this.itemsData=ar;
+		}});
+})();
+</script>
+</html>

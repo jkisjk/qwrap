@@ -1,0 +1,106 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>验证Valid ----placeholder</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<style>
+	span.placeholder {color:#999;position:absolute;padding:3px;}
+	</style>
+</head>
+<body>
+<div id=doc3>
+	<div id="bd" >
+		<div class="section-ctn">
+			<ul>
+				<li>
+					<label class="k">订单主人：</label>
+					<input type="text" placeholder="请填写订单主人" value="JK">
+				</li>
+				<li>
+					<label class="k">订单号：</label>
+					<input type="text" placeholder="请填写订单号">
+				</li>
+				<li>
+					<label class="k">备注：</label>
+					<textarea type="text" placeholder="请填写备注"></textarea>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="ft">
+		部分内容来自 qwrap wagang组件Valid: (<a href="http://dev.qwrap.com/resource/js/wagang/_index.html">http://dev.qwrap.com/resource/js/wagang/_index.html</a>)
+	</div>
+	<div id="ft">
+		QWrap网址： <a href="http://www.qwrap.com">www.qwrap.com</a>
+	</div>
+</div>
+</body>
+
+<script>
+
+function initPlaceHolders(){
+	if('placeholder' in document.createElement('input')){ //如果浏览器原生支持placeholder
+		return ;
+	}
+	function target (e){
+		var e=e||window.event;
+		return e.target||e.srcElement;
+	};
+	function _getEmptyHintEl(el){
+		var hintEl=el.hintEl;
+		return hintEl && g(hintEl);
+	};
+	function blurFn(e){
+		var el=target(e);
+		if(!el || el.tagName !='INPUT' && el.tagName !='TEXTAREA') return;//IE下，onfocusin会在div等元素触发 
+		var	emptyHintEl=el.__emptyHintEl;
+		if(emptyHintEl){
+			//clearTimeout(el.__placeholderTimer||0);
+			//el.__placeholderTimer=setTimeout(function(){//在360浏览器下，autocomplete会先blur再change
+				if(el.value) emptyHintEl.style.display='none';
+				else emptyHintEl.style.display='';
+			//},600);
+		}
+	};
+	function focusFn(e){
+		var el=target(e);
+		if(!el || el.tagName !='INPUT' && el.tagName !='TEXTAREA') return;//IE下，onfocusin会在div等元素触发 
+		var emptyHintEl=el.__emptyHintEl;
+		if(emptyHintEl){
+			//clearTimeout(el.__placeholderTimer||0);
+			emptyHintEl.style.display='none';
+		}
+	};
+	if(document.addEventListener){//ie
+		document.addEventListener('focus',focusFn, true);
+		document.addEventListener('blur', blurFn, true);
+	}
+	else{
+		document.attachEvent('onfocusin',focusFn);
+		document.attachEvent('onfocusout',blurFn);
+	}
+
+	var elss=[document.getElementsByTagName('input'),document.getElementsByTagName('textarea')];
+	for(var n=0;n<2;n++){
+		var els=elss[n];
+		for(var i =0;i<els.length;i++){
+			var el=els[i];
+			var placeholder=el.getAttribute('placeholder'),
+				emptyHintEl=el.__emptyHintEl;
+			if(placeholder && !emptyHintEl){
+				emptyHintEl=document.createElement('span');
+				emptyHintEl.innerHTML=placeholder;
+				emptyHintEl.className='placeholder';
+				emptyHintEl.onclick=function (el){return function(){try{el.focus();}catch(ex){}}}(el);
+				if(el.value) emptyHintEl.style.display='none';
+				el.parentNode.insertBefore(emptyHintEl,el);
+				el.__emptyHintEl=emptyHintEl;
+			}
+		}
+	}
+}
+
+initPlaceHolders();
+
+</script>
+</html>

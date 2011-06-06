@@ -1,8 +1,7 @@
 /*
-	Copyright (c) 2009, Baidu Inc. All rights reserved.
-	http://www.youa.com
+	Copyright (c) Baidu Youa Wed QWrap
 	version: $version$ $release$ released
-	author: yingjiakuan@baidu.com
+	author: JK
 */
 
 
@@ -19,7 +18,7 @@
 	 * @param {object} eventArgs (Optional) 自定义事件参数
 	 * @returns {CustEvent} 自定义事件
 	 */
-	var CustEvent = QW.CustEvent = function(target, type, eventArgs) {
+	var CustEvent = function(target, type, eventArgs) {
 		this.target = target;
 		this.type = type;
 		mix(this, eventArgs || {});
@@ -60,12 +59,14 @@
 	 * @returns {void} 无返回值
 	 */
 
+
 	/**
-	 * @class CustEventTargetH  自定义事件Target
+	 * @class CustEventTargetH  CustEventTarget的Helper
+	 * @singleton 
 	 * @namespace QW
 	 */
 
-	QW.CustEventTargetH = {
+	var CustEventTargetH = {
 		/**
 		 * 添加监控
 		 * @method on 
@@ -140,16 +141,16 @@
 			}
 			return custEvent.returnValue !== false || (retDef === false && custEvent.returnValue === undefined);
 		},
+		/**
+		 * 为一个对象添加一系列事件，并添加on/un/fire三个方法<br/>
+		 * 添加的事件中自动包含一个特殊的事件类型"*"，这个事件类型没有独占模式，所有事件均会落到on("*")事件对应的处理函数中
+		 * @static
+		 * @method createEvents
+		 * @param {Object} obj 事件所属对象，即：是哪个对象的事件。
+		 * @param {String|Array} types 事件名称。
+		 * @returns {any} target
+		 */
 		createEvents: function(target, types) {
-			/**
-			 * 为一个对象添加一系列事件，并添加on/un/fire三个方法<br/>
-			 * 添加的事件中自动包含一个特殊的事件类型"*"，这个事件类型没有独占模式，所有事件均会落到on("*")事件对应的处理函数中
-			 * @static
-			 * @method createEvents
-			 * @param {Object} obj 事件所属对象，即：是哪个对象的事件。
-			 * @param {String|Array} types 事件名称。
-			 * @returns {any} target
-			 */
 			types = types || [];
 			if (typeof types == "string") {
 				types = types.split(",");
@@ -165,5 +166,28 @@
 			return target;
 		}
 	};
+
+	/**
+	 * @class CustEventTarget  自定义事件Target，有以下序列方法：createEvents、on、un、fire；参见CustEventTargetH
+	 * @namespace QW
+	 */
+
+	var CustEventTarget = function() {
+		this.__custListeners = {};
+	};
+	var methodized = QW.HelperH.methodize(CustEventTargetH); 
+	mix(CustEventTarget.prototype, methodized);
+
+	CustEvent.createEvents = function(target, types) {
+		CustEventTargetH.createEvents(target, types); 
+		return mix(target, methodized);//尊重对象本身的on。
+	};
+
+	/*
+	 * 输出到QW
+	 */
+	QW.CustEvent = CustEvent;
+	QW.CustEventTargetH = CustEventTargetH;
+	QW.CustEventTarget = CustEventTarget;
 
 }());

@@ -1,8 +1,7 @@
 /*
-	Copyright (c) 2009, Baidu Inc. All rights reserved.
-	http://www.youa.com
+	Copyright (c) Baidu Youa Wed QWrap
 	version: $version$ $release$ released
-	author: yingjiakuan@baidu.com
+	author: JK
 */
 
 /**
@@ -443,6 +442,33 @@
 		 */
 		evalExp: function(s, opts) {
 			return new Function("opts", "return (" + s + ");")(opts);
+		},
+		/** 
+		 * 解析url或search字符串。
+		 * @method queryUrl
+		 * @static
+		 * @param {String} s url或search字符串
+		 * @param {String} key (Optional) 参数名。
+		 * @return {Json|String|Array|undefined} 如果key为空，则返回解析整个字符串得到的Json对象；否则返回参数值。有多个参数，或参数名带[]的，参数值为Array。
+		 */
+		queryUrl: function(url, key) {
+			url = url.replace(/^[^?=]*\?/ig, '').split('#')[0];	//去除网址与hash信息
+			var json = {};
+			//考虑到key中可能有特殊符号如“[].”等，而[]却有是否被编码的可能，所以，牺牲效率以求严谨，就算传了key参数，也是全部解析url。
+			url.replace(/(^|&)([^&=]+)=([^&]*)/g, function (a, b, key , value){
+				key = decodeURIComponent(key);
+				value = decodeURIComponent(value);
+				if (!(key in json)) {
+					json[key] = /\[\]$/.test(key) ? [value] : value; //如果参数名以[]结尾，则当作数组
+				}
+				else if (json[key] instanceof Array) {
+					json[key].push(value);
+				}
+				else {
+					json[key] = [json[key], value];
+				}
+			});
+			return key ? json[key] : json;
 		}
 	};
 

@@ -1,8 +1,7 @@
 /*
-	Copyright (c) 2009, Baidu Inc. All rights reserved.
-	http://www.youa.com
+	Copyright (c) Baidu Youa Wed QWrap
 	version: $version$ $release$ released
-	author: wuliang@baidu.com lichao03@baidu.com
+	author: QWrap 月影、CC、JK
 */
 
 

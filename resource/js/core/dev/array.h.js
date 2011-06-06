@@ -1,6 +1,5 @@
 /*
-	Copyright (c) 2009, Baidu Inc. All rights reserved.
-	http://www.youa.com
+	Copyright (c) Baidu Youa Wed QWrap
 	version: $version$ $release$ released
 */
 

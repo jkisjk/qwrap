@@ -32,7 +32,7 @@ YUI({ base: '../../../../../_references/frameworks/yui3.1.1/build/', filter: 'ra
 		},
 		"getStyle" : function(){
 			var els=Y.all('li');
-			//els.getStyle("color");//г
+			//els.getStyle("color");//本句运行出错
 			for(var i=0;i<els.length;i++){
 				void els.item(i).style.color;
 			}

@@ -1,7 +1,9 @@
 <script type="text/javascript" src="../../apps/core_dom_youa.js"></script>
-<button data--ban="5000">测试</button>
+data--ban="5000":<button data--ban="5000">测试</button><br/>
+onchange代理：<input ><input type=checkbox><select><option value="1">1<option value="2">2</select>
 <script type="text/javascript">
 W('button').on('click', function () {
 	alert('lazy');
 });
+W('body').delegate('input,textarea,select','change',function(){document.title=this.value})
 </script>

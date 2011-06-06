@@ -147,6 +147,7 @@
 					'w.click(handler)',
 					'w.focus(handler)',
 					'w.blur(handler)',
+					'w.hover(enterHandler,leaveHandler)',
 					'w.addEventListener(name, handler, capture)--不推荐',
 					'w.removeEventListener(name, handler, capture)--不推荐'
 				],
@@ -261,6 +262,7 @@
 					'Object.isString(obj)',
 					'Object.isWrap(obj, coreName)',
 					'Object.dump(obj, props)',
+					'Object.encodeURIJson(json)',
 					'Object.fromArray(obj, keys, values)',
 					'Object.get(obj, prop, nullSensitive)',
 					'Object.keys(obj)',
@@ -287,6 +289,7 @@
 					's.evalJs(opts)',
 					's.format(arg0)',
 					's.mulReplace(arr)',
+					's.queryUrl(key)',
 					's.stripTags()',
 					's.subByte(len, tail)',
 					's.tmpl(opts)',

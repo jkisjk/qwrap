@@ -198,6 +198,7 @@ E[attr=val]	√
 E[attr~=val]	√
 E[attr|=val]	√
 :first-child	√
+:focus	√
 :link 
 :visited 
 :lang()    
@@ -231,9 +232,12 @@ E ~ F	√
 :enabled	√
 :disabled	√
 :checked	√
+:indeterminate	√
+:contains()	√
 --------------------------
 其它
 :parent	√
+:input	√ (相法于input,textarea,button,select)
 --------------------------
 示例：
 "ul li" 
@@ -248,15 +252,20 @@ W.query/W.one方法支持各种组合语法。
   input,textarea,select
   #id>div
   #id~div.bbb
+
 w.ancestorNode/W.nextSibling等只支持最简selector
 即没有“, >~+”关系符的selector，如
   div.aaa
   input[readOnly]
-w.delegate支持以“>”或“ ”打头的简单selector
+
+w.delegate支持以“>”或“ ”打头的selector
 如：
   >*
   >*>*
   ul.aaa a.op_del
+
+w.delegate不支持以“+”或“~”打头的selector
+
  </pre>
 
 				</li>

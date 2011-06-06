@@ -13,7 +13,7 @@
 query selector version 1.0
 Copyright 2010
 Dual licensed under the MIT or GPL Version 2 licenses.
-author "??(zhongqincheng)"
+author "司徒正美(zhongqincheng)"
 http://code.google.com/p/bloghighlighter/
 http://www.cnblogs.com/rubylouvre/
 */
@@ -42,7 +42,7 @@ http://www.cnblogs.com/rubylouvre/
         }
         return str;
     };
-    //IE5.5еDOM??document.documentElement?body?
+    //由于IE5.5中的DOM实现错误，document.documentElement会返回body标签
     dom.htm = dom.doc.documentElement || dom.doc.getElementsByTagName("html")[0];
     var nextEl = (function(){
         return "nextElementSibling" in dom.htm ?
@@ -80,36 +80,36 @@ http://www.cnblogs.com/rubylouvre/
         }
     }
 
-    //???
+    //用于获取选择器的类型
     var types = {
-        "#":"id",        //ID?
-        ".":"class",     //?
-        /*"tag";         //??*/
-        "[":"attribute", //?
-        " ":"descendant",//???
-        ">":"child",     //???
-        "+":"adjacent",  //???
-        "~":"general",   //????
-        ":":"pseudo",    //α?
-        ",":"combine",   //?
-        "*":"wildcard"   //??
+        "#":"id",        //ID选择器
+        ".":"class",     //类选择器
+        /*"tag";         //标签选择器*/
+        "[":"attribute", //属性选择器
+        " ":"descendant",//关系选择器（后代选择器）
+        ">":"child",     //关系选择器（亲子选择器）
+        "+":"adjacent",  //关系选择器（相邻选择器）
+        "~":"general",   //关系选择器（兄长选择器）
+        ":":"pseudo",    //伪类选择器
+        ",":"combine",   //联合选择器
+        "*":"wildcard"   //通配符选择器
     }
-    //???
+    //用于移除相应的选择器
     var regexes = {
-        id: /#((?:[\w\u00c0-\uFFFF_-]|\\.)+)/,      //ID?
-        tag: /^((?:[\w\u00c0-\uFFFF\*_-]|\\.)+)/,   //??
-        attribute: /\[((?:[\w\u00c0-\uFFFF_-]|\\.)+)\s*(?:(\S?=)(['"]*)(.*?)\3|)\]/, //?
-        "class": /\.((?:[\w\u00c0-\uFFFF_-]|\\.)+)/,//?
-        pseudo: /:((?:[\w\u00c0-\uFFFF_-]|\\.)+)(?:\((['"]*)((?:\([^\)]+\)|[^\2\(\)]*)+)\2\))?/, //α?
-        combine: /,/,                               //?
-        child:/^(\>)\s*(\w*|\*)/,                    //?
-        adjacent:/^(\+)\s*(\w*|\*)/,                 //?
-        general:/^(\~)\s*(\w*|\*)/,                  //??
-        descendant:/(\s+)(\.([\w_-]+))?/,            //?
-        wildcard :/\*/                               //??
+        id: /#((?:[\w\u00c0-\uFFFF_-]|\\.)+)/,      //ID选择器
+        tag: /^((?:[\w\u00c0-\uFFFF\*_-]|\\.)+)/,   //标签选择器
+        attribute: /\[((?:[\w\u00c0-\uFFFF_-]|\\.)+)\s*(?:(\S?=)(['"]*)(.*?)\3|)\]/, //属性选择器
+        "class": /\.((?:[\w\u00c0-\uFFFF_-]|\\.)+)/,//类选择器
+        pseudo: /:((?:[\w\u00c0-\uFFFF_-]|\\.)+)(?:\((['"]*)((?:\([^\)]+\)|[^\2\(\)]*)+)\2\))?/, //伪类选择器
+        combine: /,/,                               //联合选择器
+        child:/^(\>)\s*(\w*|\*)/,                    //亲子选择器
+        adjacent:/^(\+)\s*(\w*|\*)/,                 //相邻选择器
+        general:/^(\~)\s*(\w*|\*)/,                  //兄长选择器
+        descendant:/(\s+)(\.([\w_-]+))?/,            //后代选择器
+        wildcard :/\*/                               //通配符选择器
     };
 
-    var processWildcard = function (root) {//??
+    var processWildcard = function (root) {//获得页面上所有元素
         var _slice = slice,all =  root.all || root.getElementsByTagName("*"),
         i = 0,result=[],ri=0,el;
         if(dom.ie){
@@ -206,7 +206,7 @@ http://www.cnblogs.com/rubylouvre/
             return result;
         }
     }
-    var processDescendant = function(className,lastResult, root){//?
+    var processDescendant = function(className,lastResult, root){//后代选择器
         var result = [],ri = 0,isAll = !className.length ,
         uniqResult = {}, i = 0 ,el, reg;
         if(!isAll){
@@ -245,7 +245,7 @@ http://www.cnblogs.com/rubylouvre/
         }
         return result;
     };
-    var processChild = function (nodeName,lastResult) {//?
+    var processChild = function (nodeName,lastResult) {//亲子选择器
         var tagName = nodeName.toUpperCase() || "*",
         result = [],ri = 0,isAll = tagName === "*",el,i=0;
         while((el = lastResult[i++])){
@@ -257,7 +257,7 @@ http://www.cnblogs.com/rubylouvre/
         return result;
     };
 
-    var processGeneral = function (nodeName,lastResult) {//??
+    var processGeneral = function (nodeName,lastResult) {//兄长选择器
         var tagName = nodeName.toUpperCase() || "*",_nextEl = nextEl,
         isAll = tagName === "*", result = [],ri = 0, uniqResult = {}, i = 0, node;
         while((node = lastResult[i++])){
@@ -278,7 +278,7 @@ http://www.cnblogs.com/rubylouvre/
         return result;
     };
 
-    var processAdjacent = function (nodeName,lastResult) { //?
+    var processAdjacent = function (nodeName,lastResult) { //相邻选择器
         var tagName = nodeName.toUpperCase() || "*",_nextEl = nextEl,
         result = [],ri=0,isAll = tagName === "*",i = 0, node;
         while((node = lastResult[i++])){
@@ -336,7 +336,7 @@ http://www.cnblogs.com/rubylouvre/
         return el.getAttribute(name,flag) || el[name];
     };
 
-    var processAttribute = function (name,operator,value,lastResult, root) { //?
+    var processAttribute = function (name,operator,value,lastResult, root) { //属性选择器
         if(lastResult.length === 0)
             lastResult = processWildcard(root);
         var result = [],ri = 0,reg;
@@ -347,7 +347,7 @@ http://www.cnblogs.com/rubylouvre/
         }
         var el , i = 0 ,isNot = dom.isNot;
         while((el = lastResult[i++])){
-            var attrib = fastGetAttribute(el, name),//?????
+            var attrib = fastGetAttribute(el, name),//取得元素的实际属性值
             flag = (attrib != null) && (attrib !== "");
             if(flag && operator)
                 switch (operator) {
@@ -415,27 +415,27 @@ http://www.cnblogs.com/rubylouvre/
         }
     }
 
-    var filters = { //α??
-        enabled: function(el){//?
+    var filters = { //伪类选择器的过滤器
+        enabled: function(el){//标准
             return el.disabled === false && el.type !== "hidden";
         },
-        disabled: function(el){//?
+        disabled: function(el){//标准
             return el.disabled === true;
         },
-        checked: function(el){//?
+        checked: function(el){//标准
             return el.checked === true;
         },
-        indeterminate:function(el){//?
+        indeterminate:function(el){//标准
             return el.indeterminate = true && el.type === "checkbox"
         },
         selected: function(el){
             el.parentNode.selectedIndex;
             return el.selected === true;
         },
-        empty: function (el) {//?
+        empty: function (el) {//标准
             return !el.firstChild;
         },
-        lang: function (el, value) {//?
+        lang: function (el, value) {//标准
             var reg = new RegExp("^" + value, "i")
             while (el && !el.getAttribute("lang"))
                 el = el.parentNode;
@@ -483,10 +483,10 @@ http://www.cnblogs.com/rubylouvre/
         link:function(el){
             return el.nodeName === "A";
         },
-        root:function(el){//?
+        root:function(el){//标准
             return el ===  (el.ownerDocument || el.document).documentElement;
         },
-        target:function(el,_,root){//?
+        target:function(el,_,root){//标准
             var id = root.location.hash.slice(1);
             return el.id === id || el.name === id;
         },
@@ -496,16 +496,16 @@ http://www.cnblogs.com/rubylouvre/
         contains: function(el, exp) {
             return (el.textContent||el.innerText||'').indexOf(exp) !== -1
         },
-        "first-child":      processPseudoNoExp(-1, true),//?
-        "last-child":       processPseudoNoExp( 1, true),//?
-        "only-child":       processPseudoNoExp( 0, true),//?
-        "first-of-type":    processPseudoNoExp(-1, false),//?
-        "last-of-type":     processPseudoNoExp( 1, false),//?
-        "only-of-type":     processPseudoNoExp( 0 ,false),//?
-        "nth-child":        processPseudoHasExp("firstChild", "nextSibling",     true),//?
-        "nth-last-child":   processPseudoHasExp("lastChild",  "previousSibling", true),//?
-        "nth-of-type":      processPseudoHasExp("firstChild", "nextSibling",     false),//?
-        "nth-last-of-type": processPseudoHasExp("lastChild",  "previousSibling", false)//?
+        "first-child":      processPseudoNoExp(-1, true),//标准
+        "last-child":       processPseudoNoExp( 1, true),//标准
+        "only-child":       processPseudoNoExp( 0, true),//标准
+        "first-of-type":    processPseudoNoExp(-1, false),//标准
+        "last-of-type":     processPseudoNoExp( 1, false),//标准
+        "only-of-type":     processPseudoNoExp( 0 ,false),//标准
+        "nth-child":        processPseudoHasExp("firstChild", "nextSibling",     true),//标准
+        "nth-last-child":   processPseudoHasExp("lastChild",  "previousSibling", true),//标准
+        "nth-of-type":      processPseudoHasExp("firstChild", "nextSibling",     false),//标准
+        "nth-last-of-type": processPseudoHasExp("lastChild",  "previousSibling", false)//标准
     };
 
     var processNth = function (exp) {
@@ -515,7 +515,7 @@ http://www.cnblogs.com/rubylouvre/
             b: match[3] - 0
         };
     };
-    var processPseudo = function (arr,lastResult, root){//α?
+    var processPseudo = function (arr,lastResult, root){//伪类选择器
         var type = arr[1], exp= arr[3] ;
         if(lastResult.length === 0 )
             lastResult = processWildcard(root);
@@ -539,7 +539,7 @@ http://www.cnblogs.com/rubylouvre/
         if(is(filter,"Object") && is(filter.curry,"Function")){
             return filter.curry(lastResult,processNth(exp),isNot);
         }
-        //target root checked disabled empty enabled lang α
+        //处理target root checked disabled empty enabled lang 等伪类
         while(el = lastResult[i++]){
             if(filter(el, exp, root) ^ isNot)
                 result[ri++] = el;
@@ -547,41 +547,41 @@ http://www.cnblogs.com/rubylouvre/
         return result;
     };
 
-    //?????
+    //适配器，根据选择器的类型调用相应的函数去处理
     var dispatcher = {
-        wildcard:function(segment,lastResult,root){    //??
+        wildcard:function(segment,lastResult,root){    //通配符选择器
             return dom.isNot ? [] : processWildcard(root);
         },
-        tag : function(segment,lastResult,root){       //??
+        tag : function(segment,lastResult,root){       //标签选择器
             return processTag(segment.toUpperCase(), lastResult, root);
         },
-        id : function(segment, lastResult, root){        //ID?
+        id : function(segment, lastResult, root){        //ID选择器
             var identifier = segment.slice(1);
             return  dom.isNot ? processAttribute("id","=",identifier,lastResult ,root):
             dom.getElementById(identifier, root) ;
         },
-        "class":function(segment, lastResult, root){     //?
+        "class":function(segment, lastResult, root){     //类选择器
             var className = segment.slice(1);
             return dom.isNot ? processAttribute("class","~=",className,lastResult, root):
             processClass(className, lastResult, root);
         },
-        descendant:function(segment, lastResult, root){ //?(??className)
+        descendant:function(segment, lastResult, root){ //后代选择器(第一个参数为className)
             return processDescendant(segment.match(regexes.descendant)[3], lastResult, root);
         },
-        child:function(segment, lastResult){       //?(??tagsName)
+        child:function(segment, lastResult){       //亲子选择器(第一个参数为tagsName)
             return processChild(segment.match(regexes.child)[2],lastResult);
         },
-        general:function(segment, lastResult){    //??(??tagsName)
+        general:function(segment, lastResult){    //兄长选择器(第一个参数为tagsName)
             return processGeneral(segment.match(regexes.general)[2],lastResult);
         },
-        adjacent:function(segment, lastResult){   //?(??tagsName)
+        adjacent:function(segment, lastResult){   //相邻选择器(第一个参数为tagsName)
             return processAdjacent(segment.match(regexes.adjacent)[2],lastResult)
         },
-        attribute:function(segment, lastResult, root){ //?
+        attribute:function(segment, lastResult, root){ //属性选择器
             var arr = segment.match(regexes.attribute);
             return processAttribute(arr[1],arr[2], arr[4],lastResult, root);
         },
-        pseudo:function(segment, lastResult, root){      //α?
+        pseudo:function(segment, lastResult, root){      //伪类选择器
             return  processPseudo(segment.match(regexes.pseudo), lastResult, root);
         }
     }

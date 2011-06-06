@@ -2,7 +2,7 @@
 	var els = document.getElementsByTagName('script'),
 		srcPath = '';
 	for (var i = 0; i < els.length; i++) {
-		var src = els[i].src.split(/apps[\\\/]/g);
+		var src = els[i].src.split(/apps[_\-\\\/]/g);
 		if (src[1]) {
 			srcPath = src[0];
 			break;
@@ -20,6 +20,5 @@
 	document.write('<script type="text/javascript" src="' + srcPath + 'core/function.h.js"><\/script>');
 	document.write('<script type="text/javascript" src="' + srcPath + 'core/class.h.js"><\/script>');
 	document.write('<script type="text/javascript" src="' + srcPath + 'core/helper.h.js"><\/script>');
-	document.write('<script type="text/javascript" src="' + srcPath + 'core/custevent.h.js"><\/script>');
-	document.write('<script type="text/javascript" src="' + srcPath + 'core/custevent_retouch.js"><\/script>');
+	document.write('<script type="text/javascript" src="' + srcPath + 'core/custevent.js"><\/script>');
 }());

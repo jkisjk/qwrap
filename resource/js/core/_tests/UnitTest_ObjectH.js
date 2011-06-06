@@ -151,6 +151,13 @@
 				"history": [1, 2]
 			};
 			value_of(ObjectH.stringify(json)).should_be('{"cardNo":"bbbb1234","history":[1,2]}');
+		},
+		'encodeURIJson': function() {
+			var json = {
+				"a": "1",
+				"b": [1, 2]
+			};
+			value_of(ObjectH.encodeURIJson(json)).should_be('a=1&b=1&b=2');
 		}
 	});
 

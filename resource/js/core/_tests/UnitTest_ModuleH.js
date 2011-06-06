@@ -17,7 +17,7 @@
 		'addConfig': function() {
 			value_of(ModuleH).should_have_method('addConfig');
 			ModuleH.addConfig("JSON", {
-				url: '//core/json.js',
+				url: '//core/dev/json.js',
 				requires: 'ArrayH,ClassH'
 			});
 		},

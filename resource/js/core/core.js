@@ -19,6 +19,5 @@
 	document.write('<script type="text/javascript" src="' + srcPath + 'core/function.h.js"><\/script>');
 	document.write('<script type="text/javascript" src="' + srcPath + 'core/class.h.js"><\/script>');
 	document.write('<script type="text/javascript" src="' + srcPath + 'core/helper.h.js"><\/script>');
-	document.write('<script type="text/javascript" src="' + srcPath + 'core/custevent.h.js"><\/script>');
-	document.write('<script type="text/javascript" src="' + srcPath + 'core/custevent_retouch.js"><\/script>');
+	document.write('<script type="text/javascript" src="' + srcPath + 'core/custevent.js"><\/script>');
 }());

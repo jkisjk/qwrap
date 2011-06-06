@@ -1,8 +1,7 @@
 /*
-	Copyright (c) 2009, Baidu Inc. All rights reserved.
-	http://www.youa.com
+	Copyright (c) Baidu Youa Wed QWrap
 	version: $version$ $release$ released
-	author: wuliang@baidu.com
+	author: 月影、JK
 */
 
 
@@ -362,6 +361,27 @@
 				}
 			}
 			return null; //无法序列化的，返回null;
+		},
+
+		/** 
+		 * encodeURI一个Json对象
+		 * @method encodeURIJson
+		 * @static
+		 * @param {Json} json  Json数据，只有一层json，每一键对应的值可以是字符串或字符串数组
+		 * @returns {string} : 返回被encodeURI结果。
+		 */
+		encodeURIJson: function(json){
+			var s = [];
+			for( var p in json ){
+				if(json[p]==null) continue;
+				if(json[p] instanceof Array)
+				{
+					for (var i=0;i<json[p].length;i++) s.push( encodeURIComponent(p) + '=' + encodeURIComponent(json[p][i]));
+				}
+				else
+					s.push( encodeURIComponent(p) + '=' + encodeURIComponent(json[p]));
+			}
+			return s.join('&');
 		}
 
 	};

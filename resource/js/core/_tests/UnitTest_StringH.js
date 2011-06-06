@@ -76,7 +76,13 @@
 		},
 		'evalExp': function() {
 			value_of(StringH.evalExp("1+2")).should_be(3);
+		},
+		'queryUrl': function() {
+			value_of(StringH.queryUrl("a=1&b=1&b=2",'a')).should_be('1');
+			value_of(StringH.queryUrl("a=1&b=1&b=2",'b')+'').should_be('1,2');
+			value_of(StringH.queryUrl("a=1&b=1&b=2").b+'').should_be('1,2');
 		}
+		
 	});
 
 

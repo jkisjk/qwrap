@@ -1,3 +1,12 @@
-[2011-05-04]
-Fork from wedteam/qwrap   jkisjk
-hello
+[2011-06-06]
+最近两个月的修改统一更新，包括
+
+所有代码规范化。
+添加无依赖化抽取工具。
+js/core更新：
+  文件调整：custevent.h.js与custevent_retouch.js合并成一个文件：custevent.js
+  添加方法：StringH.queryUrl、ObjectH.encodeURIJson等
+js/dom更新：
+  eventtarget.h.js事件修改，添加onchange代理等。
+  selector.js升级，修复根元素遗漏问题，以及添加部分伪类
+

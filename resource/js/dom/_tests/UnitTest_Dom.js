@@ -100,6 +100,21 @@ describe('DOM_Integrity_Retouch', {
 		var drect = QW.Dom.getDocRect();
 		value_of(drect).log();
 	},
+	'addEventListener removeEventListener fire': function() {
+		var test = 0,
+			handler;
+		QW.Dom.insertAdjacentHTML(document.body, 'beforeEnd', '<div id="test">1</div>');
+		var node = QW.NodeH.g('test');
+		QW.Dom.addEventListener(node, 'mousedown', handler = function(e) {
+			test += 1;
+		});
+		QW.Dom.fire(node, 'mousedown');
+		QW.Dom.removeEventListener(node, 'mousedown', handler);
+		value_of(test).should_be(1);
+		QW.Dom.fire(node, 'mousedown');
+		value_of(test).should_be(1);
+		document.body.removeChild(node);
+	},
 	'on un fire': function() {
 		var test = 0,
 			handler;

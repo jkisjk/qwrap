@@ -297,23 +297,26 @@
 		 * @param	{string}	sEvent	事件名称
 		 * @return	{void}
 		 */
-		fire: function(el, sEvent) {
-			el = g(el);
-			if (el.fireEvent) {
-				return el.fireEvent('on' + sEvent);
+		fire: (function() {
+			if (document.dispatchEvent) {
+				return function(el, sEvent) {
+					var evt = null,
+						doc = el.ownerDocument || el;
+					if (/mouse|click/i.test(sEvent)) {
+						evt = doc.createEvent('MouseEvents');
+						evt.initMouseEvent(sEvent, true, true, doc.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+					} else {
+						evt = doc.createEvent('Events');
+						evt.initEvent(sEvent, true, true, doc.defaultView);
+					}
+					return el.dispatchEvent(evt);
+				};
 			} else {
-				var evt = null,
-					doc = el.ownerDocument || el;
-				if (/mouse|click/i.test(sEvent)) {
-					evt = doc.createEvent('MouseEvents');
-					evt.initMouseEvent(sEvent, true, true, doc.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-				} else {
-					evt = doc.createEvent('Events');
-					evt.initEvent(sEvent, true, true, doc.defaultView);
-				}
-				return el.dispatchEvent(evt);
+				return function(el, sEvent) {
+					return el.fireEvent('on' + sEvent);
+				};
 			}
-		}
+		}())
 	};
 
 	EventTargetH._defaultExtend = function() {

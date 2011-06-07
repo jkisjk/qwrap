@@ -4749,7 +4749,7 @@ if (QW.Browser.ie) {
 		}
 	 */
 	var Cache = function() {
-		var cacheSeq = 0,
+		var cacheSeq = 1,
 			seqProp = '__QWETH_id';
 		return {
 			get: function(el, eventName, handler, selector) {

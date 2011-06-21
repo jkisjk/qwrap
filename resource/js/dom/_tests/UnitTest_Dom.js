@@ -124,11 +124,51 @@ describe('DOM_Integrity_Retouch', {
 			value_of(e.target.nodeName);
 			test += 1;
 		});
+		QW.Dom.on(node, 'mousedown', function(e) {
+			value_of(e.target.nodeName);
+			test += 1;
+		});
 		QW.Dom.fire(node, 'mousedown');
-		QW.Dom.un(node, 'mousedown', handler);
-		value_of(test).should_be(1);
+		value_of(test).should_be(2);
+		QW.Dom.un(node, 'mousedown', handler);//移除单个监控
 		QW.Dom.fire(node, 'mousedown');
-		value_of(test).should_be(1);
+		value_of(test).should_be(3);
+		QW.Dom.un(node, 'mousedown');//移除一个事件的所有监控
+		QW.Dom.fire(node, 'mousedown');
+		value_of(test).should_be(3);
+		QW.Dom.un(node);//移除所有事件临控
+		QW.Dom.fire(node, 'mousedown');
+		value_of(test).should_be(3);
+		document.body.removeChild(node);
+	},
+
+	'delegate undelegate': function() {
+		var test = 0,
+			handler;
+		QW.Dom.insertAdjacentHTML(document.body, 'beforeEnd', '<div id="test"><div id="subtest1">subtest1</div></div>');
+		var node = QW.NodeH.g('test');
+		QW.Dom.delegate(node, '#subtest1', 'mousedown', handler = function(e) {
+			value_of(e.target.nodeName);
+			test += 1;
+		});
+		QW.Dom.delegate(node, '#subtest1', 'mousedown', function(e) {
+			value_of(e.target.nodeName);
+			test += 1;
+		});
+		QW.Dom.fire(QW.Dom.g('subtest1'), 'mousedown');
+		value_of(test).should_be(2);
+		QW.Dom.undelegate(node, '#subtest1', 'mousedown', handler);//移除单个监控
+		QW.Dom.fire(QW.Dom.g('subtest1'), 'mousedown');
+		value_of(test).should_be(3);
+		QW.Dom.undelegate(node, '#subtest1', 'mousedown');//移除一个事件的所有监控
+		QW.Dom.fire(QW.Dom.g('subtest1'), 'mousedown');
+		value_of(test).should_be(3);
+		QW.Dom.undelegate(node, '#subtest1');//移除一个selector的所有事件代理
+		QW.Dom.fire(QW.Dom.g('subtest1'), 'mousedown');
+		value_of(test).should_be(3);
+		QW.Dom.undelegate(node);//移除所有事件代理
+		QW.Dom.fire(QW.Dom.g('subtest1'), 'mousedown');
+		value_of(test).should_be(3);
 		document.body.removeChild(node);
 	},
 	'$': function() {

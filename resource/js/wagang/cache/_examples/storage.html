@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Jerry Qu's HTML document</title>
+    <meta http-equiv="Pragma" content="no-cache" />  
+    <meta http-equiv="Cache-Control" content="no-cache" />     
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="ImageToolbar" content="no" />
+	<script type="text/javascript" srccc="../../../apps/core_dom_youa.js"></script>
+	<script type="text/javascript" src="http://dev.qwrap.com/resource/js/apps/core_dom_youa.js"></script>
+	<script type="text/javascript" src="../../../wagang/cache/cache.js"></script>
+    </head>
+	<body>
+<h3>1.存储：QW.Storage.set(key , value)</h3>
+<pre>
+QW.Storage.set('test', 'hello world!');
+</pre>
+<div id="test1"></div>
+<script type="text/javascript">
+	QW.Storage.set('test', 'hello world!');
+</script>
+
+<h3>2.读取：QW.Storage.get(key, callback)</h3>
+<pre>
+QW.Storage.get('test', function(val) {
+	alert(val);
+});
+</pre>
+<div id="test2"></div>
+<script type="text/javascript">
+	QW.Storage.get('test', function(val) {
+		QW.NodeH.g('test2').innerHTML = 'test : ' + val;
+	});
+</script>
+
+<h3>3.移除：QW.Storage.remove(key)</h3>
+<pre>
+QW.Storage.remove('test');
+</pre>
+<div id="test3"></div>
+<script type="text/javascript">
+	QW.Storage.remove('test');
+	QW.Storage.get('test', function(val) {
+		QW.NodeH.g('test3').innerHTML = 'test : ' + val;
+	});
+</script>
+
+<h3>4.类型：QW.Storage.storageType</h3>
+<pre>
+alert(QW.Storage.storageType);
+</pre>
+<div id="test4"></div>
+<script type="text/javascript">
+	QW.NodeH.g('test4').innerHTML = QW.Storage.storageType;
+</script>
+
+	</body>
+</html>

@@ -9,6 +9,7 @@
 				el.__BAN_preTime = new Date() * 1;
 				return true;
 			}
+			QW.EventH.preventDefault(e);
 			return;
 		}
 		return true;

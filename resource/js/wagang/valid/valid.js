@@ -29,18 +29,19 @@
 	var Valid = {
 		VERSION: '0.0.1',
 		EVENTS: 'hint,blur,pass,fail,beforecheckall,checkall,initall'.split(','),
+		validPath: QW.PATH + 'wagang/valid/',
 		REQ_ATTR: 'reqMsg',
 		//默认的必须输入属性名称
 		_curReqAttr: 'reqMsg' //当前必须输入属性名称(例如,对于"保存订单草稿"和"下订单"两个按钮,必须输入属性值可能不一样)
 	};
 
-/* 
-* 从JsData中获取element对象的属性
-* @method	getJsAttr
-* @param	{HTMLElement} el 目标对象
-* @param	{string} attribute 属性名称
-* @return	{any}
-*/
+	/* 
+	* 从JsData中获取element对象的属性
+	* @method	getJsAttr
+	* @param	{HTMLElement} el 目标对象
+	* @param	{string} attribute 属性名称
+	* @return	{any}
+	*/
 	var getJsAttr = function(el, attribute) {
 		var CheckRules = Valid.CheckRules;
 		if (!CheckRules) return null;
@@ -296,8 +297,7 @@
 	var Msgs = Valid.Msgs = {
 		n_integer: '请输入小于{$0}的正整数。',
 		n_format: '数字输入格式为"{$0}"。',
-		n_upper: '输入值太大，最大允许<strong>{$0}</strong>。',
-		//注意：{$0}表示允许值，{$1}表示实际值
+		n_upper: '输入值太大，最大允许<strong>{$0}</strong>。', //注意：{$0}表示允许值，{$1}表示实际值
 		n_lower: '输入值太小，最小允许<strong>{$0}</strong>。',
 		nrange_from: '您输入的范围不合理。',
 		nrange_to: '您输入的范围不合理。',
@@ -308,14 +308,10 @@
 		daterange_from: '起始日期不能大于截止日期。',
 		daterange_to: '截止日期不能小于起始日期。',
 		daterange_larger_span: "时间跨度不得超过<strong>{$0}</strong>天。",
-		text_longer: '字数太多，最多允许<strong>{$0}</strong>字。',
-		//'{$1}字太多，最多允许<strong>{$0}</strong>字'
-		text_shorter: '字数太少，最少允许<strong>{$0}</strong>字。',
-		//'{$1}字太少，最少允许<strong>{$0}</strong>字'
-		bytetext_longer: '字数太多，最多允许<strong>{$0}</strong>字节。',
-		//'{$1}字节太多，最多允许<strong>{$0}</strong>字节'
-		bytetext_shorter: '字数太少，最少允许<strong>{$0}</strong>字节。',
-		//'{$1}字节太少，最少允许<strong>{$0}</strong>字节'
+		text_longer: '字数太多，最多允许<strong>{$0}</strong>字。', //'{$1}字太多，最多允许<strong>{$0}</strong>字'
+		text_shorter: '字数太少，最少允许<strong>{$0}</strong>字。', //'{$1}字太少，最少允许<strong>{$0}</strong>字'
+		bytetext_longer: '字数太多，最多允许<strong>{$0}</strong>字节。', //'{$1}字节太多，最多允许<strong>{$0}</strong>字节'
+		bytetext_shorter: '字数太少，最少允许<strong>{$0}</strong>字节。', //'{$1}字节太少，最少允许<strong>{$0}</strong>字节'
 		richtext_longer: '字数太多，最多允许<strong>{$0}</strong>字。',
 		richtext_shorter: '字数太少，最少允许<strong>{$0}</strong>字。',
 		_reconfirm: '两次输入不一致。',
@@ -369,7 +365,7 @@
 		getCalendarImg: (function() {
 			var calendarImg = null;
 			return function() {
-				return calendarImg = calendarImg || createElement('<img src="' + QW.PATH + 'wagang/valid/assets/Calendar.gif" align="absMiddle" class="calendar-hdl-img" style="cursor:pointer">');
+				return calendarImg = calendarImg || createElement('<img src="' + Valid.validPath + 'assets/Calendar.gif" align="absMiddle" class="calendar-hdl-img" style="cursor:pointer">');
 			};
 		}()),
 		/** 
@@ -383,7 +379,7 @@
 			if (QW.Calendar) {
 				QW.Calendar.pickDate(el);
 			} else {
-				var calendarJsUrl = QW.PATH + "wagang/valid/calendar.js?v={version}"; //to get the calendarUrl Url.
+				var calendarJsUrl = Valid.validPath + "calendar.js?v={version}"; //to get the calendarUrl Url.
 				loadJs(calendarJsUrl, function() {
 					QW.Calendar.pickDate(el);
 				});

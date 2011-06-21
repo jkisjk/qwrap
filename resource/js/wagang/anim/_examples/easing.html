@@ -43,7 +43,7 @@
 							by : 500
 						}
 					}, 2000, easings[i]);
-					anim.onsuspend = function(){
+					anim.onend = function(){
 						setTimeout(function(){
 							anim.el.style.left = "100px";		//动画结束后500ms复原
 						}, 500);

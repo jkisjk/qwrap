@@ -220,7 +220,7 @@
 						return -1/2 * (Math.cos(Math.PI*p) - 1);
 					});
 
-					anim1.onsuspend = function(){
+					anim1.onend = function(){
 						isRun = false;
 					}
 
@@ -241,7 +241,7 @@
 						return -1/2 * (Math.cos(Math.PI*p) - 1);
 					});
 
-					anim2.onsuspend = function(){
+					anim2.onend = function(){
 						isRun = false;
 					}
 

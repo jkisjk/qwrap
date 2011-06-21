@@ -1739,27 +1739,31 @@ if (QW.Browser.ie) {
 		 */
 		rwrap: function(helper, wrapper, wrapConfig) {
 			var ret = create(helper);
-			wrapConfig = wrapConfig || {};
+			wrapConfig = wrapConfig || 'operator';
 
 			for (var i in helper) {
 				var wrapType = wrapConfig,
 					fn = helper[i];
-				if (typeof wrapType != 'string') {
-					wrapType = wrapConfig[i] || '';
-				}
-				if ('queryer' == wrapType) { //如果方法返回查询结果，对返回值进行包装
-					ret[i] = FunctionH.rwrap(fn, wrapper, -1);
-				} else if ('operator' == wrapType) { //如果方法只是执行一个操作
-					if (helper instanceof Methodized) { //如果是methodized后的,对this直接返回
-						ret[i] = (function(fn) {
-							return function() {
-								fn.apply(this, arguments);
-								return this;
-							};
-						}(fn));
-					} else {
-						ret[i] = FunctionH.rwrap(fn, wrapper, 0); //否则对第一个参数进行包装，针对getter系列
+				if(fn instanceof Function){
+					if (typeof wrapType != 'string') {
+						wrapType = wrapConfig[i] || '';
 					}
+					if ('queryer' == wrapType) { //如果方法返回查询结果，对返回值进行包装
+						ret[i] = FunctionH.rwrap(fn, wrapper, -1);
+					} else if ('operator' == wrapType || 'methodized' == wrapType) { //如果方法只是执行一个操作
+						if (helper instanceof Methodized || 'methodized' == wrapType) { //如果是methodized后的,对this直接返回
+							ret[i] = (function(fn) {
+								return function() {
+									fn.apply(this, arguments);
+									return this;
+								};
+							}(fn));
+						} else {
+							ret[i] = FunctionH.rwrap(fn, wrapper, 0); //否则对第一个参数进行包装，针对getter系列
+						}
+					}
+				}else{
+					ret[i] = fn;
 				}
 			}
 			return ret;
@@ -1811,7 +1815,8 @@ if (QW.Browser.ie) {
 			mulConfig = mulConfig || {};
 
 			for (var i in helper) {
-				if (typeof helper[i] == "function") {
+				var fn = helper[i];
+				if (fn instanceof Function) {
 					var mulType = mulConfig;
 					if (typeof mulType != 'string') {
 						mulType = mulConfig[i] || '';
@@ -1819,23 +1824,24 @@ if (QW.Browser.ie) {
 
 					if ("getter" == mulType || "getter_first" == mulType || "getter_first_all" == mulType) {
 						//如果是配置成gettter||getter_first||getter_first_all，那么需要用第一个参数
-						ret[i] = FunctionH.mul(helper[i], 1);
+						ret[i] = FunctionH.mul(fn, 1);
 					} else if ("getter_all" == mulType) {
-						ret[i] = FunctionH.mul(helper[i], 0);
+						ret[i] = FunctionH.mul(fn, 0);
 					} else {
-						ret[i] = FunctionH.mul(helper[i], 2); //operator、queryer的话需要join返回值，把返回值join起来的说
+						ret[i] = FunctionH.mul(fn, 2); //operator、queryer的话需要join返回值，把返回值join起来的说
 					}
 					if ("getter" == mulType || "getter_first_all" == mulType) {
 						//如果配置成getter||getter_first_all，那么还会生成一个带All后缀的方法
-						ret[i + "All"] = FunctionH.mul(helper[i], 0);
+						ret[i + "All"] = FunctionH.mul(fn, 0);
 					}
+				}else{
+					ret[i] = fn;
 				}
 			}
 			return ret;
 		},
 		/**
 		 * 对helper的方法，进行methodize化，使其的第一个参数为this，或this[attr]。
-		 * <strong>methodize方法会抛弃掉helper上的非function类成员以及命名以下划线开头的成员（私有成员）</strong>
 		 * @method methodize
 		 * @static
 		 * @param {Helper} helper Helper对象，如DateH
@@ -1846,8 +1852,12 @@ if (QW.Browser.ie) {
 			var ret = new Methodized(); //因为 methodize 之后gsetter和rwrap的行为不一样  
 
 			for (var i in helper) {
-				if (typeof helper[i] == "function" && !/^_/.test(i)) {
-					ret[i] = FunctionH.methodize(helper[i], attr);
+				var fn = helper[i];
+
+				if (fn instanceof Function) {
+					ret[i] = FunctionH.methodize(fn, attr);
+				}else{
+					ret[i] = fn;
 				}
 			}
 			return ret;
@@ -4243,16 +4253,33 @@ if (QW.Browser.ie) {
 
 				hooks.opacity = {
 					get: function(el, current) {
-						var match = el.currentStyle.filter.match(/alpha\(opacity=(.*)\)/);
-						return match && match[1] ? parseInt(match[1], 10) / 100 : 1.0;
+						var opacity;
+
+						if (el.filters['alpha']) {
+							opacity = el.filters['alpha'].opacity / 100;
+						} else if (el.filters['DXImageTransform.Microsoft.Alpha']) {
+							opacity = el.filters['DXImageTransform.Microsoft.Alpha'].opacity / 100;
+						}
+
+						if (isNaN(opacity)) {
+							opacity = 1;
+						}
+
+						return opacity;
 					},
 
 					set: function(el, value) {
-						el.style.filter = 'alpha(opacity=' + parseInt(value * 100, 10) + ')';
+						if (el.filters['alpha']) {
+							el.filters['alpha'].opacity = value * 100;
+						} else {
+							el.style.filter += 'alpha(opacity=' + (value * 100) + ')';
+						}
+						el.style.opacity = value;
 					},
 
 					remove : function (el) {
 						el.style.filter = '';
+						el.style.removeAttribute('opacity');
 					}
 				};
 			}
@@ -4769,6 +4796,30 @@ if (QW.Browser.ie) {
 				if (data && handler[seqProp]) {
 					delete data[eventName + handler[seqProp] + (selector || '')];
 				}
+			},
+			removeEvents: function(el, eventName) {
+				var data = el[seqProp] && this[el[seqProp]];
+				if (data) {
+					var reg = new RegExp('^[a-zA-Z.]*' + (eventName || '') + '\\d+$');
+					for (var i in data) {
+						if (reg.test(i)) {
+							EventTargetH.removeEventListener(el, i.split(/[^a-zA-Z]/)[0], data[i]);
+							delete data[i];
+						}
+					}
+				}
+			},
+			removeDelegates: function(el, eventName, selector) {
+				var data = el[seqProp] && this[el[seqProp]];
+				if (data) {
+					var reg = new RegExp('^([a-zA-Z]+\\.)?' + (eventName || '') + '\\d+.+');
+					for (var i in data) {
+						if (reg.test(i) && (!selector || i.substr(i.length - selector.length) == selector)) {
+							EventTargetH.removeEventListener(el, i.split(/[^a-zA-Z]/)[0], data[i], true);
+							delete data[i];
+						}
+					}
+				}
 			}
 		};
 	}();
@@ -4786,7 +4837,7 @@ if (QW.Browser.ie) {
 	 */
 
 	function listener(el, sEvent, handler, userEventName) {
-		return Cache.get(el, sEvent, handler) || function(e) {
+		return Cache.get(el, sEvent + (userEventName ? '.' + userEventName : ''), handler) || function(e) {
 			if (!userEventName || userEventName && EventTargetH._EventHooks[userEventName][sEvent](el, e)) {
 				return fireHandler(el, e, handler, sEvent);
 			}
@@ -4806,7 +4857,7 @@ if (QW.Browser.ie) {
 	 */
 
 	function delegateListener(el, selector, sEvent, handler, userEventName) {
-		return Cache.get(el, sEvent, handler, selector) || function(e) {
+		return Cache.get(el, sEvent + (userEventName ? '.' + userEventName : ''), handler, selector) || function(e) {
 			var elements = [],
 				node = e.srcElement || e.target;
 			if (!node) {
@@ -4929,7 +4980,7 @@ if (QW.Browser.ie) {
 				for (var i in hooks) {
 					var _listener = listener(el, i, handler, sEvent);
 					EventTargetH.addEventListener(el, i, _listener);
-					Cache.add(_listener, el, i, handler);
+					Cache.add(_listener, el, i+'.'+sEvent, handler);
 				}
 			} else {
 				_listener = listener(el, sEvent, handler);
@@ -4948,12 +4999,15 @@ if (QW.Browser.ie) {
 		 */
 		un: function(el, sEvent, handler) {
 			el = g(el);
+			if (!handler) { //移除多个临控
+				return Cache.removeEvents(el, sEvent);
+			}
 			var hooks = EventTargetH._EventHooks[sEvent];
 			if (hooks) {
 				for (var i in hooks) {
 					var _listener = listener(el, i, handler, sEvent);
 					EventTargetH.removeEventListener(el, i, _listener);
-					Cache.remove(el, i, handler);
+					Cache.remove(el, i+'.'+sEvent, handler);
 				}
 			} else {
 				_listener = listener(el, sEvent, handler);
@@ -4978,7 +5032,7 @@ if (QW.Browser.ie) {
 				for (var i in hooks) {
 					var _listener = delegateListener(el, selector, i, handler, sEvent);
 					EventTargetH.addEventListener(el, i, _listener, true);
-					Cache.add(_listener, el, i, handler, selector);
+					Cache.add(_listener, el, i+'.'+sEvent, handler, selector);
 				}
 			} else {
 				_listener = delegateListener(el, selector, sEvent, handler);
@@ -4998,16 +5052,19 @@ if (QW.Browser.ie) {
 		 */
 		undelegate: function(el, selector, sEvent, handler) {
 			el = g(el);
+			if (!handler) { //移除多个临控
+				return Cache.removeDelegates(el, sEvent, selector);
+			}
 			var hooks = EventTargetH._DelegateHooks[sEvent];
 			if (hooks) {
 				for (var i in hooks) {
 					var _listener = delegateListener(el, selector, i, handler, sEvent);
-					EventTargetH.removeEventListener(el, i, _listener);
-					Cache.remove(el, i, handler, selector);
+					EventTargetH.removeEventListener(el, i, _listener, true);
+					Cache.remove(el, i+'.'+sEvent, handler, selector);
 				}
 			} else {
 				_listener = delegateListener(el, selector, sEvent, handler);
-				EventTargetH.removeEventListener(el, sEvent, _listener);
+				EventTargetH.removeEventListener(el, sEvent, _listener, true);
 				Cache.remove(el, sEvent, handler, selector);
 			}
 		},
@@ -5621,6 +5678,7 @@ if (QW.Browser.ie) {
 				el.__BAN_preTime = new Date() * 1;
 				return true;
 			}
+			QW.EventH.preventDefault(e);
 			return;
 		}
 		return true;

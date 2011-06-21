@@ -25,7 +25,7 @@
 		}
 		var anim = new ElAnim(el, opt, dur || 800);
 		if (callback) {
-			anim.on("suspend", function() {
+			anim.on("end", function() {
 				callback();
 			});
 		}
@@ -106,6 +106,8 @@
 		}
 	};
 
-	NodeW.pluginHelper(AnimElH, 'operator');
-	QW.ObjectH.mix(QW.Dom, AnimElH);
+	QW.NodeW.pluginHelper(AnimElH, 'operator');
+	if (QW.Dom) {
+		QW.ObjectH.mix(QW.Dom, AnimElH);
+	}
 }());

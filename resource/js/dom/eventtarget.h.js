@@ -47,6 +47,30 @@
 				if (data && handler[seqProp]) {
 					delete data[eventName + handler[seqProp] + (selector || '')];
 				}
+			},
+			removeEvents: function(el, eventName) {
+				var data = el[seqProp] && this[el[seqProp]];
+				if (data) {
+					var reg = new RegExp('^[a-zA-Z.]*' + (eventName || '') + '\\d+$');
+					for (var i in data) {
+						if (reg.test(i)) {
+							EventTargetH.removeEventListener(el, i.split(/[^a-zA-Z]/)[0], data[i]);
+							delete data[i];
+						}
+					}
+				}
+			},
+			removeDelegates: function(el, eventName, selector) {
+				var data = el[seqProp] && this[el[seqProp]];
+				if (data) {
+					var reg = new RegExp('^([a-zA-Z]+\\.)?' + (eventName || '') + '\\d+.+');
+					for (var i in data) {
+						if (reg.test(i) && (!selector || i.substr(i.length - selector.length) == selector)) {
+							EventTargetH.removeEventListener(el, i.split(/[^a-zA-Z]/)[0], data[i], true);
+							delete data[i];
+						}
+					}
+				}
 			}
 		};
 	}();
@@ -64,7 +88,7 @@
 	 */
 
 	function listener(el, sEvent, handler, userEventName) {
-		return Cache.get(el, sEvent, handler) || function(e) {
+		return Cache.get(el, sEvent + (userEventName ? '.' + userEventName : ''), handler) || function(e) {
 			if (!userEventName || userEventName && EventTargetH._EventHooks[userEventName][sEvent](el, e)) {
 				return fireHandler(el, e, handler, sEvent);
 			}
@@ -84,7 +108,7 @@
 	 */
 
 	function delegateListener(el, selector, sEvent, handler, userEventName) {
-		return Cache.get(el, sEvent, handler, selector) || function(e) {
+		return Cache.get(el, sEvent + (userEventName ? '.' + userEventName : ''), handler, selector) || function(e) {
 			var elements = [],
 				node = e.srcElement || e.target;
 			if (!node) {
@@ -207,7 +231,7 @@
 				for (var i in hooks) {
 					var _listener = listener(el, i, handler, sEvent);
 					EventTargetH.addEventListener(el, i, _listener);
-					Cache.add(_listener, el, i, handler);
+					Cache.add(_listener, el, i+'.'+sEvent, handler);
 				}
 			} else {
 				_listener = listener(el, sEvent, handler);
@@ -226,12 +250,15 @@
 		 */
 		un: function(el, sEvent, handler) {
 			el = g(el);
+			if (!handler) { //移除多个临控
+				return Cache.removeEvents(el, sEvent);
+			}
 			var hooks = EventTargetH._EventHooks[sEvent];
 			if (hooks) {
 				for (var i in hooks) {
 					var _listener = listener(el, i, handler, sEvent);
 					EventTargetH.removeEventListener(el, i, _listener);
-					Cache.remove(el, i, handler);
+					Cache.remove(el, i+'.'+sEvent, handler);
 				}
 			} else {
 				_listener = listener(el, sEvent, handler);
@@ -256,7 +283,7 @@
 				for (var i in hooks) {
 					var _listener = delegateListener(el, selector, i, handler, sEvent);
 					EventTargetH.addEventListener(el, i, _listener, true);
-					Cache.add(_listener, el, i, handler, selector);
+					Cache.add(_listener, el, i+'.'+sEvent, handler, selector);
 				}
 			} else {
 				_listener = delegateListener(el, selector, sEvent, handler);
@@ -276,16 +303,19 @@
 		 */
 		undelegate: function(el, selector, sEvent, handler) {
 			el = g(el);
+			if (!handler) { //移除多个临控
+				return Cache.removeDelegates(el, sEvent, selector);
+			}
 			var hooks = EventTargetH._DelegateHooks[sEvent];
 			if (hooks) {
 				for (var i in hooks) {
 					var _listener = delegateListener(el, selector, i, handler, sEvent);
-					EventTargetH.removeEventListener(el, i, _listener);
-					Cache.remove(el, i, handler, selector);
+					EventTargetH.removeEventListener(el, i, _listener, true);
+					Cache.remove(el, i+'.'+sEvent, handler, selector);
 				}
 			} else {
 				_listener = delegateListener(el, selector, sEvent, handler);
-				EventTargetH.removeEventListener(el, sEvent, _listener);
+				EventTargetH.removeEventListener(el, sEvent, _listener, true);
 				Cache.remove(el, sEvent, handler, selector);
 			}
 		},

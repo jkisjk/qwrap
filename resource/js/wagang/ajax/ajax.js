@@ -201,7 +201,7 @@
 			data = data || me.data;
 
 			if (typeof data == 'object') {
-				if (data.tagName = 'FORM') data = encodeURIForm(data); //data是Form HTMLElement
+				if (data.tagName == 'FORM') data = encodeURIForm(data); //data是Form HTMLElement
 				else data = encodeURIJson(data); //data是Json数据
 			}
 

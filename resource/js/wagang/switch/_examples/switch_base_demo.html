@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Switch Demo</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="../../../apps/assets/base.css" rel="stylesheet" type="text/css" media="screen"/>
+	<style>
+		/* 轮播广告 */
+		.picslide {	background-color:#E5E5E5; padding:3px;width:407px;margin:5px;float:left;position:relative;}
+		.picslide ul {position: relative;}
+		.picslide ul.text {padding:1px; }
+		.picslide ul.text li {border-left: 1px solid #DCDCDC; float: left; text-align: center;}
+		.picslide ul.text li.first {border-left: 0 none;}
+		.picslide ul.text li span {cursor: pointer;display: block;height: 28px;line-height: 28px;width: 75px;}
+		.picslide ul.text li.preselected span {background-color: #e99;}
+		.picslide ul.text li.selected span {background-color: #f66;color: #FFFFFF;cursor: default;}
+		.picslide ul.pic { position:relative; height:220px;}
+		.picslide ul.pic li { position:absolute; top:0; left:0;display:none;}
+		.picslide ul.pic li.selected {z-index:3;display:block;}
+		.picslide ul.pic { background-color: #FFFFFF; border: 1px solid #DCDCDC; }
+		.picslide ul.pic li img {height: 220px; width: 405px; }
+
+		.picslide ul.num {position:absolute;bottom:7px;right:2px; z-index:10;}
+		.picslide ul.num li {margin:5px; display:inline;}
+		.picslide ul.num li span {cursor: pointer;display:inline-block;text-align: center;height: 20px;line-height: 20px;width: 20px;background-color:#ccc}
+		.picslide ul.num li.preselected span {background-color: #e99;}
+		.picslide ul.num li.selected span {background-color: #f66;color: #FFFFFF;cursor: default;}
+		#picslide2 ul.pic { position:relative; height:250px;}
+		#picslide2 ul.pic span{ padding-left:10px;}
+
+	</style>
+	<script type="text/javascript" src="../../../apps/core_dom_youa.js"></script>
+	<script type="text/javascript" src="../../../wagang/switch/switch.js"></script>
+</head>
+<div id=doc3>
+	<div id="bd" >
+		<div class="section-ctn">
+			<h3 class="section-hd" onclick="W(this).nextSibling('div').toggle();" >轮播广告 <span style="padding-left:100px;color:blue;">点击展开详情</span></h3>
+			<div class="cls">
+				<div class="picslide" id="picslide">
+					<ul class="pic switch-content">
+						<li selected><a target="_blank" href="http://maizuo.youa.com"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-19/1640a3aebcfb76afc2e0853340a0bacb.jpg"></a></li> 
+						<li ><a target="_blank" href="http://co.youa.baidu.com/content/lottery/promo/hmfl/?ad=youa"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-19/7472373902b12c8cc1bf7ec585f1c4fb.jpg"></a></li> 
+						<li ><a target="_blank" href="http://youa.baidu.com/shop/b036bed19708ba4990e16eec/tab/a0367a0e1dfcbc6a5132e0e2"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-18/c110b640512b0eff600f223201ce6ac1.jpg"></a></li> 
+						<li ><a target="_blank" href="http://youa.baidu.com/item/b67394c57a7c9d3886c1b544?n=1"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-18/f873d70e8e7b0db4a1e13b09b2e101a6.jpg"></a></li> 
+						<li ><a target="_blank" href="http://yx.youa.baidu.com/sj/sqhd.html?c=570"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-17/953256e42fc183b2ac34b92ccd59b142.jpg"></a></li> 
+					</ul>
+
+					<ul class="text switch-nav cls">
+						<li class="selected first"><span>文字信息1</span></li>
+						<li><span>文字信息2</span></li>
+						<li><span>文字信息3</span></li>
+						<li><span>文字信息4</span></li>
+						<li><span>文字信息5</span></li>
+					</ul>
+				</div>
+				<script type="text/javascript">
+				Dom.ready(function () {
+					var tabview = new TabView(g('picslide'), {
+						tabSelector : '>.switch-nav>li',
+						viewSelector : '>.switch-content>li',
+						autoPlay: true,
+						supportMouseenter: true,
+						mouseenterSwitchTime: 300
+					});
+				});
+				</script>
+
+				<div class="picslide" id="picslide2">
+					<ul class="pic switch-content">
+						<li selected><a target="_blank" href="http://maizuo.youa.com"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-19/1640a3aebcfb76afc2e0853340a0bacb.jpg"></a>
+							<span>文字信息1</span>
+						</li> 
+						<li ><a target="_blank" href="http://co.youa.baidu.com/content/lottery/promo/hmfl/?ad=youa"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-19/7472373902b12c8cc1bf7ec585f1c4fb.jpg"></a>
+							<span>文字信息2</span>
+						</li>  
+						<li ><a target="_blank" href="http://youa.baidu.com/shop/b036bed19708ba4990e16eec/tab/a0367a0e1dfcbc6a5132e0e2"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-18/c110b640512b0eff600f223201ce6ac1.jpg"></a>
+							<span>文字信息3</span>
+						</li> 
+						<li ><a target="_blank" href="http://youa.baidu.com/item/b67394c57a7c9d3886c1b544?n=1"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-18/f873d70e8e7b0db4a1e13b09b2e101a6.jpg"></a>
+							<span>文字信息4</span>
+						</li> 
+						<li ><a target="_blank" href="http://yx.youa.baidu.com/sj/sqhd.html?c=570"><img src="http://co.youa.baidu.com/picture/r/image/2010-08-17/953256e42fc183b2ac34b92ccd59b142.jpg"></a>
+							<span>文字信息5</span>
+						</li> 
+					</ul>
+
+					<ul class="num switch-nav cls">
+						<li class="selected first"><span>1</span></li>
+						<li><span>2</span></li>
+						<li><span>3</span></li>
+						<li><span>4</span></li>
+						<li><span>5</span></li>
+					</ul>
+				</div>
+				<script type="text/javascript">
+				Dom.ready(function () {
+					var tabview = new TabView(g('picslide2'), {
+						tabSelector : '>.switch-nav>li',
+						viewSelector : '>.switch-content>li',
+						autoPlay: true,
+						supportMouseenter: true,
+						mouseenterSwitchTime: 300
+
+					});
+				});
+				</script>
+			
+			</div>
+
+
+		</div>
+
+		<div class="section-ctn">
+			<style>
+				.books-tbl {width:100%}
+				.books-tbl thead {background-color:#ccc}
+				.books-tbl tr.preselected {background-color:#fcc}
+				.books-tbl tbody tr.selected {background-color:#f99}
+			</style>
+			<h3 class="section-hd" onclick="W(this).nextSibling('div').toggle();" >行高亮 <span style="padding-left:100px;color:blue;">点击展开详情</span></h3>
+			<div class="main-second">
+				<table cellspacing=0 cellpadding=3 border=1 class="books-tbl">
+					<thead>
+						<tr><td>序号</td><td>书名</td><td>期望价格</td></tr>
+					</thead>
+					<tbody id="books">
+						<tr><td>1</td><td>西游记</td><td><input></td></tr>
+						<tr><td>2</td><td>水浒传</td><td><input></td></tr>
+						<tr><td>3</td><td>三国演义</td><td><input></td></tr>
+						<tr><td>4</td><td>红楼梦</td><td><input></td></tr>
+					</tbody>
+				</table>
+			</div>
+			<script type="text/javascript">
+			Dom.ready(function () {
+				var tabview = new TabView(g('books'), {
+					tabSelector : 'tr',
+					supportMouseenter: true,
+					switchEvents: ['click','focus']
+				});
+			});
+			
+			</script>
+		</div>
+
+	<!--}end: body --> 
+	</div> 
+	<div id="ft">
+		QWrap (<a href="http://www.qwrap.com">www.qwrap.com</a>)
+	</div>
+
+</div>
+</body> 
+</html>

@@ -45,27 +45,31 @@
 		 */
 		rwrap: function(helper, wrapper, wrapConfig) {
 			var ret = create(helper);
-			wrapConfig = wrapConfig || {};
+			wrapConfig = wrapConfig || 'operator';
 
 			for (var i in helper) {
 				var wrapType = wrapConfig,
 					fn = helper[i];
-				if (typeof wrapType != 'string') {
-					wrapType = wrapConfig[i] || '';
-				}
-				if ('queryer' == wrapType) { //如果方法返回查询结果，对返回值进行包装
-					ret[i] = FunctionH.rwrap(fn, wrapper, -1);
-				} else if ('operator' == wrapType) { //如果方法只是执行一个操作
-					if (helper instanceof Methodized) { //如果是methodized后的,对this直接返回
-						ret[i] = (function(fn) {
-							return function() {
-								fn.apply(this, arguments);
-								return this;
-							};
-						}(fn));
-					} else {
-						ret[i] = FunctionH.rwrap(fn, wrapper, 0); //否则对第一个参数进行包装，针对getter系列
+				if(fn instanceof Function){
+					if (typeof wrapType != 'string') {
+						wrapType = wrapConfig[i] || '';
 					}
+					if ('queryer' == wrapType) { //如果方法返回查询结果，对返回值进行包装
+						ret[i] = FunctionH.rwrap(fn, wrapper, -1);
+					} else if ('operator' == wrapType || 'methodized' == wrapType) { //如果方法只是执行一个操作
+						if (helper instanceof Methodized || 'methodized' == wrapType) { //如果是methodized后的,对this直接返回
+							ret[i] = (function(fn) {
+								return function() {
+									fn.apply(this, arguments);
+									return this;
+								};
+							}(fn));
+						} else {
+							ret[i] = FunctionH.rwrap(fn, wrapper, 0); //否则对第一个参数进行包装，针对getter系列
+						}
+					}
+				}else{
+					ret[i] = fn;
 				}
 			}
 			return ret;
@@ -117,7 +121,8 @@
 			mulConfig = mulConfig || {};
 
 			for (var i in helper) {
-				if (typeof helper[i] == "function") {
+				var fn = helper[i];
+				if (fn instanceof Function) {
 					var mulType = mulConfig;
 					if (typeof mulType != 'string') {
 						mulType = mulConfig[i] || '';
@@ -125,23 +130,24 @@
 
 					if ("getter" == mulType || "getter_first" == mulType || "getter_first_all" == mulType) {
 						//如果是配置成gettter||getter_first||getter_first_all，那么需要用第一个参数
-						ret[i] = FunctionH.mul(helper[i], 1);
+						ret[i] = FunctionH.mul(fn, 1);
 					} else if ("getter_all" == mulType) {
-						ret[i] = FunctionH.mul(helper[i], 0);
+						ret[i] = FunctionH.mul(fn, 0);
 					} else {
-						ret[i] = FunctionH.mul(helper[i], 2); //operator、queryer的话需要join返回值，把返回值join起来的说
+						ret[i] = FunctionH.mul(fn, 2); //operator、queryer的话需要join返回值，把返回值join起来的说
 					}
 					if ("getter" == mulType || "getter_first_all" == mulType) {
 						//如果配置成getter||getter_first_all，那么还会生成一个带All后缀的方法
-						ret[i + "All"] = FunctionH.mul(helper[i], 0);
+						ret[i + "All"] = FunctionH.mul(fn, 0);
 					}
+				}else{
+					ret[i] = fn;
 				}
 			}
 			return ret;
 		},
 		/**
 		 * 对helper的方法，进行methodize化，使其的第一个参数为this，或this[attr]。
-		 * <strong>methodize方法会抛弃掉helper上的非function类成员以及命名以下划线开头的成员（私有成员）</strong>
 		 * @method methodize
 		 * @static
 		 * @param {Helper} helper Helper对象，如DateH
@@ -152,8 +158,12 @@
 			var ret = new Methodized(); //因为 methodize 之后gsetter和rwrap的行为不一样  
 
 			for (var i in helper) {
-				if (typeof helper[i] == "function" && !/^_/.test(i)) {
-					ret[i] = FunctionH.methodize(helper[i], attr);
+				var fn = helper[i];
+
+				if (fn instanceof Function) {
+					ret[i] = FunctionH.methodize(fn, attr);
+				}else{
+					ret[i] = fn;
 				}
 			}
 			return ret;

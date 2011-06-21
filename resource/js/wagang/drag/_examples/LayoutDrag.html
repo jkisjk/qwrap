@@ -31,7 +31,7 @@
 		JKDrag LayoutDrag: RowDrag,ColumnDrag,ModuleLayoutDrag<br/>
 	</div>
 	<div id="bd" >
-		<div class="section-ctn">
+		<div class="section-ctn cls">
 			<h3 class="section-hd">模块拖动示例(block)：</h3>
 
 			<div class="cls">
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 
-		<div class="section-ctn">
+		<div class="section-ctn cls" id='inline-drag-ctn'>
 			<h3 class="section-hd">模块拖动示例(inline)：</h3>
 			<div class="inlineModuleCtn cls">
 				<div class="inlineModule1 draggable2" >1---1</div>
@@ -171,8 +171,8 @@ function initModuleLayoutDrag()
 initModuleLayoutDrag();
 
 
-//模块拖动(inline)
-function initModuleLayoutDrag2()
+//模块拖动(inline) 
+function initModuleLayoutDrag2_bak()
 {
 	var containers=QW.NodeH.query(0,".inlineModuleCtn");
 	var objs=QW.NodeH.query(0,".draggable2");
@@ -183,6 +183,22 @@ function initModuleLayoutDrag2()
 		var d=new QW.LayoutDrag({oSrc:obj,hdlObj:obj,siblings:siblings,containers:containers,isInline:true,needAnim:true});
 	}
 }
+
+//模块拖动(inline) 代理写法
+function initModuleLayoutDrag2()
+{
+	var containers=QW.NodeH.query(0,".inlineModuleCtn");
+	var siblings=QW.NodeH.query(0,".draggable2");
+	var d=new QW.LayoutDrag({
+		delegateContainer: QW.NodeH.g('inline-drag-ctn'),
+		oHdlSelector: '.draggable2',
+		siblings: siblings,
+		containers: containers,
+		isInline: true,
+		needAnim: true
+	});
+}
+
 initModuleLayoutDrag2();
 
 //模块拖动(tr)

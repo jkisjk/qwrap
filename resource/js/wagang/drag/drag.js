@@ -1,13 +1,9 @@
 /*
- * @QWrap
- * @author: JK(JK_10000@yahoo.com.cn)
- * @create-date : 2008-10-18
- * @remark: 部分代码来自Baidu C2C,致谢
- */
-/*
- * Drag: 拖动
- * @version: 0.0.1
- */
+	Copyright QWrap
+	version: $version$ $release$ released
+	author: JK
+*/
+
 
 (function() {
 
@@ -16,8 +12,11 @@
 		DomU = QW.DomU,
 		createElement = DomU.createElement,
 		NodeH = QW.NodeH,
-		on = QW.EventTargetH.addEventListener,
-		un = QW.EventTargetH.removeEventListener,
+		EventTargetH = QW.EventTargetH,
+		on = EventTargetH.addEventListener,
+		un = EventTargetH.removeEventListener,
+		delegate = EventTargetH.delegate,
+		ancestorNode = NodeH.ancestorNode,
 		getCurrentStyle = NodeH.getCurrentStyle,
 		setStyle = NodeH.setStyle,
 		getRect = NodeH.getRect,
@@ -33,7 +32,7 @@
 		CustEvent = QW.CustEvent;
 
 	/**
-	 * DragManager是一个全局的拖动管理器。
+	 * @class DragManager 是一个全局的拖动管理器。
 	 * 每次只能有一个拖动在进行。
 	 * 这个拖动的对象：oDrag。
 	 * DragManager只对oDrag的三个Drag方法进调用，这三个方法是：
@@ -48,28 +47,17 @@
 	 */
 	var DragManager = {
 		isDragging: false,
-		oDrag: null,
-		//当前被拖动的Drag对象。
-		startDate: null,
-		//拖动开始时间
-		startX: 0,
-		//拖动X坐标
-		startY: 0,
-		//拖动Y坐标
-		pageX: 0,
-		//pageX
-		pageY: 0,
-		//pageY
-		deltaX: 0,
-		//相对于起始，X的变化
-		deltaY: 0,
-		//相对于起始，Y的变化
-		deltaDeltaX: 0,
-		//相对于上一次mousemove，X的变化。（例如，本值大于0,表示鼠标在向右移）
-		deltaDeltaY: 0,
-		//相对于上一次mousemove，Y的变化
-		mouseDownTarget: null,
-		//mouseDown的对象
+		oDrag: null,	//当前被拖动的Drag对象。
+		startDate: null,	//拖动开始时间
+		startX: 0,	//拖动X坐标
+		startY: 0,	//拖动Y坐标
+		pageX: 0,	//pageX
+		pageY: 0,	//pageY
+		deltaX: 0,	//相对于起始，X的变化
+		deltaY: 0,	//相对于起始，Y的变化
+		deltaDeltaX: 0,	//相对于上一次mousemove，X的变化。（例如，本值大于0,表示鼠标在向右移）
+		deltaDeltaY: 0,	//相对于上一次mousemove，Y的变化
+		mouseDownTarget: null,	//mouseDown的对象
 		startDrag: function(e, oDrag) {} //把一个Drag对象委托给DragManager管理。
 	};
 
@@ -98,7 +86,6 @@
 			un(document, 'mouseup', mouseU);
 		};
 		var mouseM = function(e) {//mouseMove
-			//testIpt.value=Math.random();
 			var obj = DragManager.oDrag;
 			if (!DragManager.isDragging || !obj) return;
 			var x = pageX(e);
@@ -109,7 +96,6 @@
 			DragManager.pageY = y;
 			DragManager.deltaX = x - DragManager.startX;
 			DragManager.deltaY = y - DragManager.startY;
-			//testIpt.value=[DragManager.deltaX,DragManager.deltaY];
 			obj.drag(e); //调用Drag对象的drag方法
 		};
 		DragManager.startDrag = function(e, oDrag) {
@@ -119,7 +105,27 @@
 	}());
 
 	/**
-	 * SimpleDrag 简单拖动
+	 * @class SimpleDrag 简单拖动
+	 * @namespace QW
+	 * @constructor
+	 * @param {json} opts - 其它参数， 
+		---目前只支持以下参数：
+		{Element} oSrc 被拖动的节点对象
+		{Element} oHdl 启动拖动事件的触发节点
+		{Element} delegateContainer 代理拖动的容器。如果此属性为空，则为代理拖动。代理拖动情况下的oSrc与oHdl为即时获取。
+		{string} oHdlSelector 代理拖动情况下，启动拖动事件的触发节点的selector
+		{string} oSrcSelector 代理拖动情况下，通过oHdl找到oSrc。如果为空，则this.oSrc=this.oHdl；否则this.oSrc=ancestorNode(this.oHdl,selector)
+		{Element} oProxy 拖动虚框节点
+		{string} xAttr 拖动的x属性，默认为'left'
+		{string} yAttr 拖动的y属性，默认为'top'
+		{int} maxXAttr 最大x属性值
+		{int} minXAttr 最小x属性值
+		{int} maxYAttr 最大y属性值
+		{int} minYAttr 最小y属性值
+		{boolean} xFixed x属性固定
+		{boolean} yFixed: false,
+		{boolean} withProxy: false,
+	 * @returns {SimpleDrag} 
 	 */
 
 	function SimpleDrag(opts) {
@@ -228,10 +234,24 @@
 				var me = this;
 				if (me._rendered) return;
 				CustEvent.createEvents(me, SimpleDrag.EVENTS);
-				me.oHdl = me.oHdl || me.oSrc;
-				on(me.oHdl, 'mousedown', function(e) {
-					DragManager.startDrag(e, me);
-				});
+				if (me.delegateContainer) {
+					delegate(me.delegateContainer, me.oHdlSelector, 'mousedown', function(e) {
+						me.oHdl = this;
+						if(me.oSrcSelector){
+							me.oSrc = ancestorNode(this, me.oSrcSelector);
+						}
+						else {
+							me.oSrc = me.oHdl;
+						}
+						DragManager.startDrag(e && e.core || e, me);
+					});
+				}
+				else {
+					me.oHdl = me.oHdl || me.oSrc;
+					on(me.oHdl, 'mousedown', function(e) {
+						DragManager.startDrag(e, me);
+					});
+				}
 				me._rendered = true;
 			}
 		};
@@ -316,21 +336,16 @@
 
 
 	/**
-	 * LayoutDrag 布局拖动调整。
-	 * 对于不同的布局，在new LayoutDrag的参数opts里，可以传入调整函数，其典型代码如下：
-	 *	adjustLayout:function(custEvent){
-	 *		if(custEvent.type=='dragstart'){
-	 *		}
-	 *		else if(custEvent.type=='drag'){
-	 *		}
-	 *		else if(custEvent.type=='dragend'){
-	 *		}
-	 *	}
-	 * 这里已实现了两个常用的，即：
-	 * ----ModuleLayout拖动：LayoutDrag.adjustModuleLayoutDrag
-	 * ----列拖动：LayoutDrag.adjustColumnDrag
+	 * @class LayoutDrag 布局拖动调整
+	 * @namespace QW
+	 * @constructor
+	 * @param {json} opts - 其它参数， 
+		---除了支持SimpleDrap的相关参数外，还支持支持以下参数：
+		{boolean} isInline 是否是inline的模块，默认为false
+		{array|collection} siblings “目的地”的参考位置对象，表示“目的地”是该对象的前面或后面
+		{array|collection} containers “目的地”的容器对象，表示“目的地”是该对象里面。
+	 * @returns {LayoutDrag} 
 	 */
-
 	function LayoutDrag(opts) {
 		SimpleDrag.call(this, opts);
 	}
@@ -349,24 +364,8 @@
 				removeClass(this.oSrc, 'dragingModule');
 				SimpleDrag.prototype.dragend.call(this, e);
 			},
-/*
-		//不同的layoutDrag只需修改adjustLayout这一个方法；
-		//其示例代码为：
-		adjustLayout:function(custEvent){
-			if(custEvent.type=='ondragstart'){
-			}
-			else if(custEvent.type=='ondrag'){
-			}
-			else if(custEvent.type=='ondragend'){
-			}
-		}
-		//以下为LayoutDrag的默认adjustLayout方法
-		*/
 			/**
 			 * adjustLayout(custEvent): 默认的调整模块位置函数，
-			 * 它需要LayoutDrag有以下属性：
-			 * {array|collection} siblings “目的地”的参考位置对象，表示“目的地”是该对象的前面或后面
-			 * {array|collection} containers “目的地”的容器对象，表示“目的地”是该对象里面。
 			 */
 			adjustLayout: function(custEvent) {
 				var me = this,
@@ -378,7 +377,7 @@
 					rect;
 				if (custEvent.type == 'dragstart') {
 					if (me.__elAnim) { //如果有动画，则停止动画
-						me.__elAnim.stop();
+						me.__elAnim.pause();
 					}
 				} else if (custEvent.type == 'drag') {
 					if (containers || siblings) {
@@ -433,7 +432,7 @@
 									to: rect.top
 								}
 							}, 300);
-						elAnim.on('suspend', function() {
+						elAnim.on('end', function() {
 							me.oProxy.style.display = 'none';
 						});
 						elAnim.play();

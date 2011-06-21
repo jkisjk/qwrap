@@ -1221,16 +1221,33 @@
 
 				hooks.opacity = {
 					get: function(el, current) {
-						var match = el.currentStyle.filter.match(/alpha\(opacity=(.*)\)/);
-						return match && match[1] ? parseInt(match[1], 10) / 100 : 1.0;
+						var opacity;
+
+						if (el.filters['alpha']) {
+							opacity = el.filters['alpha'].opacity / 100;
+						} else if (el.filters['DXImageTransform.Microsoft.Alpha']) {
+							opacity = el.filters['DXImageTransform.Microsoft.Alpha'].opacity / 100;
+						}
+
+						if (isNaN(opacity)) {
+							opacity = 1;
+						}
+
+						return opacity;
 					},
 
 					set: function(el, value) {
-						el.style.filter = 'alpha(opacity=' + parseInt(value * 100, 10) + ')';
+						if (el.filters['alpha']) {
+							el.filters['alpha'].opacity = value * 100;
+						} else {
+							el.style.filter += 'alpha(opacity=' + (value * 100) + ')';
+						}
+						el.style.opacity = value;
 					},
 
 					remove : function (el) {
 						el.style.filter = '';
+						el.style.removeAttribute('opacity');
 					}
 				};
 			}

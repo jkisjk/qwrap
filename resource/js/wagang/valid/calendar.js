@@ -1,10 +1,10 @@
 (function() {
 	var Calendar = {
-		VERSION: "0.0.1"
+		VERSION: "0.0.1",
+		calendarPath: QW.PATH + 'wagang/valid/'
 	};
 
-	var QW = window.QW,
-		mix = QW.ObjectH.mix,
+	var mix = QW.ObjectH.mix,
 		formatDate = QW.DateH.format,
 		NodeH = QW.NodeH,
 		g = NodeH.g;
@@ -49,7 +49,7 @@
 			}
 			document.getElementsByTagName("head")[0].appendChild(oStyle);
 			var html = [];
-			var sSelect = ['<select></select> ', '<img src="' + QW.PATH + 'wagang/valid/assets/UpAndDown.gif" align="absMiddle" usemap="#year_change_map"/>', '<map name="year_change_map">', '<area shape="rect" coords="0,0,13,8" href="#"/>', '<area shape="rect" coords="0,10,13,17" href="#"/>', '</map>'].join("");
+			var sSelect = ['<select></select> ', '<img src="' + Calendar.calendarPath + 'assets/UpAndDown.gif" align="absMiddle" usemap="#year_change_map"/>', '<map name="year_change_map">', '<area shape="rect" coords="0,0,13,8" href="#"/>', '<area shape="rect" coords="0,10,13,17" href="#"/>', '</map>'].join("");
 			html.push('<div id="cal_hd">' + sSelect + '&nbsp;&nbsp;' + sSelect.replace(/year/g, "month") + '</div>', '<div id="cal_bd" align=center width=100% ></div>', '<div id="cal_ft">', '<button>\u786E\u5B9A</button>&nbsp;&nbsp;', '<button>\u6E05\u7A7A</button>&nbsp;&nbsp;', '<button>\u53D6\u6D88</button>', '</div>');
 			oWrap = g("cal_wrap");
 			oWrap.innerHTML = html.join("");

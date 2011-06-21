@@ -34,8 +34,7 @@
 	{function} onstep (Optional) onstep事件
 	{function} onpause (Optional) onpause事件
 	{function} onresume (Optional) onresume事件
-	{function} onstop (Optional) onstop事件
-	{function} onsuspend (Optional) onsuspend事件
+	{function} onend (Optional) onend事件
 	{function} onreset (Optional) onreset事件
  * @returns {Anim} anim - 动画对象
  */
@@ -44,8 +43,7 @@
 	isPlaying() 判断是否正在播放 -----returns {boolean}  
 	play() 从0开始播放 ----returns {boolean} 是否开始顺利开始。（因为onbeforeplay有可能阻止了play） 
 	step(per) 播放一帧，参数per为[0,1]区间内的数值，为可选，表示播放到某进度
-	stop() 停止播放，并预归位到0。
-	suspend() 播放到最后
+	end() 播放到最后
 	pause() 暂停播放
 	resume() 继续播放
 	reset() 播放到最开始
@@ -55,7 +53,7 @@
 			<button onclick="eval(g('code1').value);" id="evalBtn">运行以下textarea里的代码</button>
 			<br/>
 			<textarea id="code1" style="width:750px;height:200px;">var i=0;
-new QW.Anim(function(){document.title=i++;},3000,{frameTime:100,onsuspend:function(){alert('结束');}}).play();
+new QW.Anim(function(){document.title=i++;},3000,{frameTime:100,onend:function(){alert('结束');}}).play();
 
 			</textarea>
 			</div>

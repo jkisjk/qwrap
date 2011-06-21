@@ -24,8 +24,7 @@
 		{function} onstep (Optional) onstep事件
 		{function} onpause (Optional) onpause事件
 		{function} onresume (Optional) onresume事件
-		{function} onstop (Optional) onstop事件
-		{function} onsuspend (Optional) onsuspend事件
+		{function} onend (Optional) onend事件
 		{function} onreset (Optional) onreset事件
 	 * @returns {Anim} anim - 动画对象
 	 */
@@ -43,7 +42,7 @@
 		CustEvent.createEvents(this, Anim.EVENTS);
 	};
 
-	Anim.EVENTS = 'beforeplay,play,step,pause,resume,stop,suspend,reset'.split(',');
+	Anim.EVENTS = 'beforeplay,play,step,pause,resume,end,reset'.split(',');
 	/*
 	 * turnOn 打开动画定时器
 	 * @param {Anim} anim Anim实例
@@ -99,7 +98,7 @@
 		 */
 		play: function() {
 			var me = this;
-			if (me.isPlaying()) me.stop();
+			if (me.isPlaying()) me.pause();
 			changePer(me, 0);
 			if (!me.fire('beforeplay')) return false;
 			me._status = 1;
@@ -131,32 +130,21 @@
 			me.animFun(this.per);
 			me.fire('step');
 			if (this.per >= 1) {
-				this.suspend();
+				this.end();
 				return;
 			}
 		},
 		/**
-		 * 停止播放，并预归位到0。
-		 * @method stop
-		 * @returns {void} 
-		 */
-		stop: function() {
-			this._status = 8;
-			changePer(this, 0);
-			turnOff(this);
-			this.fire('stop');
-		},
-		/**
 		 * 播放到最后
-		 * @method suspend
+		 * @method end
 		 * @returns {void} 
 		 */
-		suspend: function() {
+		end: function() {
 			changePer(this, 1);
 			this.animFun(1);
 			this._status = 2;
 			turnOff(this);
-			this.fire('suspend');
+			this.fire('end');
 		},
 		/**
 		 * 暂停播放

@@ -52,7 +52,7 @@
 					d.style.bottom=y+"px";
 					container.appendChild(d);
 				}, 5000 , {byStep : byStepBox.checked, frameTime:frameTimeSelect.value*1});
-				anim.onsuspend = function(){
+				anim.onend = function(){
 					btn.disabled = false;
 				};
 				anim.play();

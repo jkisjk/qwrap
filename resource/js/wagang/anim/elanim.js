@@ -50,7 +50,7 @@
 	 * @public
 	 * @static
 	 */
-	ElAnim.EVENTS = []; //["play", "beforeplay", "stop", "pause", "resume", "suspend", "reset"];
+	ElAnim.EVENTS = []; //'beforeplay,play,step,pause,resume,end,reset'.split(',');
 	ElAnim.UNIT_PATTERNS = {
 		'': /opacity|padding/i,
 		'px': /width|height|top$|bottom$|left$|right$/i

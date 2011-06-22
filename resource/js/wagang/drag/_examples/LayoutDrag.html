@@ -71,7 +71,7 @@
 		</div>
 
 		<div class="section-ctn cls" id='inline-drag-ctn'>
-			<h3 class="section-hd">模块拖动示例(inline)：</h3>
+			<h3 class="section-hd">模块拖动示例(inline)：<a href="#" class="add">添加Item</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="remove">删除Item</a></h3>
 			<div class="inlineModuleCtn cls">
 				<div class="inlineModule1 draggable2" >1---1</div>
 				<div class="inlineModule1 draggable2">1---2</div>
@@ -197,6 +197,37 @@ function initModuleLayoutDrag2()
 		isInline: true,
 		needAnim: true
 	});
+
+	var one = QW.NodeH.one, 
+		query = QW.NodeH.query,
+		g = QW.NodeH.g,
+		insertTo = QW.NodeH.insertTo;
+		create = QW.DomU.create,
+		on = QW.EventW.on;
+
+	var refresh = function() {
+		d.siblings = query(0,".draggable2");
+	};
+
+	one(g('inline-drag-ctn'), '.add').onclick = function(e) {
+		var container = one(g('inline-drag-ctn'), '.inlineModuleCtn'),
+			newEl = create('<div class="inlineModule1 draggable2">1---new</div>');
+		container.appendChild(newEl);
+
+		refresh();
+		return false;
+	};
+
+	one(g('inline-drag-ctn'), '.remove').onclick = function(e) {
+		e.preventDefault();
+		var container = one(g('inline-drag-ctn'), '.inlineModuleCtn');
+		if(query(container, '.draggable2').length > 0) {
+			container.removeChild(one(container, '.draggable2'));
+
+			refresh();
+		}
+		return false;
+	};
 }
 
 initModuleLayoutDrag2();

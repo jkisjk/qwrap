@@ -1,0 +1,3 @@
+<url-policy>
+    <allow-access-from url="qwrap.com" /> 
+</url-policy>

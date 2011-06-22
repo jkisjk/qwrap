@@ -46,7 +46,6 @@
 			body.insertBefore(container,body.firstChild);
 			container.innerHTML = html.join("");
 			flashEl = g(flashId);
-			document.title=document.title.split("#")[0]; //IE下flash会导致浏览器title加很多#
 		}
 		function periodicalExecuter(callback) {//执行器
 			switch (flashStatus)

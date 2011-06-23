@@ -92,12 +92,13 @@ function DualSlider(opts) {
 			},
 			setMinValue : function(min) {
 				if(typeof min == 'undefined' || !/^\d+$/.test(min)) return;
-				var resize, left;
+				var resize, left, startValue;
+				startValue = this.startValue;
 				resize = this.resizes[0];
-				min = Math.max(this.startValue, min | 0);
+				min = Math.max(startValue, min | 0);
 				min = Math.min(this.maxValue, min);
 				this.minValue = min;
-				left = Math.round(min / this.value * this.width);
+				left = Math.round((min - startValue) / this.value * this.width);
 				W(resize.oSrc).css('width', left + 'px');
 				resize.fire('dragend');
 			},

@@ -73,11 +73,12 @@
 				<input type="text" autocomplete="off" style="width:59px;" class="sr_input" id="i2">
 			</div>
 		</div>
-		<script type="text/javascript" src="../../../apps/core_dom_youa.js"></script>
+		<script type="text/javascript" src="../../../apps/core_dom_youa.combo.js"></script>
 		<script type="text/javascript" src="../drag.js"></script>
 		<script type="text/javascript" src="dualslider.js"></script>
 		<script type="text/javascript">
-			var values = [100000, 510000];
+			var values = [0, 500],
+				defaults = [50, 250];
 
 			var s1 = new DualSlider({
 					container : '#shopping_dualslider_price', 
@@ -95,22 +96,22 @@
 
 			['#i1', '#i2'].forEach(function(el, i) {
 				el = W(el);
-				['keyup', 'blur'].forEach(function(evt) {
-					el.on(evt, function() {
-						var i1 = W('#i1'), i2 = W('#i2');
-						var min = i1.val(), max = i2.val();
-						s1.setValues(min, max);
+				el.on('blur', function() {
+					var i1 = W('#i1'), i2 = W('#i2');
+					var min = i1.val(), max = i2.val();
+					s1.setValues(min, max);
 
-						if(min != s1.minValue) {
-							i1.val(s1.minValue); //å€¼æœ‰ä¿®æ­£
-						}
-						if(max != s1.maxValue) {
-							i2.val(s1.maxValue);
-						}
-					});
+					if(min != s1.minValue) {
+						i1.val(s1.minValue); //ÖµÓÐÐÞÕý
+					}
+					if(max != s1.maxValue) {
+						i2.val(s1.maxValue);
+					}
 				});
-				el.val(values[i]);
+				el.val(defaults[i]);
 			});
+
+			s1.setValues.apply(s1, defaults);
 		</script>
 	</body>
 </html>

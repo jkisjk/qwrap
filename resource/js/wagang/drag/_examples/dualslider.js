@@ -1,6 +1,6 @@
 function DualSlider(opts) {
 	ObjectH.mix(this, opts, 1);
-	this.init();
+	this._init();
 };
 (function() {
 	DualSlider.EVENTS = ['drag', 'dragend'];
@@ -10,8 +10,9 @@ function DualSlider(opts) {
 			width : 100, //拖动距离，单位px
 			startValue : 0,
 			endValue : 100,
+			needAnim : true,
 
-			init : function() {
+			_init : function() {
 				if(this.container) {
 					var holderLeft, holderRight, sliderLeft, sliderRight, container, startValue, endValue;
 					this.container = W(this.container);
@@ -30,11 +31,11 @@ function DualSlider(opts) {
 					this.value = endValue - startValue;
 
 					CustEvent.createEvents(this, DualSlider.EVENTS);
-					this.render();
+					this._render();
 				}
 			},
 			
-			render : function() {
+			_render : function() {
 				var holders, sliders, width, resize1, resize2, instance;
 				holders = this.holders;
 				sliders = this.sliders;
@@ -56,6 +57,10 @@ function DualSlider(opts) {
 						yFixed:true
 					});
 
+				resize1.on('dragstart', function() {
+					instance._cancelAnim();
+				});
+
 				resize1.on('dragend', function() {
 					var el = this.oSrc;
 					resize2.maxXAttr = width - parseInt(W(el).getCurrentStyle('width'));
@@ -70,6 +75,10 @@ function DualSlider(opts) {
 						startValue = instance.startValue;
 					instance.minValue = Math.round((left / width) * value + startValue);
 					instance.fire('drag');
+				});
+
+				resize2.on('dragstart', function() {
+					instance._cancelAnim();
 				});
 
 				resize2.on('dragend', function() {
@@ -90,18 +99,47 @@ function DualSlider(opts) {
 
 				this.resizes = [resize1, resize2];
 			},
-			setMinValue : function(min) {
+			_cancelAnim : function() {
+				if(this.anims && this.anims.length) {
+					this.anims.forEach(function(anim) {
+						anim.end();
+					});
+				}
+			},
+			_setWidth : function(el, width, resize) {
+				if(this.needAnim && typeof ElAnim !== 'undefined') {
+					var instance = this;
+					if(!instance.anims) instance.anims = [];
+					var anim = new ElAnim(el, {
+						"width" : {
+							to    : width
+						}
+					}, 500, Easing.elasticOut);
+
+					anim.on("end", function(){
+						resize.fire('dragend');
+						instance.anims.remove(anim);
+					});
+
+					anim.play();
+					instance.anims.push(anim);
+				} else {
+					W(el).css('width', width + 'px');
+					resize.fire('dragend');
+				}
+			},
+			_setMinValue : function(min) {
 				if(typeof min == 'undefined' || !/^\d+$/.test(min)) return;
-				var resize, left;
+				var resize, left, startValue;
+				startValue = this.startValue;
 				resize = this.resizes[0];
-				min = Math.max(this.startValue, min | 0);
+				min = Math.max(startValue, min | 0);
 				min = Math.min(this.maxValue, min);
 				this.minValue = min;
-				left = Math.round(min / this.value * this.width);
-				W(resize.oSrc).css('width', left + 'px');
-				resize.fire('dragend');
+				left = Math.round((min - startValue) / this.value * this.width);
+				this._setWidth(resize.oSrc, left, resize);
 			},
-			setMaxValue : function(max) {
+			_setMaxValue : function(max) {
 				if(typeof max == 'undefined' || !/^\d+$/.test(max)) return;
 				var resize, right, endValue;
 				endValue = this.endValue;
@@ -110,12 +148,15 @@ function DualSlider(opts) {
 				max = Math.max(this.minValue, max);
 				this.maxValue = max;
 				right = Math.round((endValue - max) / this.value * this.width);
-				W(resize.oSrc).css('width', right + 'px');
-				resize.fire('dragend');
+				this._setWidth(resize.oSrc, right, resize);
 			},
 			setValues : function(min, max) {
-				this.setMinValue(min);
-				this.setMaxValue(max);
+				this._cancelAnim();
+				this._setMinValue(min);
+				this._setMaxValue(max);
+			},
+			getValues : function() {
+				return [this.minValue, this.maxValue];
 			}
 		};
 })();

@@ -3,100 +3,72 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Jerry Qu's HTML document</title>
-    <meta http-equiv="Pragma" content="no-cache" />  
-    <meta http-equiv="Cache-Control" content="no-cache" />     
-    <meta http-equiv="Expires" content="0" />
     <meta http-equiv="ImageToolbar" content="no" />
-	<link rel="stylesheet" type="text/css" href="" media="all" />
     <style type="text/css">
-		* {
-			margin: 0;
-			padding: 0;
-		}
-		.price_graph {
-			background: url("images/bar_bg.gif") repeat-x;
-			display: block;
-			font-size: 0;
-			height: 16px;
-			line-height: 0;
-			margin: 4px 0 0 4px;
-			position: relative;
-		}
-
-		.price_graph .arr1 {
-			background: url("images/bg_bar.gif") repeat-x scroll 0 3px transparent;
-			display: block;
-			height: 16px;
-			left: 0;
-			position: absolute;
-			top: 0;
-		}
-
-		.price_graph .arr2 {
-			background: url("images/bg_bar.gif") repeat-x scroll 0 3px transparent;
-			display: block;
-			height: 16px;
-			position: absolute;
-			right: 0;
-			top: 0;
-		}
-
-		.price_graph .arr {
-			background: url("images/bg_bar_arr.png") no-repeat scroll 0 0 transparent;
-			cursor: pointer;
-			display: block;
-			height: 16px;
-			position: absolute;
-			text-indent: -9000px;
-			width: 10px;
-		}
-
-		.price_graph .arr1 .arr {
-			right: -7px;
-			top: 0;
-		}
-
-		.price_graph .arr2 .arr {
-			left: -7px;
-			top: 0;
-		}
+		dt {margin:20px 0;font-size:14px;font-weight:bold;}
+		.price_graph {background:url("images/bar_bg.gif") repeat-x; display:block; font-size:0; height:16px; line-height:0; margin:4px 0 0 4px; position:relative}
+		.price_graph .arr1 {background:url("images/bg_bar.gif") repeat-x scroll 0 3px transparent; display:block; height:16px; left:0; position:absolute; top:0}
+		.price_graph .arr2 {background:url("images/bg_bar.gif") repeat-x scroll 0 3px transparent; display:block; height:16px; position:absolute; right:0; top:0}
+		.price_graph .arr {background:url("images/bg_bar_arr.png") no-repeat scroll 0 0 transparent; cursor:pointer; display:block; height:16px; position:absolute; text-indent:-9000px; width:10px}
+		.price_graph .arr1 .arr {right:-7px; top:0}
+		.price_graph .arr2 .arr {left:-7px; top:0}
     </style>
     </head>
 	<body>
 		<div id="container" style="margin:50px auto;width:760px;">
-			<div id="shopping_dualslider_price" class="price_graph" style="width: 212px;">
-				<span style="width:0px;" class="arr1"><span class="arr"></span></span>
-				<span style="width:0px;" class="arr2"><span class="arr"></span></span>
-			</div>
-			<div class="price_input">
-				<input type="text" autocomplete="off" style="width:58px;" class="sr_input" id="i1"> ~ 
-				<input type="text" autocomplete="off" style="width:59px;" class="sr_input" id="i2">
-			</div>
+			<dl>
+				<dt>示例一：</dt>
+				<dd>
+					<div id="sample1" class="price_graph" style="width: 212px;">
+						<span style="width:0px;" class="arr1"><span class="arr"></span></span>
+						<span style="width:0px;" class="arr2"><span class="arr"></span></span>
+					</div>
+					<div class="price_input">
+						<input type="text" autocomplete="off" style="width:58px;" class="sr_input" id="i1"> ~ 
+						<input type="text" autocomplete="off" style="width:59px;" class="sr_input" id="i2">
+					</div>
+				</dd>
+				<dt>示例二：</dt>
+				<dd>
+					<div id="sample2" class="price_graph" style="width: 312px;">
+						<span style="width:0px;" class="arr1"><span class="arr"></span></span>
+						<span style="width:0px;" class="arr2"><span class="arr"></span></span>
+					</div>
+					<div>
+						<input type="button" id="sample2-set" value="s2.setValues(2000, 6000)" /> &nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" id="sample2-get" value="alert(s2.getValues())" />
+					</div>
+				</dd>
+			</dl>
 		</div>
-		<script type="text/javascript" src="../../../apps/core_dom_youa.js"></script>
+		<script type="text/javascript" src="../../../apps/core_dom_youa.combo.js"></script>
+		<script type="text/javascript" src="../../anim/anim.js"></script>
 		<script type="text/javascript" src="../drag.js"></script>
 		<script type="text/javascript" src="dualslider.js"></script>
 		<script type="text/javascript">
-			var values = [100000, 510000];
+			//Sample1
+			(function() {
+				var values = [0, 500],
+					defaults = [50, 250];
 
-			var s1 = new DualSlider({
-					container : '#shopping_dualslider_price', 
-					width : 200,
-					startValue : values[0],
-					endValue : values[1]
+				var s1 = new DualSlider({
+						container : '#sample1', 
+						width : 200,
+						startValue : values[0],
+						endValue : values[1],
+						needAnim : false
+					});
+				
+				s1.on('drag', function() {
+					var i1 = W('#i1'), i2 = W('#i2');
+
+					i1.val(s1.minValue);
+					i2.val(s1.maxValue);
 				});
-			
-			s1.on('drag', function() {
-				var i1 = W('#i1'), i2 = W('#i2');
 
-				i1.val(s1.minValue);
-				i2.val(s1.maxValue);
-			});
-
-			['#i1', '#i2'].forEach(function(el, i) {
-				el = W(el);
-				['keyup', 'blur'].forEach(function(evt) {
-					el.on(evt, function() {
+				['#i1', '#i2'].forEach(function(el, i) {
+					el = W(el);
+					el.on('blur', function() {
 						var i1 = W('#i1'), i2 = W('#i2');
 						var min = i1.val(), max = i2.val();
 						s1.setValues(min, max);
@@ -108,9 +80,31 @@
 							i2.val(s1.maxValue);
 						}
 					});
+					el.val(defaults[i]);
 				});
-				el.val(values[i]);
-			});
+
+				s1.setValues.apply(s1, defaults);
+			})();
+
+			//Sample2
+			var s2;
+			(function() {
+				var values = [0, 10000];
+
+				s2 = new DualSlider({
+						container : '#sample2', 
+						width : 300,
+						startValue : values[0],
+						endValue : values[1]
+					});
+
+				['#sample2-get', '#sample2-set'].forEach(function(el) {
+					W(el).click(function(e) {
+						e.preventDefault();
+						eval(this.value);
+					});
+				});
+			})();
 		</script>
 	</body>
 </html>

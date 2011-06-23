@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Jerry Qu's HTML document</title>
+    <meta http-equiv="Pragma" content="no-cache" />  
+    <meta http-equiv="Cache-Control" content="no-cache" />     
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="ImageToolbar" content="no" />
+	<link rel="stylesheet" type="text/css" href="" media="all" />
+    <style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.price_graph {
+			background: url("images/bar_bg.gif") repeat-x;
+			display: block;
+			font-size: 0;
+			height: 16px;
+			line-height: 0;
+			margin: 4px 0 0 4px;
+			position: relative;
+		}
+
+		.price_graph .arr1 {
+			background: url("images/bg_bar.gif") repeat-x scroll 0 3px transparent;
+			display: block;
+			height: 16px;
+			left: 0;
+			position: absolute;
+			top: 0;
+		}
+
+		.price_graph .arr2 {
+			background: url("images/bg_bar.gif") repeat-x scroll 0 3px transparent;
+			display: block;
+			height: 16px;
+			position: absolute;
+			right: 0;
+			top: 0;
+		}
+
+		.price_graph .arr {
+			background: url("images/bg_bar_arr.png") no-repeat scroll 0 0 transparent;
+			cursor: pointer;
+			display: block;
+			height: 16px;
+			position: absolute;
+			text-indent: -9000px;
+			width: 10px;
+		}
+
+		.price_graph .arr1 .arr {
+			right: -7px;
+			top: 0;
+		}
+
+		.price_graph .arr2 .arr {
+			left: -7px;
+			top: 0;
+		}
+    </style>
+    </head>
+	<body>
+		<div id="container" style="margin:50px auto;width:760px;">
+			<div id="shopping_dualslider_price" class="price_graph" style="width: 212px;">
+				<span style="width:0px;" class="arr1"><span class="arr"></span></span>
+				<span style="width:0px;" class="arr2"><span class="arr"></span></span>
+			</div>
+			<div class="price_input">
+				<input type="text" autocomplete="off" style="width:58px;" class="sr_input" id="i1"> ~ 
+				<input type="text" autocomplete="off" style="width:59px;" class="sr_input" id="i2">
+			</div>
+		</div>
+		<script type="text/javascript" src="../../../apps/core_dom_youa.js"></script>
+		<script type="text/javascript" src="../drag.js"></script>
+		<script type="text/javascript" src="dualslider.js"></script>
+		<script type="text/javascript">
+			var start = 10, end = 510;
+
+			var s1 = new DualSlider({
+					container : '#shopping_dualslider_price', 
+					width : 200,
+					startValue : start,
+					endValue : end
+				});
+			
+			s1.on('drag', function() {
+				var i1 = W('#i1'), i2 = W('#i2');
+
+				i1.val(s1.minValue);
+				i2.val(s1.maxValue);
+			});
+			
+			W('#i1, #i2').on('blur', function() {
+				var i1 = W('#i1'), i2 = W('#i2');
+				s1.setValues(i1.val(), i2.val());
+
+				i1.val(s1.minValue);
+				i2.val(s1.maxValue);
+			});
+
+			W('#i1').fire('blur');
+		</script>
+	</body>
+</html>

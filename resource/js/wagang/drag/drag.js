@@ -480,4 +480,4 @@
 		RectSelector: RectSelector
 	});
 
-}());
+}()); 

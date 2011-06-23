@@ -122,8 +122,8 @@
 		{int} minXAttr 最小x属性值
 		{int} maxYAttr 最大y属性值
 		{int} minYAttr 最小y属性值
-		{boolean} xFixed x属性固定
-		{boolean} yFixed: false,
+		{boolean} xFixed x属性固定，默认为false
+		{boolean} yFixed x属性固定，默认为false
 		{boolean} withProxy: false,
 	 * @returns {SimpleDrag} 
 	 */
@@ -169,14 +169,14 @@
 			dragstart: function(e) {
 				var me = this;
 				if (me.oHdl.setCapture) me.oHdl.setCapture();
-				me.startXAttr = $F(getCurrentStyle(me.oSrc, me.xAttr));
-				me.startYAttr = $F(getCurrentStyle(me.oSrc, me.yAttr));
+				me.startXAttr = $F(getCurrentStyle(me.oSrc, me.xAttr.replace(/^-/,'')));
+				me.startYAttr = $F(getCurrentStyle(me.oSrc, me.yAttr.replace(/^-/,'')));
 				if (me.withProxy) {
 					var proxy = me.getProxy();
 					var rect = getRect(me.oSrc);
 					setRect(proxy, rect.left, rect.top, rect.width, rect.height, false);
-					me.startXAttrProxy = $F(proxy.style[me.xAttr]);
-					me.startYAttrProxy = $F(proxy.style[me.yAttr]);
+					me.startXAttrProxy = $F(proxy.style[me.xAttr.replace(/^-/,'')]);
+					me.startYAttrProxy = $F(proxy.style[me.yAttr.replace(/^-/,'')]);
 					proxy.__deltaX = proxy.__deltaY = 0;
 					lazyApply(
 						function() {
@@ -204,7 +204,7 @@
 				for (var i in dirs) {
 					var iLow = i.toLowerCase();
 					if (!me[iLow + 'Fixed']) {
-						var delta = DragManager['delta' + i];
+						var delta = (me[iLow+'Attr'].indexOf('-') == 0 ? -1 : 1) * DragManager['delta' + i];
 						if (me['max' + i + 'Attr'] != null) delta = Math.min(delta, me['max' + i + 'Attr'] - me['start' + i + 'Attr']);
 						if (me['min' + i + 'Attr'] != null) delta = Math.max(delta, me['min' + i + 'Attr'] - me['start' + i + 'Attr']);
 						if (me.withProxy) {
@@ -213,7 +213,7 @@
 							} catch (ex) {}
 							me.oProxy['__delta' + i] = delta;
 						} else {
-							setStyle(me.oSrc, me[iLow + 'Attr'], (me['start' + i + 'Attr'] + delta) + 'px');
+							setStyle(me.oSrc, me[iLow + 'Attr'].replace(/^-/,''), (me['start' + i + 'Attr'] + delta) + 'px');
 						}
 					}
 				}
@@ -225,8 +225,8 @@
 				if (me.withProxy) {
 					var proxy = me.oProxy;
 					proxy.style.display = 'none';
-					if (!me.xFixed) setStyle(me.oSrc, me.xAttr, (me.startXAttr + proxy.__deltaX) + 'px');
-					if (!me.yFixed) setStyle(me.oSrc, me.yAttr, (me.startYAttr + proxy.__deltaY) + 'px');
+					if (!me.xFixed) setStyle(me.oSrc, me.xAttr.replace(/^-/,''), (me.startXAttr + proxy.__deltaX) + 'px');
+					if (!me.yFixed) setStyle(me.oSrc, me.yAttr.replace(/^-/,''), (me.startYAttr + proxy.__deltaY) + 'px');
 				}
 				me.fire('dragend');
 			},
@@ -257,10 +257,18 @@
 		};
 	}());
 
-/*
-* SimpleResize 简单Resize
-*/
-
+	/**
+	 * @class SimpleResize 简单大小调整
+	 * @namespace QW
+	 * @constructor
+	 * @param {json} opts - 其它参数， 
+		---参考SimpleDrap的相关参数，不同的是，以下四项的默认值有变化：
+		{string} xAttr 拖动的x属性，默认为'width'
+		{string} yAttr 拖动的y属性，默认为'height'
+		{int} minXAttr 最小x属性值，默认为0
+		{int} minYAttr 最小y属性值，默认为0
+	 * @returns {SimpleResize} 
+	 */
 	function SimpleResize(opts) {
 		SimpleDrag.call(this, opts);
 	}
@@ -276,8 +284,16 @@
 		mix(SimpleResize.prototype, SimpleDrag.prototype);
 	}());
 
+
 	/**
-	 * RectSelector： 长方形选择器
+	 * @class RectSelector 方框选择器，用户需要在ondrag里处理真正的选择。
+	 * @namespace QW
+	 * @constructor
+	 * @param {json} opts - 其它参数， 
+		---目前只支持以下参数：
+		{Element} oHdl 启动选择框的触发节点
+		{Element} oProxy 拖动虚框节点，默认自动创建
+	 * @returns {RectSelector} 
 	 */
 
 	function RectSelector(opts) {

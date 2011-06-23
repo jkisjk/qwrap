@@ -23,6 +23,7 @@
 	</style>
 	<script type="text/javascript" src="../../../apps/core_dom_pure.js"></script>
 	<script type="text/javascript" src="../drag.js"></script>
+	<script type="text/javascript">var g = QW.NodeH.g;</script>
 </head>
 <body >
 <div id=doc3>
@@ -50,35 +51,46 @@
 	
 	<div class="ctn1" id="ctn1" > 
 		ctn1<hr/>
-		Drag----------------------<br>
+		<div>
+			------Drag With Proxy:<input type=checkbox onclick="dragSampComplex.withProxy=this.checked;"/> <br/>
+			minLeft(minXAttr):<input type=checkbox onclick="dragSampComplex.minXAttr=this.checked?100:null;" />;
+			maxLeft(maxXAttr):<input type=checkbox onclick="dragSampComplex.maxXAttr=this.checked?(600-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'width'))):null;" /><br/>
+			minTop(minYAttr):<input type=checkbox onclick="dragSampComplex.minYAttr=this.checked?100:null;" />;
+			maxTop(maxYAttr):<input type=checkbox onclick="dragSampComplex.maxYAttr=this.checked?(500-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'height'))):null;" /><br/>
+			X Fixed:<input type=checkbox onclick="dragSampComplex.xFixed=this.checked;"/>;
+			Y Fixed:<input type=checkbox onclick="dragSampComplex.yFixed=this.checked;"/> <br/>
+			<textarea id="dragSampComplexCode" style="width:400px;height:50px;">
 
-		minLeft(minXAttr):<input type=checkbox onclick="dragSampComplex.minXAttr=this.checked?100:null;" />;
-		maxLeft(maxXAttr):<input type=checkbox onclick="dragSampComplex.maxXAttr=this.checked?(600-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'width'))):null;" /><br/>
-		minTop(minYAttr):<input type=checkbox onclick="dragSampComplex.minYAttr=this.checked?100:null;" />;
-		maxTop(maxYAttr):<input type=checkbox onclick="dragSampComplex.maxYAttr=this.checked?(500-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'height'))):null;" /><br/>
-		Drag With Proxy:<input type=checkbox onclick="dragSampComplex.withProxy=this.checked;"/> <br/>
-		X Fixed:<input type=checkbox onclick="dragSampComplex.xFixed=this.checked;"/> <br/>
-		Y Fixed:<input type=checkbox onclick="dragSampComplex.yFixed=this.checked;"/> <br/>
+			</textarea>
+		</div>
+		<div>
+			------Resize With Proxy:<input type=checkbox onclick="resizeSampComplex.withProxy=this.checked;"/> <br/>
+			minWidth(minXAttr):<input type=checkbox onclick="resizeSampComplex.minXAttr=this.checked?100:70;" />;
+			maxWidth(maxXAttr):<input type=checkbox onclick="resizeSampComplex.maxXAttr=this.checked?Math.max(70,(600-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'left')))):null;" /><br/>
+			minHeight(minYAttr):<input type=checkbox onclick="resizeSampComplex.minYAttr=this.checked?100:70;" />;
+			maxHeight(maxAAttr):<input type=checkbox onclick="resizeSampComplex.maxYAttr=this.checked?Math.max(70,(500-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'top')))):null;" /><br/>
+			X Fixed:<input type=checkbox onclick="resizeSampComplex.xFixed=this.checked;"/>;
+			Y Fixed:<input type=checkbox onclick="resizeSampComplex.yFixed=this.checked;"/> <br/>
+			<textarea id="resizeSampComplexCode" style="width:400px;height:50px;">
 
-		Resize-------------------<br>
-		minWidth(minXAttr):<input type=checkbox onclick="resizeSampComplex.minXAttr=this.checked?100:70;" />;
-		maxWidth(maxXAttr):<input type=checkbox onclick="resizeSampComplex.maxXAttr=this.checked?Math.max(70,(600-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'left')))):null;" /><br/>
-		minHeight(minYAttr):<input type=checkbox onclick="resizeSampComplex.minYAttr=this.checked?100:70;" />;
-		maxHeight(maxAAttr):<input type=checkbox onclick="resizeSampComplex.maxYAttr=this.checked?Math.max(70,(500-parseInt(QW.NodeH.getCurrentStyle(dragSampComplex.oSrc,'top')))):null;" /><br/>
-		Resize With Proxy:<input type=checkbox onclick="resizeSampComplex.withProxy=this.checked;"/> <br/>
-		X Fixed:<input type=checkbox onclick="resizeSampComplex.xFixed=this.checked;"/> <br/>
-		Y Fixed:<input type=checkbox onclick="resizeSampComplex.yFixed=this.checked;"/> <br/>
-
-		Test checkboxes:--------------------<br/>
-		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
-		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /><br/>
-		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
-		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /><br/>
-		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
-		<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
+			</textarea>
+		</div>
+		<div>
+			------Test checkboxes:<br/>
+			<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
+			<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /><br/>
+			<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
+			<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /><br/>
+			<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
+			<input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox /> <input type=checkbox name=testCheckbox />
+		</div>
 	</div>
 
 	<div id="DragSample1" >Simple Drag</div>
+	<script type="text/javascript">//<![CDATA[
+		//简单拖动
+		var dragSamp1  = new QW.SimpleDrag({oSrc:g('DragSample1')});
+	</script>
 	<div id="DragSample2" >
 		<div id="DragSam2Header" class="dragHeader">header</div>
 		Drag with header <br>
@@ -86,8 +98,16 @@
 		X Fixed:<input type=checkbox onclick="dragSamp2.xFixed=this.checked;"/> <br/>
 		Y Fixed:<input type=checkbox onclick="dragSamp2.yFixed=this.checked;"/> <br/>
 	</div>
+	<script type="text/javascript">//<![CDATA[
+		//指定oHdl的简单拖动
+		var dragSamp2  = new QW.SimpleDrag({oSrc:g('DragSample2'),oHdl:g("DragSam2Header")});
+	</script>
 
 	<div id="ResizeSample1" >Simple Resize </div>
+	<script type="text/javascript">//<![CDATA[
+		//简单resize
+		var resizeSamp1  = new QW.SimpleResize({oSrc:g('ResizeSample1')});
+	</script>
 	<div id="ResizeSample2" >
 		<div id=ResizeSam2Corner class="resizeCorner">></div>
 		Resize with corner <br>
@@ -95,6 +115,10 @@
 		X Fixed:<input type=checkbox onclick="resizeSamp2.xFixed=this.checked;"/> <br/>
 		Y Fixed:<input type=checkbox onclick="resizeSamp2.yFixed=this.checked;"/> <br/>
 	</div>
+	<script type="text/javascript">//<![CDATA[
+		//指定oHdl简单resize
+		var resizeSamp2  = new QW.SimpleResize({oSrc:g('ResizeSample2'),oHdl:g("ResizeSam2Corner")});
+	</script>
 
 	<div id="DragAndResizeComplexSamp" >
 		<div id="ComplexSamHeader" class="dragHeader">header</div>
@@ -104,19 +128,6 @@
 </div>
 </body>
 <script type="text/javascript">//<![CDATA[
-function g(id){
-	return document.getElementById(id);
-};
-	//简单拖动
-	var dragSamp1  = new QW.SimpleDrag({oSrc:g('DragSample1')});
-	//指定oHdl的简单拖动
-	var dragSamp2  = new QW.SimpleDrag({oSrc:g('DragSample2'),oHdl:g("DragSam2Header")});
-	//简单resize
-	var resizeSamp1  = new QW.SimpleResize({oSrc:g('ResizeSample1')});
-	//指定oHdl简单resize
-	var resizeSamp2  = new QW.SimpleResize({oSrc:g('ResizeSample2'),oHdl:g("ResizeSam2Corner")});
-
-
 	//复合Drag和Resize示例
 	var dragSampComplex=new QW.SimpleDrag({oSrc:g('DragAndResizeComplexSamp'),oHdl:g("ComplexSamHeader")});
 	var resizeSampComplex=new QW.SimpleResize({oSrc:g('DragAndResizeComplexSamp'),oHdl:g("ComplexSamCorner")});
@@ -141,6 +152,24 @@ function g(id){
 			boxes[i].checked=!!(QW.DomU.rectIntersect(QW.NodeH.getRect(boxes[i]),region1));
 		}
 	});
+
+
+	function showAgrs(){
+		var args='withProxy maxXAttr minXAttr maxYAttr minYAttr xFixed yFixed'.split(' '),
+			dragSampComplexCode=["var dragSampComplex = new QW.SimpleDrag({\n\toSrc:g('DragAndResizeComplexSamp'),\n\toHdl:g('ComplexSamHeader')"],
+			resizeSampComplexCode=["var simpleSampComplex = new QW.SimpleResize({\n\toSrc:g('DragAndResizeComplexSamp'),\n\toHdl:g('ComplexSamCorner')"];
+		for(var i =0;i<args.length;i++){
+			var key = args[i];
+			if(dragSampComplex[key]) dragSampComplexCode.push(',\n\t'+key+': '+dragSampComplex[key]);
+			if(resizeSampComplex[key]) resizeSampComplexCode.push(',\n\t'+key+': '+resizeSampComplex[key]);
+		}
+		dragSampComplexCode.push("\n};");
+		resizeSampComplexCode.push("\n};");
+		g('dragSampComplexCode').value = dragSampComplexCode.join('');
+		g('resizeSampComplexCode').value = resizeSampComplexCode.join('');
+	}
+	QW.EventTargetH.delegate(g('ctn1'),'input','click',showAgrs);
+	QW.EventTargetH.on(document,'mouseup',showAgrs);
 
 //]]></script>
 </html>

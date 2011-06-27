@@ -43,15 +43,15 @@ function DualSlider(opts) {
 				instance = this;
 				
 				resize1 = new SimpleResize({
-						oSrc:holders[0].core[0],
-						oHdl:sliders[0].core[0],
+						oSrc:holders[0][0],
+						oHdl:sliders[0][0],
 						maxXAttr:width,
 						yFixed:true
 					});
 
 				resize2 = new SimpleResize({
-						oSrc:holders[1].core[0],
-						oHdl:sliders[1].core[0],
+						oSrc:holders[1][0],
+						oHdl:sliders[1][0],
 						xAttr:'-width',
 						maxXAttr:width,
 						yFixed:true
@@ -114,7 +114,7 @@ function DualSlider(opts) {
 						"width" : {
 							to    : width
 						}
-					}, 500, Easing.elasticOut);
+					}, 500, Easing.easeIn);
 
 					anim.on("end", function(){
 						resize.fire('dragend');
@@ -152,8 +152,13 @@ function DualSlider(opts) {
 			},
 			setValues : function(min, max) {
 				this._cancelAnim();
-				this._setMinValue(min);
-				this._setMaxValue(max);
+				if(max < this.minValue) {
+					this._setMinValue(min);
+					this._setMaxValue(max);
+				} else {
+					this._setMaxValue(max);
+					this._setMinValue(min);
+				}
 			},
 			getValues : function() {
 				return [this.minValue, this.maxValue];

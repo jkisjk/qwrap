@@ -35,8 +35,10 @@
 						<span style="width:0px;" class="arr2"><span class="arr"></span></span>
 					</div>
 					<div>
-						<input type="button" id="sample2-set" value="s2.setValues(2000, 6000)" /> &nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="button" id="sample2-get" value="alert(s2.getValues())" />
+						<input type="button" class="sample2" value="s2.setValues(2000, 6000)" /> <br />
+						<input type="button" class="sample2" value="s2.setValues(0, 10000)" /> <br />
+						<input type="button" class="sample2" value="s2.setValues(5000, 5000)" /> <br />
+						<input type="button" class="sample2" value="alert(s2.getValues())" />
 					</div>
 				</dd>
 			</dl>
@@ -98,11 +100,9 @@
 						endValue : values[1]
 					});
 
-				['#sample2-get', '#sample2-set'].forEach(function(el) {
-					W(el).click(function(e) {
-						e.preventDefault();
-						eval(this.value);
-					});
+				W('.sample2').click(function(e) {
+					e.preventDefault();
+					eval(this.value);
 				});
 			})();
 		</script>

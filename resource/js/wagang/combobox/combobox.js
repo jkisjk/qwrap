@@ -197,7 +197,7 @@
 					}
 				}
 			});
-			on(me.oText, "focus", function(e) { //监控oText的事件
+			var focusHdl = function(e) { //监控oText的事件
 				if (me.disabled) return;
 				if (me._refreshTimer) clearInterval(me._refreshTimer);
 				me._refreshTimer = setInterval(function() {
@@ -216,7 +216,8 @@
 						}
 					}
 				}, 100);
-			});
+			};
+			on(me.oText, "focus", focusHdl);
 			on(me.oText, "blur", function(e) { //监控oText的事件
 				me.hide();
 				clearInterval(me._refreshTimer);
@@ -258,6 +259,7 @@
 				me.hide();
 				preventDefault(e);
 			};
+			if(document.activeElement == me.oText) focusHdl();//如果render时,页面已经focus在输入框，则先运行focus事件
 		}
 	};
 

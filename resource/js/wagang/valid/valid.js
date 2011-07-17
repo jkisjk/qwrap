@@ -427,7 +427,7 @@
 		 * @return {void}  
 		 */
 		prepare4Vld: function(el) {
-			if (el.getAttribute("ignoredbc")) Utils.dbc2sbcValue(el);
+			if (getAttr2(el,"ignoredbc")) Utils.dbc2sbcValue(el);
 			if (el.type == "text" || el.type == "textarea") Utils.trimTextValue(el); //这个会导致如果用户想用空格排版的话，第一行的排版有误
 		}
 	};
@@ -622,12 +622,12 @@
 				if (!isOk) {
 					msg = Msgs.getMsg(el, "d_format");
 				} else {
-					var maxV = el.getAttribute("maxValue") || "2049-12-31";
+					var maxV = getAttr2(el,"maxValue") || "2049-12-31";
 					if (tempD > new Date(maxV.replace(/\D+/g, "/"))) {
 						isOk = false;
 						msg = tmpl(Msgs.getMsg(el, "d_upper"), [maxV, val]);
 					}
-					var minV = el.getAttribute("minValue") || "1900-01-01";
+					var minV = getAttr2(el,"minValue") || "1900-01-01";
 					if (tempD < new Date(minV.replace(/\D+/g, "/"))) {
 						isOk = false;
 						msg = tmpl(Msgs.getMsg(el, "d_lower"), [minV, val]);
@@ -757,7 +757,7 @@
 		richtext: function(el, renderResult) {
 			return Validators._checkLength(el || this, renderResult, function(a) {
 				var s = getValue(a);
-				if (a.getAttribute("ignoreTag")) return s.replace(/<img[^>]*>/g, "a").replace(/<[^>]*>/g, "").length;
+				if (getAttr2(a,"ignoreTag")) return s.replace(/<img[^>]*>/g, "a").replace(/<[^>]*>/g, "").length;
 				else return s.length;
 			}, "richtext");
 		},
@@ -821,7 +821,7 @@
 		 */
 		reconfirm: function(el, renderResult) {
 			Utils.prepare4Vld(el);
-			var oriEl = g(el.getAttribute("reconfirmFor"));
+			var oriEl = g(getAttr2(el, "reconfirmFor"));
 			var isOk = (getValue(el) == getValue(oriEl));
 			if (renderResult != false) Valid.renderResult(el, isOk, !isOk && Msgs.getMsg(el, "_reconfirm"));
 			return isOk;
@@ -1219,7 +1219,7 @@
 				return ;
 			}
 			QW.NodeW('input,textarea', ce.target).forEach(function(el) {
-				var placeholder = el.getAttribute('placeholder'),
+				var placeholder = getAttr2(el,'placeholder'),
 					placeHolderEl = Valid._getPlaceHolderEl(el);
 				if (placeholder && !placeHolderEl) {
 					var placeHolderElId = 'placeHolder-' + placeHolder_idx++;

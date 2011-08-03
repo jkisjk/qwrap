@@ -237,11 +237,17 @@
 					}, true);
 				} else {
 					document.attachEvent('onfocusin', function(e) {
-						Valid.hint(e.srcElement);
-					})
+						var el = e.srcElement;
+						if (el && ',INPUT,SELECT,TEXTAREA,OBJECT'.indexOf(',' + el.tagName) > -1) {
+							Valid.hint(el);
+						}
+					});
 					document.attachEvent('onfocusout', function(e) {
-						Valid.blur(e.srcElement);
-					})
+						var el = e.srcElement;
+						if (el && ',INPUT,SELECT,TEXTAREA,OBJECT'.indexOf(',' + el.tagName) > -1) {
+							Valid.blur(el);
+						}
+					});
 				}
 			}
 			var els = query(container, "input");

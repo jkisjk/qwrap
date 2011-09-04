@@ -95,7 +95,7 @@
 		 * @param {String} method (Optional) 请求方式，get或post
 		 * @returns {Ajax}
 		 * @example 
-			QW.Ajax.get('http://demo.com',{key: 'value'},function(data){});
+			QW.Ajax.request('http://demo.com',{key: 'value'},function(responseText){alert(responseText);});
 		 */
 		request: function(url, data, callback, method) {
 			if (url.constructor == Object) {
@@ -116,7 +116,9 @@
 					url: url,
 					method: method,
 					data: data,
-					oncomplete: callback
+					oncomplete: function() {
+						callback.call(this, this.requester.responseText);
+					}
 				});
 			}
 			a.send();
@@ -131,7 +133,7 @@
 		 * @param {Function} callback 请求完成后的回调
 		 * @returns {Ajax}
 		 * @example
-		 QW.Ajax.get('http://demo.com',{key: 'value'},function(e){alert(this.requester.responseText);});
+		 QW.Ajax.get('http://demo.com',{key: 'value'},function(responseText){alert(responseText);});
 		 */
 		get: function(url, data, callback) {
 			var args = [].slice.call(arguments, 0);
@@ -147,7 +149,7 @@
 		 * @param {Function} callback 请求完成后的回调
 		 * @returns {Ajax}
 		 * @example
-		 QW.Ajax.post('http://demo.com',{key: 'value'},function(e){alert(this.requester.responseText);});
+		 QW.Ajax.post('http://demo.com',{key: 'value'},function(responseText){alert(responseText);});
 		 */
 		post: function(url, data, callback) {
 			var args = [].slice.call(arguments, 0);

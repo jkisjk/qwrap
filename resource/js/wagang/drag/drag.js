@@ -243,7 +243,7 @@
 						else {
 							me.oSrc = me.oHdl;
 						}
-						DragManager.startDrag(e && e.core || e, me);
+						DragManager.startDrag(e, me);
 					});
 				}
 				else {

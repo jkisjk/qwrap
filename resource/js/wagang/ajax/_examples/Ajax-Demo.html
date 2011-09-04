@@ -72,12 +72,12 @@
  * @param {Function} callback 请求完成后的回调
  * @returns {Ajax}
  * @example
-	QW.Ajax.get('http://demo.com',{key: 'value'},function(e){alert(this.requester.responseText);});
+	QW.Ajax.get('http://demo.com',{key: 'value'},function(responseText){alert(responseText);});
  */
 			</pre>
 			<button onclick="W(this).nextSibling('textarea').val().evalJs();" >运行以下textarea里的代码</button>
 			<br/>
-			<textarea id="code1" style="width:750px;height:50px;">Ajax.get('AjaxServer.php',function(e){alert(this.requester.responseText);})
+			<textarea id="code1" style="width:750px;height:50px;">Ajax.get('AjaxServer.php',function(responseText){alert(responseText);})
 			</textarea>
 			</div>
 		</div>
@@ -94,12 +94,12 @@
  * @param {Function} callback 请求完成后的回调
  * @returns {Ajax}
  * @example
-	QW.Ajax.post('http://demo.com',{key: 'value'},function(e){alert(this.requester.responseText);});
+	QW.Ajax.post('http://demo.com',{key: 'value'},function(responseText){alert(responseText);});
  */
 			</pre>
 			<button onclick="W(this).nextSibling('textarea').val().evalJs();" >运行以下textarea里的代码</button>
 			<br/>
-			<textarea id="code1" style="width:750px;height:50px;">Ajax.post('AjaxServer.php',function(e){alert(this.requester.responseText);})
+			<textarea id="code1" style="width:750px;height:50px;">Ajax.post('AjaxServer.php',function(responseText){alert(responseText);})
 			</textarea>
 			</div>
 		</div>
@@ -117,12 +117,12 @@
  * @param {String} method (Optional) 请求方式，get或post
  * @returns {Ajax}
  * @example
-	QW.Ajax.get('http://demo.com',{key: 'value'},function(data){});
+	QW.Ajax.request('http://demo.com',{key: 'value'},function(responseText){alert(responseText);});
  */
 			</pre>
 			<button onclick="W(this).nextSibling('textarea').val().evalJs();" >运行以下textarea里的代码</button>
 			<br/>
-			<textarea id="code1" style="width:750px;height:50px;">Ajax.request('AjaxServer.php',function(e){alert(this.requester.responseText);},'get');
+			<textarea id="code1" style="width:750px;height:50px;">QW.Ajax.request('AjaxServer.php',{key: 'value'},function(responseText){alert(responseText);},'get');
 			</textarea>
 			</div>
 		</div>
@@ -132,7 +132,7 @@
 			<div style="display:;">
 			<button onclick="W(this).nextSibling('textarea').val().evalJs();" >运行以下textarea里的代码</button>
 			<br/>
-			<textarea id="code1" style="width:750px;height:100px;">Ajax.post('AjaxServer.php','err=mcphp.fatal',function(e){var status=this.opResults('http://www.qwrap.com');});
+			<textarea id="code1" style="width:750px;height:100px;">Ajax.post('AjaxServer.php','err=mcphp.fatal',function(responseText){var status=this.opResults('http://www.qwrap.com');});
 			//需要php运行。opResults解析返回json，并处理一些通用的异常。
 			//把数据改成'err=mcphp.ok'以示服务器正确处理问题，正确的话会跳转至qwrap首页
 			</textarea>

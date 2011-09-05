@@ -1,5 +1,4 @@
 //	document.write('<script type="text/javascript" src="' + srcPath + 'wagang/ajax/ajax.js"></script>');
-
 /*
  * @fileoverview Encapsulates common operations of Ajax
  * @author　JK ,绝大部分代码来自BBLib/util/BBAjax(1.0版),其作者为：Miller。致谢
@@ -97,7 +96,7 @@
 		 * @param {String} method (Optional) 请求方式，get或post
 		 * @returns {Ajax}
 		 * @example 
-			QW.Ajax.get('http://demo.com',{key: 'value'},function(data){});
+			QW.Ajax.request('http://demo.com',{key: 'value'},function(responseText){alert(responseText);});
 		 */
 		request: function(url, data, callback, method) {
 			if (url.constructor == Object) {
@@ -118,7 +117,9 @@
 					url: url,
 					method: method,
 					data: data,
-					oncomplete: callback
+					oncomplete: function() {
+						callback.call(this, this.requester.responseText);
+					}
 				});
 			}
 			a.send();
@@ -133,7 +134,7 @@
 		 * @param {Function} callback 请求完成后的回调
 		 * @returns {Ajax}
 		 * @example
-		 QW.Ajax.get('http://demo.com',{key: 'value'},function(e){alert(this.requester.responseText);});
+		 QW.Ajax.get('http://demo.com',{key: 'value'},function(responseText){alert(responseText);});
 		 */
 		get: function(url, data, callback) {
 			var args = [].slice.call(arguments, 0);
@@ -149,7 +150,7 @@
 		 * @param {Function} callback 请求完成后的回调
 		 * @returns {Ajax}
 		 * @example
-		 QW.Ajax.post('http://demo.com',{key: 'value'},function(e){alert(this.requester.responseText);});
+		 QW.Ajax.post('http://demo.com',{key: 'value'},function(responseText){alert(responseText);});
 		 */
 		post: function(url, data, callback) {
 			var args = [].slice.call(arguments, 0);
@@ -348,9 +349,7 @@
 	QW.provide('Ajax', Ajax);
 }());
 
-
 //	document.write('<script type="text/javascript" src="' + srcPath + 'wagang/ajax/ajax_retouch.js"></script>');
-
 /*
  *	Copyright (c) QWrap
  *	version: $version$ $release$ released
@@ -526,7 +525,7 @@
 				};
 				QW.ObjectH.mix(o, opts || {}, true);
 			}
-			new Ajax(o).require();
+			new Ajax(o).send();
 		}
 	};
 

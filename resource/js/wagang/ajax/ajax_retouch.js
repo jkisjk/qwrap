@@ -173,7 +173,7 @@
 				};
 				QW.ObjectH.mix(o, opts || {}, true);
 			}
-			new Ajax(o).require();
+			new Ajax(o).send();
 		}
 	};
 

@@ -513,16 +513,17 @@
 	 */
 	var FormH = {
 		ajaxForm: function(oForm, opts) {
+			var o = {
+				data: oForm,
+				url: oForm.action,
+				method: oForm.method
+			};
 			if (typeof opts == 'function') {
-				var o = {
-					data: oForm,
-					oncomplete: opts
+				o.oncomplete = function() {
+						opts.call(this, this.requester.responseText);
 				};
 			} else {
-				o = {
-					data: oForm,
-					oncomplete: Ajax.opResults
-				};
+				o.oncomplete = Ajax.opResults;
 				QW.ObjectH.mix(o, opts || {}, true);
 			}
 			new Ajax(o).send();

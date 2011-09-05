@@ -130,14 +130,18 @@
 		<div class="section-ctn">
 			<h3 class="section-hd" onclick="W(this).nextSibling('div').toggle();" >按项目逻辑需求retouch后的用法----<a href="../ajax_retouch.js" target="_blank" onclick="EventH.stopPropagation();">ajax_retouch.js</a></h3>
 			<div style="display:;">
-			<button onclick="W(this).nextSibling('textarea').val().evalJs();" >运行以下textarea里的代码</button>
+			<form id="testForm" action="AjaxServer.php" method="get">
+			<button onclick="W(this).nextSibling('textarea').val().evalJs();return false;" >运行以下textarea里的代码</button>
 			<br/>
-			<textarea id="code1" style="width:750px;height:100px;">Ajax.post('AjaxServer.php','err=mcphp.fatal',function(responseText){var status=this.opResults('http://www.qwrap.com');});
+			<textarea id="code1" style="width:750px;height:100px;">			W('#testForm').ajaxForm(function(text){alert(text);});
+			Ajax.post('AjaxServer.php','err=mcphp.fatal',function(responseText){var status=this.opResults('http://www.qwrap.com');});
 			//需要php运行。opResults解析返回json，并处理一些通用的异常。
 			//把数据改成'err=mcphp.ok'以示服务器正确处理问题，正确的话会跳转至qwrap首页
 			</textarea>
+			</form>
 			</div>
 		</div>
+
 
 	</div>
 	<div id="ft">

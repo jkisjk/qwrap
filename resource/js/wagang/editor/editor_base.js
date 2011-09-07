@@ -56,21 +56,7 @@ Editor改版说明(2008-12-03)：
 	Editor.activeInstance = null;
 	Editor.editorPath = QW.PATH + 'wagang/editor/';
 
-	var _enable = function(el) {
-		removeClass(el, 'disabled');
-	},
-		_disable = function(el) {
-			removeClass(el, 'active');
-			removeClass(el, 'mouseover');
-			addClass(el, 'disabled');
-		},
-		_activate = function(el) {
-			addClass(el, 'active');
-		},
-		_deactivate = function(el) {
-			removeClass(el, 'active');
-		},
-		_tiUp = function(e, el) {
+	var _tiUp = function(e, el) {
 			el = el || this;
 			removeClass(el, 'mousedown');
 		},
@@ -435,7 +421,7 @@ Editor改版说明(2008-12-03)：
 			default:
 				if (Browser.ie) {
 					var ti = editor.tiMap["Undo"];
-					if (ti) _rc(ti.tiEl, "disabled");
+					if (ti) removeClass(ti.tiEl, "disabled");
 				}
 			}
 		};
